@@ -6,6 +6,7 @@
     dense
     :filter="table.search"
     flat
+    :grid="$q.screen.lt.sm"
     :loading="table.isLoading"
     :pagination.sync="table.pagination"
     :rows-per-page-options="[]"
@@ -118,6 +119,72 @@
           /{{ props.row.link }}
         </a>
       </q-td>
+    </template>
+
+    <template v-slot:item="props">
+      <div class="col-12">
+        <q-card class="q-mb-md" flat :props="props">
+          <q-list dense>
+            <q-item>
+              <q-item-section>
+                <q-item-label caption>{{ props.cols[0].label }}</q-item-label>
+                <q-item-label>
+                  <small class="text-grey q-mr-xxs">
+                    {{ props.row.index }}.
+                  </small>
+                  <q-icon
+                    v-if="props.row.members >= 10000"
+                    class="q-mr-xxs"
+                    color="secondary"
+                    name="star"
+                  />
+                  <span>{{ props.row.name }}</span>
+                </q-item-label>
+                <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
+                <q-item-label>
+                  <span class="q-mr-xxs">{{ props.cols[1].value }}</span>
+                  <small
+                    :class="{
+                      'text-green': props.row.membersGrowth > 0,
+                      'text-red': props.row.membersGrowth < 0,
+                    }"
+                  >
+                    <q-icon
+                      :name="
+                        props.row.membersGrowth > 0
+                          ? 'arrow_upward'
+                          : props.row.membersGrowth < 0
+                          ? 'arrow_downward'
+                          : null
+                      "
+                    />
+                    <span>
+                      {{
+                        props.row.membersGrowth > 0 ? 
+                          `+${props.row.membersGrowth}`
+                          : props.row.membersGrowth &lt; 0
+                          ? props.row.membersGrowth
+                          : null
+                      }}
+                    </span>
+                  </small>
+                </q-item-label>
+                <q-item-label caption>{{ props.cols[3].label }}</q-item-label>
+                <q-item-label>
+                  <a
+                    class="text-secondary"
+                    :href="`https://facebook.com/groups/${props.cols[3].value}`"
+                    rel="noopener noreferer"
+                    target="_blank"
+                  >
+                    /{{ props.cols[3].value }}
+                  </a>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </div>
     </template>
   </q-table>
 </template>
