@@ -49,7 +49,6 @@
           {{ props.cols[1].label }}
         </q-th>
         <q-th class="no-border" />
-        <q-th class="no-border" />
       </q-tr>
       <q-tr :props="props">
         <q-th key="name" :props="props">{{ props.cols[0].label }}</q-th>
