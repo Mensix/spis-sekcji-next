@@ -140,6 +140,7 @@ export default {
           dataset.lastUpdateDate = output.lastUpdateDate
           dataset.groups = output.groups.map((_, idx) => ({
             ..._,
+            membersGrowth: _.membersGrowth || 0,
             index: idx + 1,
           }))
         })
