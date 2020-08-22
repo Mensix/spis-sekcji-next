@@ -72,10 +72,10 @@
       <q-tr :props="props">
         <q-th key="name" :props="props">{{ props.cols[0].label }}</q-th>
         <q-th key="membersGrowth" :props="props">
-          {{ props.cols[4].label }}
+          {{ props.cols[2].label }}
         </q-th>
-        <q-th key="link" :props="props">{{ props.cols[2].label }}</q-th>
-        <q-th key="category" :props="props"> {{ props.cols[3].label }}</q-th>
+        <q-th key="link" :props="props">{{ props.cols[3].label }}</q-th>
+        <q-th key="category" :props="props"> {{ props.cols[4].label }}</q-th>
       </q-tr>
     </template>
 

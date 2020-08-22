@@ -21,19 +21,19 @@ export default function () {
         align: 'left',
         sortable: true,
       },
-      { name: 'link', label: 'Link', field: 'link', align: 'left' },
-      {
-        name: 'category',
-        label: 'Kategoria',
-        field: 'category',
-        align: 'left',
-      },
       {
         name: 'membersGrowth',
         field: 'membersGrowth',
         label: 'Przyrost członków',
         align: 'left',
         sortable: true,
+      },
+      { name: 'link', label: 'Link', field: 'link', align: 'left' },
+      {
+        name: 'category',
+        label: 'Kategoria',
+        field: 'category',
+        align: 'left',
       },
       {
         name: 'keywords',
