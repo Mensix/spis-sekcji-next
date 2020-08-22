@@ -231,7 +231,7 @@
                 <q-item-label>
                   <a
                     class="text-secondary"
-                    :href="`https://facebook.com/groups/${props.cols[2].value}`"
+                    :href="`https://facebook.com/groups/${props.cols[3].value}`"
                     rel="noopener noreferer"
                     target="_blank"
                   >
@@ -239,7 +239,7 @@
                   </a>
                 </q-item-label>
                 <q-item-label v-if="props.cols[4].value !== undefined" caption>
-                  <span>{{ props.cols[4].label }}</span>
+                  {{ props.cols[4].label }}
                 </q-item-label>
                 <q-item-label v-if="props.cols[4].value !== undefined">
                   <span>
