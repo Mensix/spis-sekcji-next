@@ -27,7 +27,7 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <nuxt />
+      <nuxt keep-alive />
     </q-page-container>
     <q-footer class="bg-grey-2 text-black text-center q-pa-lg">
       <p class="q-ma-none">
