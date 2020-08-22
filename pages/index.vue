@@ -1,5 +1,6 @@
 <template>
   <q-table
+    binary-state-sort
     :columns="table.columns"
     :data="computedGroups"
     dense
