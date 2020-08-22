@@ -6,11 +6,23 @@
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs shrink stretch>
-          <q-route-tab exact label="Sekcje" to="/" />
-          <q-route-tab exact label="Tag-grupki" to="/taggroups" />
-          <q-route-tab exact label="Hades" to="/deadgroups" />
-          <q-route-tab exact label="Zgłoś brakującą grupę" to="/submissions" />
+        <q-tabs v-model="currentRoute" shrink stretch>
+          <q-tab label="Sekcje" name="/" @click="$router.push('/')" />
+          <q-tab
+            label="Tag-grupki"
+            name="/taggroups"
+            @click="$router.push('/taggroups')"
+          />
+          <q-tab
+            label="Hades"
+            name="/deadgroups"
+            @click="$router.push('/deadgroups')"
+          />
+          <q-tab
+            label="Zgłoś brakującą grupę"
+            name="/submissions"
+            @click="$router.push('/submissions')"
+          />
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -71,3 +83,16 @@
     </q-footer>
   </q-layout>
 </template>
+
+<script>
+import { ref } from '@nuxtjs/composition-api'
+export default {
+  setup(props, ctx) {
+    const currentRoute = ref(ctx.root.$route.path)
+
+    return {
+      currentRoute,
+    }
+  },
+}
+</script>
