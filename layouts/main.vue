@@ -85,7 +85,13 @@
       </p>
     </q-footer>
     <q-footer v-else>
-      <q-tabs v-model="currentRoute" class="bg-white" shrink stretch>
+      <q-tabs
+        v-model="currentRoute"
+        class="bg-white"
+        shrink
+        stretch
+        switch-indicator
+      >
         <q-tab
           class="text-secondary"
           icon="view_list"
@@ -113,6 +119,20 @@
           label="Zgłoś brakującą grupę"
           name="/submissions"
           @click="$router.push('/submissions')"
+        />
+        <q-tab
+          class="text-secondary"
+          icon="lock_open"
+          label="Prywatność"
+          name="/privacy"
+          @click="$router.push('privacy')"
+        />
+        <q-tab
+          class="text-secondary"
+          icon="call"
+          label="Kontakt"
+          name="/contact"
+          @click="$router.push('/contact')"
         />
       </q-tabs>
     </q-footer>
