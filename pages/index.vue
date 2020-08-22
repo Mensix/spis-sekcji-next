@@ -1,8 +1,9 @@
 <template>
   <q-table
     :columns="table.columns"
-    :data="dataset.groups"
+    :data="computedGroups"
     dense
+    :filter="table.search"
     flat
     :loading="table.isLoading"
     :pagination.sync="table.pagination"
@@ -16,6 +17,48 @@
       'keywords',
     ]"
   >
+    <template v-slot:top-left>
+      <div
+        :class="{
+          'q-py-sm': $q.screen.lt.xs || $q.screen.lt.sm,
+          'q-py-lg': $q.screen.lt.md || $q.screen.lt.lg || $q.screen.lt.xl,
+        }"
+      >
+        <q-input
+          v-model="table.search"
+          class="q-mb-sm"
+          color="secondary"
+          :debounce="250"
+          dense
+          label="Wyszukiwarka grup"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-select
+          v-model="table.selectedCategories"
+          class="q-mb-xs"
+          color="secondary"
+          dense
+          label="Pokaż kategorie"
+          multiple
+          :options="dataset.categories"
+          options-dense
+          options-selected-class="text-secondary"
+        />
+        <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
+        <p
+          :class="{
+            'q-ma-none': true,
+            'text-white': dataset.lastUpdateDate.length == 0,
+          }"
+        >
+          Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
+        </p>
+      </div>
+    </template>
+
     <template v-slot:header="props">
       <q-tr :props="props">
         <q-th class="no-border" />
@@ -123,7 +166,7 @@
 </template>
 
 <script>
-import { onMounted } from '@nuxtjs/composition-api'
+import { onMounted, computed } from '@nuxtjs/composition-api'
 import useGroups from '~/shared/useGroups'
 import useTable from '~/shared/useTable'
 export default {
@@ -143,16 +186,31 @@ export default {
           }))
           dataset.categories = [
             ...new Set(
-              output.groups.filter((x) => x.category).flatMap((x) => x.category)
+              output.groups
+                .filter((x) => x.category)
+                .flatMap((x) => x.category)
+                .sort()
             ),
           ]
         })
         .then(() => (table.isLoading = false))
     )
 
+    const computedGroups = computed(() => {
+      if (table.selectedCategories.length > 0) {
+        return dataset.groups.filter((x) =>
+          Array.isArray(x.category)
+            ? table.selectedCategories.some((y) => x.category.includes(y))
+            : table.selectedCategories.includes(x.category)
+        )
+      }
+      return dataset.groups
+    })
+
     return {
       table,
       dataset,
+      computedGroups,
     }
   },
 }
