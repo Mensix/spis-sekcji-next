@@ -24,6 +24,7 @@ export default {
   css: ['quasar/dist/quasar.min.css', '~/assets/extend.css'],
   plugins: ['~/plugins/useQuasar'],
   components: true,
+  modules: ['@nuxtjs/device'],
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',

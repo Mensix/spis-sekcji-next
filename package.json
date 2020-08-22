@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nuxtjs/composition-api": "^0.12.2",
+    "@nuxtjs/device": "^1.2.7",
     "nuxt": "^2.14.0",
     "quasar": "^1.12.13"
   },

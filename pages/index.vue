@@ -22,8 +22,8 @@
     <template v-slot:top-left>
       <div
         :class="{
-          'q-py-sm': $q.screen.lt.xs || $q.screen.lt.sm,
-          'q-py-lg': $q.screen.lt.md || $q.screen.lt.lg || $q.screen.lt.xl,
+          'q-py-sm': $device.isMobile,
+          'q-py-lg': $device.isDesktopOrTablet,
         }"
       >
         <q-input
