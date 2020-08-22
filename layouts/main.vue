@@ -1,12 +1,12 @@
 <template>
-  <q-layout view="hHh lpR fff">
+  <q-layout :view="$device.isDesktop ? 'hHh lpR fff' : 'hHh lpR fFf'">
     <q-header class="bg-secondary shadow-2 text-white">
       <q-toolbar>
         <q-toolbar-title>
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs v-model="currentRoute" shrink stretch>
+        <q-tabs v-if="!$device.isMobile" v-model="currentRoute" shrink stretch>
           <q-tab label="Sekcje" name="/" @click="$router.push('/')" />
           <q-tab
             label="Tag-grupki"
@@ -29,7 +29,10 @@
     <q-page-container>
       <nuxt keep-alive />
     </q-page-container>
-    <q-footer class="bg-grey-2 text-black text-center q-pa-lg">
+    <q-footer
+      v-if="!$device.isMobile"
+      class="bg-grey-2 text-black text-center q-pa-lg"
+    >
       <p class="q-ma-none">
         Autorzy spisu dziękują Aleksandze Marczuk i Adamowi Firynowiczowi za
         <a
@@ -80,6 +83,38 @@
           <span>Polityka prywatności</span>
         </nuxt-link>
       </p>
+    </q-footer>
+    <q-footer v-else>
+      <q-tabs v-model="currentRoute" class="bg-white" shrink stretch>
+        <q-tab
+          class="text-secondary"
+          icon="view_list"
+          label="Sekcje"
+          name="/"
+          @click="$router.push('/')"
+        />
+        <q-tab
+          class="text-secondary"
+          icon="list"
+          label="Tag-grupki"
+          name="/taggroups"
+          @click="$router.push('/taggroups')"
+        />
+        <q-tab
+          class="text-secondary"
+          icon="link_off"
+          label="Hades"
+          name="/deadgroups"
+          @click="$router.push('/deadgroups')"
+        />
+        <q-tab
+          class="text-secondary"
+          icon="edit"
+          label="Zgłoś brakującą grupę"
+          name="/submissions"
+          @click="$router.push('/submissions')"
+        />
+      </q-tabs>
     </q-footer>
   </q-layout>
 </template>
