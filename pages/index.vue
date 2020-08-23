@@ -276,6 +276,9 @@ export default {
           dataset.lastUpdateDate = output.lastUpdateDate
           dataset.groups = output.groups.map((_, idx) => ({
             ..._,
+            category: Array.isArray(_.category)
+              ? _.category.sort()
+              : _.category,
             membersGrowth: _.membersGrowth || 0,
             index: idx + 1,
           }))
