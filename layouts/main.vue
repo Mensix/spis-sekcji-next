@@ -50,22 +50,6 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <q-banner
-        v-if="$nuxt.$route.name !== 'submissions'"
-        :class="{
-          'q-py-lg': $device.isMobile,
-          'q-pt-md': $device.isDesktopOrTablet,
-        }"
-      >
-        Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na
-        nowo, lekko odświeżony został wygląd strony, a także został dodany tryb
-        ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu
-        tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się
-        tajne.
-        <template v-slot:avatar>
-          <q-icon color="secondary" name="info" />
-        </template>
-      </q-banner>
       <nuxt keep-alive />
     </q-page-container>
     <q-footer
@@ -188,15 +172,44 @@
 
 <script>
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
-import { Dark, LocalStorage } from 'quasar'
+import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
   setup(props, ctx) {
     const currentRoute = ref(ctx.root.$route.path)
-
     const faListIcon = computed(() => faList)
 
     onMounted(() => {
+      Notify.create({
+        message:
+          'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony.',
+        icon: 'announcement',
+        position: 'bottom-right',
+        timeout: 0,
+        actions: [
+          {
+            label: 'OK',
+            color: 'white',
+            handler: () => {},
+          },
+        ],
+      })
+      Notify.create({
+        message:
+          'Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na nowo, lekko odświeżony został wygląd strony, a także został dodany tryb ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się tajne.',
+        icon: 'announcement',
+        position: 'bottom-right',
+        timeout: 15000,
+        progress: true,
+        actions: [
+          {
+            label: 'OK',
+            color: 'white',
+            handler: () => {},
+          },
+        ],
+      })
+
       if (LocalStorage.getItem('darkMode') === null) {
         LocalStorage.set('darkMode', false)
       }
