@@ -19,6 +19,28 @@ export default {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
       },
+      {
+        property: 'og:title',
+        content: 'Spis Sekcji JBwA i tag-grupek',
+        hid: 'og:title',
+      },
+      {
+        property: 'og:description',
+        content:
+          'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej',
+        hid: 'og:description',
+      },
+      { property: 'og:type', content: 'website', hid: 'og:type' },
+      {
+        property: 'og:url',
+        content: 'https://sekcje.github.io/',
+        hid: 'og:url',
+      },
+      {
+        property: 'og:image',
+        content: 'https://i.imgur.com/v4efulm.png',
+        hid: 'og:image',
+      },
     ],
   },
   css: ['quasar/dist/quasar.min.css', '~/assets/extend.css'],
