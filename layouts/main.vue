@@ -58,7 +58,9 @@
       >
         Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na
         nowo, lekko odświeżony został wygląd strony, a także został dodany tryb
-        ciemny.
+        ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu
+        tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się
+        tajne.
         <template v-slot:avatar>
           <q-icon color="secondary" name="info" />
         </template>
