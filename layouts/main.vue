@@ -51,6 +51,7 @@
     </q-header>
     <q-page-container>
       <q-banner
+        v-if="$nuxt.$route.name !== 'submissions'"
         :class="{
           'q-py-lg': $device.isMobile,
           'q-pt-md': $device.isDesktopOrTablet,
