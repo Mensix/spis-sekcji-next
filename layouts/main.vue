@@ -93,7 +93,7 @@
           rel="noopener noreferer"
           target="_blank"
         >
-          spis sekcji na Akapedii.
+          spis sekcji na Akapedii
         </a>
       </p>
       <q-separator class="q-my-md" />
