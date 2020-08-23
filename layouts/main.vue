@@ -29,11 +29,19 @@
             name="/submissions"
             @click="$router.push('/submissions')"
           />
-          <q-tab
-            :label="`Tryb ${$q.dark.mode === false ? 'ciemny' : 'jasny'}`"
-            @click="toggleDarkMode()"
-          />
         </q-tabs>
+        <q-btn
+          v-if="!$device.isMobile"
+          flat
+          :label="`Tryb ${$q.dark.mode === false ? 'ciemny' : 'jasny'}`"
+          @click="toggleDarkMode()"
+        />
+        <q-btn
+          v-else
+          flat
+          :icon="$q.dark.mode === false ? 'brightness_7' : 'brightness_3'"
+          @click="toggleDarkMode()"
+        />
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -101,7 +109,10 @@
     <q-footer v-else>
       <q-tabs
         v-model="currentRoute"
-        class="bg-white"
+        :class="{
+          'bg-white text-secondary': $q.dark.mode === false,
+          'bg-dark text-secondary': $q.dark.mode === true,
+        }"
         shrink
         stretch
         switch-indicator
