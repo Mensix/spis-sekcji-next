@@ -55,7 +55,7 @@
       </p>
       <q-separator class="q-my-md" />
       <p class="q-ma-none">
-        <span>v2.0.0-alpha.3</span>
+        <span>v2.0.0-alpha.4</span>
         <span> | </span>
         <a
           class="text-secondary"
