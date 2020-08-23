@@ -214,6 +214,26 @@ export default {
           ],
         })
 
+      fetch('https://spissekcji.firebaseio.com/update.json')
+        .then((response) => response.json())
+        .then(
+          (output) =>
+            output.isUpdating === true &&
+            Notify.create({
+              message: 'Trwa aktualizacja spisu sekcji.',
+              icon: 'announcement',
+              position: 'bottom-right',
+              timeout: 3000,
+              progress: true,
+              actions: [
+                {
+                  label: 'OK',
+                  color: 'white',
+                },
+              ],
+            })
+        )
+
       if (LocalStorage.getItem('darkMode') === null) {
         LocalStorage.set('darkMode', false)
       }
