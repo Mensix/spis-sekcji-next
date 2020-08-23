@@ -29,6 +29,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/composition-api',
+    '@nuxtjs/fontawesome',
   ],
   build: {
     extend(config, ctx) {

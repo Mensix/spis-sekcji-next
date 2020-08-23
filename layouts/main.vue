@@ -8,7 +8,11 @@
       }"
     >
       <q-toolbar>
-        <q-toolbar-title>
+        <q-toolbar-title shrink>
+          <font-awesome-icon
+            class="q-icon__toolbar-title q-mr-sm"
+            :icon="faListIcon"
+          />
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
@@ -40,6 +44,7 @@
           v-else
           flat
           :icon="$q.dark.mode === false ? 'brightness_7' : 'brightness_3'"
+          round
           @click="toggleDarkMode()"
         />
       </q-toolbar>
@@ -165,11 +170,14 @@
 </template>
 
 <script>
-import { ref, onMounted } from '@nuxtjs/composition-api'
-import { LocalStorage, Dark } from 'quasar'
+import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import { Dark, LocalStorage } from 'quasar'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
   setup(props, ctx) {
     const currentRoute = ref(ctx.root.$route.path)
+
+    const faListIcon = computed(() => faList)
 
     onMounted(() => {
       if (LocalStorage.getItem('darkMode') === null) {
@@ -192,9 +200,16 @@ export default {
     }
 
     return {
+      faListIcon,
       currentRoute,
       toggleDarkMode,
     }
   },
 }
 </script>
+
+<style scoped>
+.q-icon__toolbar-title {
+  font-size: 19px;
+}
+</style>
