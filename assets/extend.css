@@ -2,6 +2,10 @@ body.body--dark {
   background-color: var(--q-color-dark) !important;
 }
 
+.q-field__bottom {
+  padding: 8px 0 0 0;
+}
+
 .q-mr-xxs {
   margin-right: 2px;
 }

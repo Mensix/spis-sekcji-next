@@ -179,9 +179,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.q-field__bottom {
-  padding: 8px 0 0 0;
-}
-</style>
