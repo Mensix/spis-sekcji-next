@@ -13,7 +13,12 @@
     :visible-columns="['name', 'link']"
   >
     <template v-slot:top-left>
-      <div>
+      <div
+        :class="{
+          'q-py-sm': $device.isMobile,
+          'q-py-lg': $device.isDesktopOrTablet,
+        }"
+      >
         <q-input
           v-model="table.search"
           class="q-mb-sm"
