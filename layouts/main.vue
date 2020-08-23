@@ -180,35 +180,37 @@ export default {
     const faListIcon = computed(() => faList)
 
     onMounted(() => {
-      Notify.create({
-        message:
-          'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony.',
-        icon: 'announcement',
-        position: 'bottom-right',
-        timeout: 0,
-        actions: [
-          {
-            label: 'OK',
-            color: 'white',
-            handler: () => {},
-          },
-        ],
-      })
-      Notify.create({
-        message:
-          'Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na nowo, lekko odświeżony został wygląd strony, a także został dodany tryb ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się tajne.',
-        icon: 'announcement',
-        position: 'bottom-right',
-        timeout: 15000,
-        progress: true,
-        actions: [
-          {
-            label: 'OK',
-            color: 'white',
-            handler: () => {},
-          },
-        ],
-      })
+      LocalStorage.getItem('cookieConsent') === null &&
+        Notify.create({
+          message:
+            'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony.',
+          icon: 'announcement',
+          position: 'bottom-right',
+          timeout: 0,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('cookieConsent', true),
+            },
+          ],
+        })
+      LocalStorage.getItem('v2read') === null &&
+        Notify.create({
+          message:
+            'Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na nowo, lekko odświeżony został wygląd strony, a także został dodany tryb ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się tajne.',
+          icon: 'announcement',
+          position: 'bottom-right',
+          timeout: 15000,
+          progress: true,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('v2read', true),
+            },
+          ],
+        })
 
       if (LocalStorage.getItem('darkMode') === null) {
         LocalStorage.set('darkMode', false)
