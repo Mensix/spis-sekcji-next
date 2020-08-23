@@ -2,15 +2,15 @@
   <q-table
     binary-state-sort
     :columns="table.columns"
-    :data="computedGroups"
+    :data="dataset.groups"
     dense
     :filter="table.search"
     flat
     :grid="$q.screen.lt.sm"
     :loading="table.isLoading"
-    :pagination.sync="table.pagination"
+    :pagination.sync="pagination"
     :rows-per-page-options="[]"
-    :visible-columns="['name', 'link', 'category']"
+    :visible-columns="['name', 'link']"
   >
     <template v-slot:top-left>
       <div>
@@ -26,17 +26,6 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-select
-          v-model="table.selectedCategories"
-          class="q-mb-xs"
-          color="secondary"
-          dense
-          label="Pokaż kategorie"
-          multiple
-          :options="dataset.categories"
-          options-dense
-          options-selected-class="text-secondary"
-        />
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
           :class="{
@@ -53,7 +42,6 @@
       <q-tr :props="props">
         <q-th key="name" :props="props">{{ props.cols[0].label }}</q-th>
         <q-th key="link" :props="props">{{ props.cols[1].label }}</q-th>
-        <q-th key="category" :props="props"> {{ props.cols[2].label }}</q-th>
       </q-tr>
     </template>
 
@@ -91,10 +79,6 @@
                     /{{ props.cols[1].value }}
                   </a>
                 </q-item-label>
-                <q-item-label caption>{{ props.cols[2].label }}</q-item-label>
-                <q-item-label>
-                  {{ props.cols[2].value }}
-                </q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -105,7 +89,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@nuxtjs/composition-api'
+import { onMounted, ref } from '@nuxtjs/composition-api'
 import useGroups from '~/shared/useGroups'
 import useTable from '~/shared/useTable'
 export default {
@@ -114,32 +98,28 @@ export default {
     const { table } = useTable()
     const { dataset } = useGroups()
 
-    onMounted(() =>
-      fetch('https://spissekcji.firebaseio.com/deadgroups.json')
+    const pagination = ref({
+      sortBy: 'name',
+      descending: false,
+      page: 0,
+      rowsPerPage: 20,
+      rowsCount: 0,
+    })
+
+    onMounted(() => {
+      fetch('https://spissekcji.firebaseio.com/dead.json')
         .then((response) => response.json())
         .then((output) => {
           dataset.lastUpdateDate = output.lastUpdateDate
           dataset.groups = output.groups
-          dataset.categories = [
-            ...new Set(output.groups.map((x) => x.category).sort()),
-          ]
         })
         .then(() => (table.isLoading = false))
-    )
-
-    const computedGroups = computed(() => {
-      if (table.selectedCategories.length > 0) {
-        return dataset.groups.filter((x) =>
-          table.selectedCategories.includes(x.category)
-        )
-      }
-      return dataset.groups
     })
 
     return {
       table,
       dataset,
-      computedGroups,
+      pagination,
     }
   },
 }
