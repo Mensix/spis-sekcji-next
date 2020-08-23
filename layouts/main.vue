@@ -51,7 +51,7 @@
       v-if="!$device.isMobile"
       :class="{
         'bg-grey-2 text-black': $q.dark.mode === false,
-        'bg-dark text-white': $q.dark.mode === true,
+        'shadow-up-2 bg-dark text-white': $q.dark.mode === true,
         'text-center q-pa-lg': true,
       }"
     >
@@ -111,7 +111,7 @@
         v-model="currentRoute"
         :class="{
           'bg-white text-secondary': $q.dark.mode === false,
-          'bg-dark text-secondary': $q.dark.mode === true,
+          'shadow-up-2 bg-dark text-secondary': $q.dark.mode === true,
         }"
         shrink
         stretch
