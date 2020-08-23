@@ -134,6 +134,7 @@
           'bg-white text-secondary': $q.dark.mode === false,
           'shadow-up-2 bg-dark text-secondary': $q.dark.mode === true,
         }"
+        no-caps
         shrink
         stretch
         switch-indicator
