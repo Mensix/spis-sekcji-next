@@ -183,10 +183,11 @@ export default {
       LocalStorage.getItem('cookieConsent') === null &&
         Notify.create({
           message:
-            'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony.',
+            'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
           icon: 'announcement',
           position: 'bottom-right',
           timeout: 0,
+          html: true,
           actions: [
             {
               label: 'OK',
@@ -195,6 +196,7 @@ export default {
             },
           ],
         })
+
       LocalStorage.getItem('v2read') === null &&
         Notify.create({
           message:
