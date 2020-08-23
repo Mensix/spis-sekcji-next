@@ -57,7 +57,7 @@
           stack-label
         >
           <template v-slot:append>
-            <q-icon name="link" />
+            <q-icon name="list" />
           </template>
         </q-input>
         <q-btn
