@@ -1,6 +1,12 @@
 <template>
   <q-layout :view="$device.isDesktop ? 'hHh lpR fff' : 'hHh lpR fFf'">
-    <q-header class="bg-secondary shadow-2 text-white">
+    <q-header
+      :class="{
+        'shadow-2': true,
+        'bg-secondary text-white': $q.dark.mode === false,
+        'bg-dark text-secondary': $q.dark.mode === true,
+      }"
+    >
       <q-toolbar>
         <q-toolbar-title>
           Spis Sekcji
@@ -23,6 +29,10 @@
             name="/submissions"
             @click="$router.push('/submissions')"
           />
+          <q-tab
+            :label="`Tryb ${$q.dark.mode === false ? 'ciemny' : 'jasny'}`"
+            @click="toggleDarkMode()"
+          />
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -31,7 +41,11 @@
     </q-page-container>
     <q-footer
       v-if="!$device.isMobile"
-      class="bg-grey-2 text-black text-center q-pa-lg"
+      :class="{
+        'bg-grey-2 text-black': $q.dark.mode === false,
+        'bg-dark text-white': $q.dark.mode === true,
+        'text-center q-pa-lg': true,
+      }"
     >
       <p class="q-ma-none">
         Autorzy spisu dziękują Aleksandze Marczuk i Adamowi Firynowiczowi za
@@ -140,13 +154,35 @@
 </template>
 
 <script>
-import { ref } from '@nuxtjs/composition-api'
+import { ref, onMounted } from '@nuxtjs/composition-api'
+import { LocalStorage, Dark } from 'quasar'
 export default {
   setup(props, ctx) {
     const currentRoute = ref(ctx.root.$route.path)
 
+    onMounted(() => {
+      if (LocalStorage.getItem('darkMode') === null) {
+        LocalStorage.set('darkMode', false)
+      }
+
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        Dark.set(true)
+      } else {
+        Dark.set(LocalStorage.getItem('darkMode'))
+      }
+    })
+
+    function toggleDarkMode() {
+      Dark.toggle()
+      LocalStorage.set('darkMode', Dark.isActive)
+    }
+
     return {
       currentRoute,
+      toggleDarkMode,
     }
   },
 }
