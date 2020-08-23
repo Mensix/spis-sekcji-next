@@ -46,7 +46,7 @@
         <p
           :class="{
             'q-ma-none': true,
-            'text-white': dataset.lastUpdateDate.length == 0,
+            'text-transparent': dataset.lastUpdateDate.length === 0,
           }"
         >
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
