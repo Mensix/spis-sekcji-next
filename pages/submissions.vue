@@ -143,6 +143,7 @@ export default {
 
     function submitSubmission() {
       if (
+        form.keywords.value > 0 &&
         form.keywords.value
           .split(',')
           .some((x) => form.name.includes(x) || form.link.value.includes(x))
