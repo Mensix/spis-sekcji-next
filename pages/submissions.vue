@@ -53,7 +53,6 @@
           hint="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
           label="Słowa kluczowe"
           outlined
-          required
           stack-label
         >
           <template v-slot:append>
@@ -89,7 +88,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/database'
 import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
 export default {
   layout: 'main',
