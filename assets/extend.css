@@ -1,3 +1,7 @@
+body.body--dark {
+  background-color: var(--q-color-dark) !important;
+}
+
 .q-mr-xxs {
   margin-right: 2px;
 }
