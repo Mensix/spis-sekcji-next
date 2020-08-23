@@ -214,7 +214,7 @@ export default {
           ],
         })
 
-      fetch('https://spissekcji.firebaseio.com/update.json')
+      fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
         .then(
           (output) =>
