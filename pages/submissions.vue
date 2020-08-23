@@ -61,6 +61,7 @@
         </q-input>
         <q-btn
           color="secondary"
+          :disable="form.isBeingSent"
           label="Wyślij"
           :loading="form.isBeingSent"
           no-caps
