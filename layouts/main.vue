@@ -50,6 +50,19 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
+      <q-banner
+        :class="{
+          'q-py-lg': $device.isMobile,
+          'q-pt-md': $device.isDesktopOrTablet,
+        }"
+      >
+        Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na
+        nowo, lekko odświeżony został wygląd strony, a także został dodany tryb
+        ciemny.
+        <template v-slot:avatar>
+          <q-icon color="secondary" name="info" />
+        </template>
+      </q-banner>
       <nuxt keep-alive />
     </q-page-container>
     <q-footer

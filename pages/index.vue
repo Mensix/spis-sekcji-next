@@ -20,12 +20,7 @@
     ]"
   >
     <template v-slot:top-left>
-      <div
-        :class="{
-          'q-py-sm': $device.isMobile,
-          'q-py-lg': $device.isDesktopOrTablet,
-        }"
-      >
+      <div>
         <q-input
           v-model="table.search"
           class="q-mb-sm"
