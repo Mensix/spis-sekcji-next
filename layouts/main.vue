@@ -224,7 +224,6 @@
             disable
             flat
             loading
-            round
           />
           <q-btn
             v-else-if="
@@ -234,7 +233,6 @@
             disable
             flat
             icon="check"
-            round
           />
         </q-card-actions>
       </q-card>
@@ -359,6 +357,8 @@ export default {
           highTraffic.isBeingSent = false
           highTraffic.wasSend = true
         })
+
+      setTimeout(() => (highTraffic.isModalShown = false), 1500)
     }
 
     function toggleDarkMode() {
