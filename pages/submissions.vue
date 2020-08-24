@@ -11,6 +11,7 @@
         <q-select
           v-model="form.type"
           color="secondary"
+          :disable="form.isBeingSent"
           label="Typ grupy"
           :options="['Sekcja', 'Tag-grupka']"
           options-selected-class="text-secondary"
@@ -20,6 +21,7 @@
         <q-input
           v-model="form.name"
           color="secondary"
+          :disable="form.isBeingSent"
           label="Nazwa grupy"
           outlined
           required
@@ -32,6 +34,7 @@
         <q-input
           v-model="form.link.value"
           color="secondary"
+          :disable="form.isBeingSent"
           :error="form.link.invalid"
           error-message="Link do grupy musi zawierać facebook.com/groups"
           hint="Link do grupy musi zawierać facebook.com/groups"
@@ -48,6 +51,7 @@
           v-model="form.keywords.value"
           class="q-mb-md"
           color="secondary"
+          :disable="form.isBeingSent"
           :error="form.keywords.invalid"
           error-message="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
           hint="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
