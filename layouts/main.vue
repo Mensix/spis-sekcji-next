@@ -50,6 +50,23 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
+      <q-banner
+        v-if="
+          $nuxt.$route.name !== 'submissions' && highTraffic.cookie === false
+        "
+        class="q-mt-lg"
+      >
+        Skąd wiesz o spisie sekcji?
+        <a
+          class="text-secondary"
+          href="#"
+          @click="highTraffic.isModalShown = !highTraffic.isModalShown"
+          >Zostaw nam informację.</a
+        >
+        <template v-slot:avatar>
+          <q-icon color="secondary" name="question_answer" />
+        </template>
+      </q-banner>
       <nuxt keep-alive />
     </q-page-container>
     <q-footer
@@ -167,11 +184,68 @@
         />
       </q-tabs>
     </q-footer>
+    <q-dialog
+      v-model="highTraffic.isModalShown"
+      @hide="highTraffic.cookie = true"
+    >
+      <q-card>
+        <q-card-section>
+          <h6 class="q-ma-none q-mb-md">Skąd wiesz o spisie sekcji?</h6>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <p class="q-ma-none q-mb-md">
+            Zostaw nam informację, skąd wiesz o spisie sekcji. Zbierane dane są
+            w pełni anonimowe.
+          </p>
+          <q-input
+            v-model="highTraffic.inputValue"
+            color="secondary"
+            :disable="highTraffic.isBeingSent"
+            label="Pisz tutaj..."
+            outlined
+            required
+          />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn
+            v-if="
+              highTraffic.isBeingSent === false && highTraffic.wasSend === false
+            "
+            color="secondary"
+            flat
+            label="Wyślij"
+            @click="sendInfo()"
+          />
+          <q-btn
+            v-else-if="
+              highTraffic.isBeingSent === true && highTraffic.wasSend === false
+            "
+            color="secondary"
+            disable
+            flat
+            loading
+            round
+          />
+          <q-btn
+            v-else-if="
+              highTraffic.isBeingSent === false && highTraffic.wasSend === true
+            "
+            color="secondary"
+            disable
+            flat
+            icon="check"
+            round
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import firebase from 'firebase/app'
+import 'firebase/database'
+import { computed, onMounted, ref, reactive } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
@@ -179,7 +253,31 @@ export default {
     const currentRoute = ref(ctx.root.$route.path)
     const faListIcon = computed(() => faList)
 
+    const highTraffic = reactive({
+      value: false,
+      isModalShown: false,
+      inputValue: '',
+      isBeingSent: false,
+      wasSend: false,
+      cookie: false,
+    })
+
     onMounted(() => {
+      firebase.apps.length === 0 &&
+        firebase.initializeApp({
+          apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
+          authDomain: 'spissekcji.firebaseapp.com',
+          databaseURL: 'https://spissekcji.firebaseio.com',
+          projectId: 'spissekcji',
+          storageBucket: 'spissekcji.appspot.com',
+          messagingSenderId: '752464608547',
+          appId: '1:752464608547:web:7786ca37c8ae1dd0',
+        })
+
+      LocalStorage.getItem('highTrafficSent') === null
+        ? LocalStorage.set('highTrafficSent', false)
+        : (highTraffic.cookie = true)
+
       LocalStorage.getItem('cookieConsent') === null &&
         Notify.create({
           message:
@@ -216,9 +314,9 @@ export default {
 
       fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
-        .then(
-          (output) =>
-            output.isUpdating === true &&
+        .then((output) => {
+          if (output.highTraffic === true) highTraffic.value = true
+          output.isUpdating === true &&
             Notify.create({
               message: 'Trwa aktualizacja spisu sekcji.',
               icon: 'announcement',
@@ -232,7 +330,7 @@ export default {
                 },
               ],
             })
-        )
+        })
 
       if (LocalStorage.getItem('darkMode') === null) {
         LocalStorage.set('darkMode', false)
@@ -248,6 +346,21 @@ export default {
       }
     })
 
+    function sendInfo() {
+      highTraffic.isBeingSent = true
+      firebase
+        .database()
+        .ref('where')
+        .push({
+          value: highTraffic.inputValue,
+        })
+        .then(() => {
+          LocalStorage.set('highTrafficSent', true)
+          highTraffic.isBeingSent = false
+          highTraffic.wasSend = true
+        })
+    }
+
     function toggleDarkMode() {
       Dark.toggle()
       LocalStorage.set('darkMode', Dark.isActive)
@@ -256,6 +369,8 @@ export default {
     return {
       faListIcon,
       currentRoute,
+      highTraffic,
+      sendInfo,
       toggleDarkMode,
     }
   },
