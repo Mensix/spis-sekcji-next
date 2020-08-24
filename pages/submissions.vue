@@ -148,10 +148,15 @@ export default {
 
     function submitSubmission() {
       if (
-        form.keywords.value > 0 &&
+        form.keywords.value.length > 0 &&
         form.keywords.value
+          .toLowerCase()
           .split(',')
-          .some((x) => form.name.includes(x) || form.link.value.includes(x))
+          .some(
+            (x) =>
+              form.name.toLowerCase().includes(x) ||
+              form.link.value.toLowerCase().includes(x)
+          )
       ) {
         form.keywords.invalid = true
       }
