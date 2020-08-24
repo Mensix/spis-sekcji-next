@@ -3,7 +3,7 @@
     <div
       :class="{
         'row justify-center': true,
-        'q-pt-md': $device.isMobile,
+        'q-pa-md': $device.isMobile,
         'q-pt-lg': $device.isDesktopOrTablet,
       }"
     >
@@ -17,7 +17,7 @@
         >
           Kontakt
         </h5>
-        <p class="q-ma-none q-mb-lg">
+        <p class="q-ma-none q-mb-sm">
           Jeżeli masz jakiś ciekawy pomysł na stronę, chcesz się przyłączyć do
           projektu, zadać pytanie, skontaktuj się z nami.
         </p>
@@ -25,12 +25,18 @@
     </div>
     <div
       :class="{
-        'row justify-center': true,
-        'q-pb-md': $device.isMobile,
-        'q-pb-lg': $device.isDesktopOrTablet,
+        'row justify-center q-mb-lg': $device.isDesktopOrTablet,
+        'q-pa-md': $device.isMobile,
+        'q-pt-lg': $device.isDesktopOrTablet,
       }"
     >
-      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 q-pr-sm">
+      <div
+        :class="{
+          'col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2': true,
+          'q-mb-md': $device.isMobile,
+          'q-pr-sm': $device.isDesktopOrTablet,
+        }"
+      >
         <q-img
           basic
           class="q-img__profile-photo"
@@ -72,7 +78,12 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 q-pl-sm">
+      <div
+        :class="{
+          'col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2': true,
+          'q-pl-sm': $device.isDesktopOrTablet,
+        }"
+      >
         <q-img
           basic
           class="q-img__profile-photo"
