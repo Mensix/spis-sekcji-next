@@ -7,7 +7,7 @@
         'q-pt-lg': $device.isDesktopOrTablet,
       }"
     >
-      <div class="text-grey col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+      <div class="text-grey col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
         <h5
           :class="{
             'text-white': $q.dark.mode === true,
@@ -30,7 +30,7 @@
         'q-pb-lg': $device.isDesktopOrTablet,
       }"
     >
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 q-pr-sp">
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 q-pr-sm">
         <q-img
           basic
           class="q-img__profile-photo"
@@ -72,7 +72,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 q-pl-sm">
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 q-pl-sm">
         <q-img
           basic
           class="q-img__profile-photo"

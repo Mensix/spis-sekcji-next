@@ -6,7 +6,7 @@
       'q-pa-lg': $device.isDesktopOrTablet,
     }"
   >
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
           v-model="form.type"
