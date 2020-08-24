@@ -58,7 +58,7 @@
               rel="noopener noreferer"
               target="_blank"
             >
-              <font-awesome-icon class="text-h4" :icon="faFacebookIcon" />
+              <font-awesome-icon class="text-h5" :icon="faFacebookIcon" />
             </a>
             <a
               :class="{
@@ -71,7 +71,7 @@
               target="_blank"
             >
               <font-awesome-icon
-                class="text-h4"
+                class="text-h5"
                 :icon="faFacebookMessengerIcon"
               />
             </a>
@@ -105,7 +105,7 @@
               rel="noopener noreferer"
               target="_blank"
             >
-              <font-awesome-icon class="text-h4" :icon="faFacebookIcon" />
+              <font-awesome-icon class="text-h5" :icon="faFacebookIcon" />
             </a>
             <a
               :class="{
@@ -118,7 +118,7 @@
               target="_blank"
             >
               <font-awesome-icon
-                class="text-h4"
+                class="text-h5"
                 :icon="faFacebookMessengerIcon"
               />
             </a>
@@ -132,7 +132,7 @@
               rel="noopener noreferer"
               target="_blank"
             >
-              <font-awesome-icon class="text-h4" :icon="faGithubIcon" />
+              <font-awesome-icon class="text-h5" :icon="faGithubIcon" />
             </a>
           </q-card-section>
         </q-card>
