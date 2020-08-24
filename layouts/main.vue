@@ -16,23 +16,11 @@
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs v-if="!$device.isMobile" v-model="currentRoute" shrink stretch>
-          <q-tab label="Sekcje" name="/" @click="$router.push('/')" />
-          <q-tab
-            label="Tag-grupki"
-            name="/taggroups"
-            @click="$router.push('/taggroups')"
-          />
-          <q-tab
-            label="Hades"
-            name="/deadgroups"
-            @click="$router.push('/deadgroups')"
-          />
-          <q-tab
-            label="Zgłoś brakującą grupę"
-            name="/submissions"
-            @click="$router.push('/submissions')"
-          />
+        <q-tabs v-if="!$device.isMobile" shrink stretch>
+          <q-route-tab label="Sekcje" to="/" />
+          <q-route-tab label="Tag-grupki" to="/taggroups" />
+          <q-route-tab label="Hades" to="/deadgroups" />
+          <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <q-btn
           v-if="!$device.isMobile"
@@ -130,7 +118,6 @@
     </q-footer>
     <q-footer v-else>
       <q-tabs
-        v-model="currentRoute"
         :class="{
           'bg-white text-secondary': $q.dark.mode === false,
           'shadow-up-2 bg-dark text-secondary': $q.dark.mode === true,
@@ -140,47 +127,41 @@
         stretch
         switch-indicator
       >
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="view_list"
           label="Sekcje"
-          name="/"
-          @click="$router.push('/')"
+          to="/"
         />
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="list"
           label="Tag-grupki"
-          name="/taggroups"
-          @click="$router.push('/taggroups')"
+          to="/taggroups"
         />
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="link_off"
           label="Hades"
-          name="/deadgroups"
-          @click="$router.push('/deadgroups')"
+          to="/deadgroups"
         />
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="edit"
           label="Zgłoś brakującą grupę"
-          name="/submissions"
-          @click="$router.push('/submissions')"
+          to="/submissions"
         />
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="lock_open"
           label="Prywatność"
-          name="/privacy"
-          @click="$router.push('privacy')"
+          to="/privacy"
         />
-        <q-tab
+        <q-route-tab
           class="text-secondary"
           icon="call"
           label="Kontakt"
-          name="/contact"
-          @click="$router.push('/contact')"
+          to="/contact"
         />
       </q-tabs>
     </q-footer>
