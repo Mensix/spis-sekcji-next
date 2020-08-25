@@ -165,10 +165,7 @@
         />
       </q-tabs>
     </q-footer>
-    <q-dialog
-      v-model="highTraffic.isModalShown"
-      @hide="highTraffic.cookie = true"
-    >
+    <q-dialog v-model="highTraffic.isModalShown">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Skąd wiesz o spisie sekcji?</h6>
@@ -339,7 +336,10 @@ export default {
           highTraffic.wasSend = true
         })
 
-      setTimeout(() => (highTraffic.isModalShown = false), 1500)
+      setTimeout(() => {
+        highTraffic.isModalShown = false
+        highTraffic.cookie = true
+      }, 1500)
     }
 
     function toggleDarkMode() {
