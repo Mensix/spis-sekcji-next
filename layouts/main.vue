@@ -40,7 +40,10 @@
     <q-page-container>
       <q-banner
         v-if="
-          $nuxt.$route.name !== 'submissions' && highTraffic.cookie === false
+          ($nuxt.$route.name !== 'submissions' ||
+            $nuxt.$route.name !== 'privacy' ||
+            $nuxt.$route.name !== 'contact') &&
+          highTraffic.cookie === false
         "
         class="q-mt-lg"
       >
