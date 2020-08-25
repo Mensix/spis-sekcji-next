@@ -27,7 +27,7 @@
           required
           stack-label
         >
-          <template v-slot:append>
+          <template #append>
             <q-icon name="edit" />
           </template>
         </q-input>
@@ -43,7 +43,7 @@
           required
           stack-label
         >
-          <template v-slot:append>
+          <template #append>
             <q-icon name="link" />
           </template>
         </q-input>
@@ -59,7 +59,7 @@
           outlined
           stack-label
         >
-          <template v-slot:append>
+          <template #append>
             <q-icon name="list" />
           </template>
         </q-input>

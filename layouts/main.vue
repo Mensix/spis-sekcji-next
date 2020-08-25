@@ -54,7 +54,7 @@
           @click="infoDialog.isModalShown = !infoDialog.isModalShown"
           >Zostaw nam informację.</a
         >
-        <template v-slot:avatar>
+        <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
       </q-banner>

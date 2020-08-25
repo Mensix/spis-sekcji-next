@@ -19,7 +19,7 @@
       'keywords',
     ]"
   >
-    <template v-slot:top-left>
+    <template #top-left>
       <div
         :class="{
           'q-py-sm': $device.isMobile,
@@ -34,7 +34,7 @@
           dense
           label="Wyszukiwarka grup"
         >
-          <template v-slot:append>
+          <template #append>
             <q-icon name="search" />
           </template>
         </q-input>
@@ -61,7 +61,7 @@
       </div>
     </template>
 
-    <template v-slot:header="props">
+    <template #header="props">
       <q-tr :props="props">
         <q-th class="no-border" />
         <q-th key="members" class="no-border" :props="props">
@@ -80,7 +80,7 @@
       </q-tr>
     </template>
 
-    <template v-slot:body-cell-name="props">
+    <template #body-cell-name="props">
       <q-td :props="props">
         <small class="text-grey q-mr-xxs">{{ props.row.index }}. </small>
         <q-icon
@@ -104,7 +104,7 @@
       </q-td>
     </template>
 
-    <template v-slot:body-cell-members="props">
+    <template #body-cell-members="props">
       <q-td :props="props">
         <span class="q-mr-xxs">{{ props.row.members }}</span>
         <small
@@ -136,9 +136,9 @@
       </q-td>
     </template>
 
-    <template v-slot:body-cell-membersGrowth />
+    <template #body-cell-membersGrowth />
 
-    <template v-slot:body-cell-link="props">
+    <template #body-cell-link="props">
       <q-td :props="props">
         <a
           class="text-secondary"
@@ -151,7 +151,7 @@
       </q-td>
     </template>
 
-    <template v-slot:body-cell-category="props">
+    <template #body-cell-category="props">
       <q-td :props="props">
         <span>
           {{
@@ -163,9 +163,9 @@
       </q-td>
     </template>
 
-    <template v-slot:body-cell-keywords />
+    <template #body-cell-keywords />
 
-    <template v-slot:item="props">
+    <template #item="props">
       <div class="col-12">
         <q-card class="q-mb-md" flat :props="props">
           <q-list dense>

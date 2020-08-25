@@ -12,7 +12,7 @@
     :rows-per-page-options="[]"
     :visible-columns="['name', 'link']"
   >
-    <template v-slot:top-left>
+    <template #top-left>
       <div
         :class="{
           'q-py-sm': $device.isMobile,
@@ -27,7 +27,7 @@
           dense
           label="Wyszukiwarka grup"
         >
-          <template v-slot:append>
+          <template #append>
             <q-icon name="search" />
           </template>
         </q-input>
@@ -43,14 +43,14 @@
       </div>
     </template>
 
-    <template v-slot:header="props">
+    <template #header="props">
       <q-tr :props="props">
         <q-th key="name" :props="props">{{ props.cols[0].label }}</q-th>
         <q-th key="link" :props="props">{{ props.cols[1].label }}</q-th>
       </q-tr>
     </template>
 
-    <template v-slot:body-cell-link="props">
+    <template #body-cell-link="props">
       <q-td :props="props">
         <a
           class="text-secondary"
@@ -63,7 +63,7 @@
       </q-td>
     </template>
 
-    <template v-slot:item="props">
+    <template #item="props">
       <div class="col-12">
         <q-card class="q-mb-md" flat :props="props">
           <q-list dense>
