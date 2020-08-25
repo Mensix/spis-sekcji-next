@@ -43,7 +43,7 @@
           ($nuxt.$route.name !== 'submissions' ||
             $nuxt.$route.name !== 'privacy' ||
             $nuxt.$route.name !== 'contact') &&
-          highTraffic.cookie === false
+          infoDialog.cookie === false
         "
         class="q-mt-lg"
       >
@@ -51,7 +51,7 @@
         <a
           class="text-secondary"
           href="#"
-          @click="highTraffic.isModalShown = !highTraffic.isModalShown"
+          @click="infoDialog.isModalShown = !infoDialog.isModalShown"
           >Zostaw nam informację.</a
         >
         <template v-slot:avatar>
@@ -168,7 +168,7 @@
         />
       </q-tabs>
     </q-footer>
-    <q-dialog v-model="highTraffic.isModalShown">
+    <q-dialog v-model="infoDialog.isModalShown">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Skąd wiesz o spisie sekcji?</h6>
@@ -179,9 +179,9 @@
             w pełni anonimowe.
           </p>
           <q-input
-            v-model="highTraffic.inputValue"
+            v-model="infoDialog.inputValue"
             color="secondary"
-            :disable="highTraffic.isBeingSent"
+            :disable="infoDialog.isBeingSent"
             label="Pisz tutaj..."
             outlined
             required
@@ -190,7 +190,7 @@
         <q-card-actions align="right">
           <q-btn
             v-if="
-              highTraffic.isBeingSent === false && highTraffic.wasSend === false
+              infoDialog.isBeingSent === false && infoDialog.wasSend === false
             "
             color="secondary"
             flat
@@ -199,7 +199,7 @@
           />
           <q-btn
             v-else-if="
-              highTraffic.isBeingSent === true && highTraffic.wasSend === false
+              infoDialog.isBeingSent === true && infoDialog.wasSend === false
             "
             color="secondary"
             disable
@@ -208,7 +208,7 @@
           />
           <q-btn
             v-else-if="
-              highTraffic.isBeingSent === false && highTraffic.wasSend === true
+              infoDialog.isBeingSent === false && infoDialog.wasSend === true
             "
             color="secondary"
             disable
@@ -232,7 +232,7 @@ export default {
     const currentRoute = ref(ctx.root.$route.path)
     const faListIcon = computed(() => faList)
 
-    const highTraffic = reactive({
+    const infoDialog = reactive({
       value: false,
       isModalShown: false,
       inputValue: '',
@@ -253,9 +253,9 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
-      LocalStorage.getItem('highTrafficSent') === null
-        ? LocalStorage.set('highTrafficSent', false)
-        : (highTraffic.cookie = true)
+      LocalStorage.getItem('infoDialogSent') === null
+        ? LocalStorage.set('infoDialogSent', false)
+        : (infoDialog.cookie = true)
 
       LocalStorage.getItem('cookieConsent') === null &&
         Notify.create({
@@ -294,7 +294,7 @@ export default {
       fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
         .then((output) => {
-          if (output.highTraffic === true) highTraffic.value = true
+          if (output.infoDialog === true) infoDialog.value = true
           output.isUpdating === true &&
             Notify.create({
               message: 'Trwa aktualizacja spisu sekcji.',
@@ -326,22 +326,22 @@ export default {
     })
 
     function sendInfo() {
-      highTraffic.isBeingSent = true
+      infoDialog.isBeingSent = true
       firebase
         .database()
         .ref('where')
         .push({
-          value: highTraffic.inputValue,
+          value: infoDialog.inputValue,
         })
         .then(() => {
-          LocalStorage.set('highTrafficSent', true)
-          highTraffic.isBeingSent = false
-          highTraffic.wasSend = true
+          LocalStorage.set('infoDialogSent', true)
+          infoDialog.isBeingSent = false
+          infoDialog.wasSend = true
         })
 
       setTimeout(() => {
-        highTraffic.isModalShown = false
-        highTraffic.cookie = true
+        infoDialog.isModalShown = false
+        infoDialog.cookie = true
       }, 1500)
     }
 
@@ -353,7 +353,7 @@ export default {
     return {
       faListIcon,
       currentRoute,
-      highTraffic,
+      infoDialog,
       sendInfo,
       toggleDarkMode,
     }
