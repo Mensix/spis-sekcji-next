@@ -44,9 +44,7 @@
         />
         <q-card>
           <q-card-section>
-            <h6 class="q-ma-none q-mb-sm">
-              Daniel Nguyen
-            </h6>
+            <h6 class="q-ma-none q-mb-sm">Daniel Nguyen</h6>
             <p class="text-grey q-ma-none">UI, UX</p>
             <q-separator class="q-my-md" />
             <a
@@ -91,9 +89,7 @@
         />
         <q-card>
           <q-card-section>
-            <h6 class="q-ma-none q-mb-sm">
-              Grzegorz Perun
-            </h6>
+            <h6 class="q-ma-none q-mb-sm">Grzegorz Perun</h6>
             <p class="text-grey q-ma-none">Kod</p>
             <q-separator class="q-my-md" />
             <a
