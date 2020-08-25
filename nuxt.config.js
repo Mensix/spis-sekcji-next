@@ -12,13 +12,6 @@ export default {
         content:
           'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej.',
       },
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-      },
       {
         property: 'og:title',
         content: 'Spis Sekcji JBwA i tag-grupek',
@@ -40,6 +33,13 @@ export default {
         property: 'og:image',
         content: 'https://i.imgur.com/v4efulm.png',
         hid: 'og:image',
+      },
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
       },
     ],
   },
