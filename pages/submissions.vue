@@ -47,6 +47,16 @@
             <q-icon name="link" />
           </template>
         </q-input>
+        <q-select
+          v-model="form.category.value"
+          color="secondary"
+          :disable="form.isBeingSent || form.type === 'Tag-grupka'"
+          label="Kategorie"
+          multiple
+          :options="form.category.data"
+          outlined
+          stack-label
+        />
         <q-input
           v-model="form.keywords.value"
           class="q-mb-md"
@@ -99,9 +109,8 @@ import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
 export default {
   layout: 'main',
   setup() {
-    onMounted(
-      () =>
-        firebase.apps.length === 0 &&
+    onMounted(() => {
+      firebase.apps.length === 0 &&
         firebase.initializeApp({
           apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
           authDomain: 'spissekcji.firebaseapp.com',
@@ -111,7 +120,11 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
-    )
+
+      fetch('https://spissekcji.firebaseio.com/settings/categories.json')
+        .then((response) => response.json())
+        .then((output) => (form.category.data = output))
+    })
 
     const form = reactive({
       type: 'Sekcja',
@@ -119,6 +132,10 @@ export default {
       link: {
         invalid: false,
         value: '',
+      },
+      category: {
+        data: [],
+        value: [],
       },
       keywords: {
         invalid: false,
@@ -171,12 +188,14 @@ export default {
           .ref('submissions')
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
+            category: form.type === 'Sekcja' && form.category.value,
             name: form.name,
             link: form.link.value,
             keywords: form.keywords.value,
           })
           .then(() => {
             form.name = form.link.value = form.keywords.value = ''
+            form.category.value = []
             form.isBeingSent = false
             form.wasSend = true
           })
