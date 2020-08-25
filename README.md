@@ -6,13 +6,14 @@ Przepisany na nowo, z lekko zmienionym wyglądem oraz mocno ulepszonym kodem.
 
 Praktycznie gotowe do wydania wraz z Vue 3.
 
-[x] Sekcje
-[x] Tag-grupki
-[x] Hades
-[x] Formularz do wysyłania próśb o dodanie grupy
-[x] Polityka prywatności
-[x] Kontakt
-[x] Tryb ciemny
+Zrobione:
+* Sekcje
+* Tag-grupki
+* Hades
+* Formularz do wysyłania próśb o dodanie grupy
+* Polityka prywatności
+* Kontakt
+* Tryb ciemny
 
 ## Stack
 
