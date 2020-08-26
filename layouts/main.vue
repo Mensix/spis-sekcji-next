@@ -43,7 +43,8 @@
           ($nuxt.$route.name !== 'submissions' ||
             $nuxt.$route.name !== 'privacy' ||
             $nuxt.$route.name !== 'contact') &&
-          infoDialog.cookie === false
+          infoDialog.cookie === false &&
+          isHighTraffic === true
         "
         class="q-mt-lg"
       >
@@ -232,6 +233,7 @@ export default {
     const currentRoute = ref(ctx.root.$route.path)
     const faListIcon = computed(() => faList)
 
+    const isHighTraffic = ref(false)
     const infoDialog = reactive({
       value: false,
       isModalShown: false,
@@ -294,6 +296,7 @@ export default {
       fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
         .then((output) => {
+          if (output.isHighTraffic === true) isHighTraffic.value = true
           if (output.infoDialog === true) infoDialog.value = true
           output.isUpdating === true &&
             Notify.create({
@@ -353,6 +356,7 @@ export default {
     return {
       faListIcon,
       currentRoute,
+      isHighTraffic,
       infoDialog,
       sendInfo,
       toggleDarkMode,
