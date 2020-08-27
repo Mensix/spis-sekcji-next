@@ -172,7 +172,10 @@ export default {
           .some(
             (x) =>
               form.name.toLowerCase().includes(x) ||
-              form.link.value.toLowerCase().includes(x)
+              form.link.value.toLowerCase().includes(x) ||
+              form.category.value
+                .map((y) => y.toLowerCase())
+                .some((z) => z.includes(x))
           )
       ) {
         form.keywords.invalid = true
