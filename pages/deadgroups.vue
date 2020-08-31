@@ -6,7 +6,7 @@
     dense
     :filter="table.search"
     flat
-    :grid="$q.screen.lt.sm"
+    :grid="$device.isMobile"
     :loading="table.isLoading"
     :pagination.sync="pagination"
     :rows-per-page-options="[]"
