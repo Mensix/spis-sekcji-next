@@ -190,7 +190,7 @@
                     v-if="props.row.isSection === false"
                     class="text-grey q-mr-xxs"
                   >
-                    <del> JBWA </del>
+                    <del>JBWA</del>
                   </small>
                   <span>{{ props.row.name }}</span>
                 </q-item-label>
