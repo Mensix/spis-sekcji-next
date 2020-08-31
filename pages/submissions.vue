@@ -191,7 +191,10 @@ export default {
           .ref('submissions')
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
-            category: form.type === 'Sekcja' && form.category.value,
+            category:
+              form.type === 'Sekcja' && form.category.value.length === 1
+                ? form.category.value.toString()
+                : form.category.value,
             name: form.name,
             link: form.link.value,
             keywords: form.keywords.value,
