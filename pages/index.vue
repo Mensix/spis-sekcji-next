@@ -257,38 +257,14 @@
 
 <script>
 import { onMounted, computed } from '@nuxtjs/composition-api'
-import useGroups from '~/shared/useGroups'
 import useTable from '~/shared/useTable'
+import { dataset, fetchGroups } from '~/store/sections'
 export default {
   layout: 'main',
   setup() {
     const { table } = useTable()
-    const { dataset } = useGroups()
 
-    onMounted(() =>
-      fetch('https://spissekcji.firebaseio.com/sections.json')
-        .then((response) => response.json())
-        .then((output) => {
-          dataset.lastUpdateDate = output.lastUpdateDate
-          dataset.groups = output.groups.map((_, idx) => ({
-            ..._,
-            category: Array.isArray(_.category)
-              ? _.category.sort()
-              : _.category,
-            membersGrowth: _.membersGrowth || 0,
-            index: idx + 1,
-          }))
-          dataset.categories = [
-            ...new Set(
-              output.groups
-                .filter((x) => x.category)
-                .flatMap((x) => x.category)
-                .sort()
-            ),
-          ]
-        })
-        .then(() => (table.isLoading = false))
-    )
+    onMounted(() => fetchGroups().then(() => (table.isLoading = false)))
 
     const computedGroups = computed(() => {
       if (table.selectedCategories.length > 0) {

@@ -4,7 +4,6 @@ export default function () {
   const dataset = reactive({
     lastUpdateDate: '',
     groups: [],
-    categories: [],
   })
 
   return {
