@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Admin panel hidden due to security issues
+pages/admin

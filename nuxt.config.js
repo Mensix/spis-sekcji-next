@@ -53,6 +53,9 @@ export default {
     '@nuxtjs/composition-api',
     '@nuxtjs/fontawesome',
   ],
+  generate: {
+    exclude: [/^\/admin/],
+  },
   build: {
     extend(config, ctx) {
       if (ctx.isDev && ctx.isClient) {
