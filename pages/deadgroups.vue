@@ -95,13 +95,12 @@
 
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
-import useGroups from '~/shared/useGroups'
 import useTable from '~/shared/useTable'
+import { dataset, fetchGroups } from '~/store/deadgroups'
 export default {
   layout: 'main',
   setup() {
     const { table } = useTable()
-    const { dataset } = useGroups()
 
     const pagination = ref({
       sortBy: 'name',
@@ -112,13 +111,7 @@ export default {
     })
 
     onMounted(() => {
-      fetch('https://spissekcji.firebaseio.com/dead.json')
-        .then((response) => response.json())
-        .then((output) => {
-          dataset.lastUpdateDate = output.lastUpdateDate
-          dataset.groups = output.groups
-        })
-        .then(() => (table.isLoading = false))
+      fetchGroups().then(() => (table.isLoading = false))
     })
 
     return {

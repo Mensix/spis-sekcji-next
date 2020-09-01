@@ -191,27 +191,14 @@
 
 <script>
 import { onMounted } from '@nuxtjs/composition-api'
-import useGroups from '~/shared/useGroups'
 import useTable from '~/shared/useTable'
+import { dataset, fetchGroups } from '~/store/taggroups'
 export default {
   layout: 'main',
   setup() {
     const { table } = useTable()
-    const { dataset } = useGroups()
 
-    onMounted(() =>
-      fetch('https://spissekcji.firebaseio.com/taggroups.json')
-        .then((response) => response.json())
-        .then((output) => {
-          dataset.lastUpdateDate = output.lastUpdateDate
-          dataset.groups = output.groups.map((_, idx) => ({
-            ..._,
-            membersGrowth: _.membersGrowth || 0,
-            index: idx + 1,
-          }))
-        })
-        .then(() => (table.isLoading = false))
-    )
+    onMounted(() => fetchGroups().then(() => (table.isLoading = false)))
 
     return {
       table,
