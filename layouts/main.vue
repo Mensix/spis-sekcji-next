@@ -59,7 +59,7 @@
           <q-icon color="secondary" name="question_answer" />
         </template>
       </q-banner>
-      <nuxt keep-alive />
+      <nuxt />
     </q-page-container>
     <q-footer
       v-if="!$device.isMobile"

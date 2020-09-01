@@ -264,7 +264,13 @@ export default {
   setup() {
     const { table } = useTable()
 
-    onMounted(() => fetchGroups().then(() => (table.isLoading = false)))
+    onMounted(() => {
+      if (dataset.groups.length === 0) {
+        fetchGroups().then(() => (table.isLoading = false))
+      } else if (dataset.groups.length > 0 && table.isLoading === true) {
+        table.isLoading = false
+      }
+    })
 
     const computedGroups = computed(() => {
       if (table.selectedCategories.length > 0) {
