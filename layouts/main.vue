@@ -91,7 +91,7 @@
       </p>
       <q-separator class="q-my-md" />
       <p class="q-ma-none">
-        <span>v2.0.0-beta.1</span>
+        <span>v2.0.0-beta.2</span>
         <span> | </span>
         <a
           class="text-secondary"
@@ -229,8 +229,7 @@ import { computed, onMounted, ref, reactive } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
-  setup(props, ctx) {
-    const currentRoute = ref(ctx.root.$route.path)
+  setup() {
     const faListIcon = computed(() => faList)
 
     const isHighTraffic = ref(false)
@@ -254,10 +253,6 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
-
-      LocalStorage.getItem('infoDialogSent') === null
-        ? LocalStorage.set('infoDialogSent', false)
-        : (infoDialog.cookie = true)
 
       LocalStorage.getItem('cookieConsent') === null &&
         Notify.create({
@@ -314,17 +309,13 @@ export default {
             })
         })
 
-      if (LocalStorage.getItem('darkMode') === null) {
-        LocalStorage.set('darkMode', false)
-      }
-
       if (
         window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
       ) {
         Dark.set(true)
       } else {
-        Dark.set(LocalStorage.getItem('darkMode'))
+        Dark.set(LocalStorage.getItem('darkMode') || false)
       }
     })
 
@@ -356,7 +347,6 @@ export default {
     return {
       Dark,
       faListIcon,
-      currentRoute,
       isHighTraffic,
       infoDialog,
       sendInfo,
