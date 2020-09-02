@@ -10,8 +10,8 @@
       <div class="text-grey col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
         <h5
           :class="{
-            'text-white': $q.dark.mode === true,
-            'text-black': $q.dark.mode === false,
+            'text-white': Dark.isActive === true,
+            'text-black': Dark.isActive === false,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -49,8 +49,8 @@
             <q-separator class="q-my-md" />
             <a
               :class="{
-                'text-white': $q.dark.mode === true,
-                'text-black': $q.dark.mode === false,
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
               }"
               href="https://facebook.com/gott.erhalte"
               rel="noopener noreferer"
@@ -60,8 +60,8 @@
             </a>
             <a
               :class="{
-                'text-white': $q.dark.mode === true,
-                'text-black': $q.dark.mode === false,
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
                 'q-ml-sm': true,
               }"
               href="https://m.me/gott.erhalte"
@@ -94,8 +94,8 @@
             <q-separator class="q-my-md" />
             <a
               :class="{
-                'text-white': $q.dark.mode === true,
-                'text-black': $q.dark.mode === false,
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
               }"
               href="https://facebook.com/grzegorz.perun"
               rel="noopener noreferer"
@@ -105,8 +105,8 @@
             </a>
             <a
               :class="{
-                'text-white': $q.dark.mode === true,
-                'text-black': $q.dark.mode === false,
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
                 'q-ml-sm': true,
               }"
               href="https://m.me/grzegorz.perun"
@@ -120,8 +120,8 @@
             </a>
             <a
               :class="{
-                'text-white': $q.dark.mode === true,
-                'text-black': $q.dark.mode === false,
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
                 'q-ml-sm': true,
               }"
               href="https://github.com/Mensix/"
@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import { Dark } from 'quasar'
 import {
   faFacebook,
   faFacebookMessenger,
@@ -152,6 +153,7 @@ export default {
     const faGithubIcon = computed(() => faGithub)
 
     return {
+      Dark,
       faFacebookIcon,
       faFacebookMessengerIcon,
       faGithubIcon,

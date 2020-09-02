@@ -3,8 +3,8 @@
     <q-header
       :class="{
         'shadow-2': true,
-        'bg-secondary text-white': $q.dark.mode === false,
-        'bg-dark text-secondary': $q.dark.mode === true,
+        'bg-secondary text-white': Dark.isActive === false,
+        'bg-dark text-secondary': Dark.isActive === true,
       }"
     >
       <q-toolbar>
@@ -25,13 +25,13 @@
         <q-btn
           v-if="!$device.isMobile"
           flat
-          :label="`Tryb ${$q.dark.mode === false ? 'ciemny' : 'jasny'}`"
+          :label="`Tryb ${Dark.isActive === false ? 'ciemny' : 'jasny'}`"
           @click="toggleDarkMode()"
         />
         <q-btn
           v-else
           flat
-          :icon="$q.dark.mode === false ? 'brightness_7' : 'brightness_3'"
+          :icon="Dark.isActive === false ? 'brightness_7' : 'brightness_3'"
           round
           @click="toggleDarkMode()"
         />
@@ -64,8 +64,8 @@
     <q-footer
       v-if="!$device.isMobile"
       :class="{
-        'bg-grey-2 text-black': $q.dark.mode === false,
-        'shadow-up-2 bg-dark text-white': $q.dark.mode === true,
+        'bg-grey-2 text-black': Dark.isActive === false,
+        'shadow-up-2 bg-dark text-white': Dark.isActive === true,
         'text-center q-pa-lg': true,
       }"
     >
@@ -123,8 +123,8 @@
     <q-footer v-else>
       <q-tabs
         :class="{
-          'bg-white text-secondary': $q.dark.mode === false,
-          'shadow-up-2 bg-dark text-secondary': $q.dark.mode === true,
+          'bg-white text-secondary': Dark.isActive === false,
+          'shadow-up-2 bg-dark text-secondary': Dark.isActive === true,
         }"
         no-caps
         shrink
@@ -354,6 +354,7 @@ export default {
     }
 
     return {
+      Dark,
       faListIcon,
       currentRoute,
       isHighTraffic,

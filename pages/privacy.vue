@@ -12,8 +12,8 @@
       <div>
         <h5
           :class="{
-            'text-white': $q.dark.mode === true,
-            'text-black': $q.dark.mode === false,
+            'text-white': Dark.isActive === true,
+            'text-black': Dark.isActive === false,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -38,8 +38,8 @@
       <div>
         <h6
           :class="{
-            'text-white': $q.dark.mode === true,
-            'text-black': $q.dark.mode === false,
+            'text-white': Dark.isActive === true,
+            'text-black': Dark.isActive === false,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -53,8 +53,8 @@
       <div>
         <h6
           :class="{
-            'text-white': $q.dark.mode === true,
-            'text-black': $q.dark.mode === false,
+            'text-white': Dark.isActive === true,
+            'text-black': Dark.isActive === false,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -78,7 +78,13 @@
 </template>
 
 <script>
+import { Dark } from 'quasar'
 export default {
   layout: 'main',
+  setup() {
+    return {
+      Dark,
+    }
+  },
 }
 </script>
