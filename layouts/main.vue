@@ -242,6 +242,26 @@ export default {
       cookie: false,
     })
 
+    function sendInfo() {
+      infoDialog.isBeingSent = true
+      firebase
+        .database()
+        .ref('where')
+        .push({
+          value: infoDialog.inputValue,
+        })
+        .then(() => {
+          LocalStorage.set('infoDialogSent', true)
+          infoDialog.isBeingSent = false
+          infoDialog.wasSend = true
+        })
+
+      setTimeout(() => {
+        infoDialog.isModalShown = false
+        infoDialog.cookie = true
+      }, 1500)
+    }
+
     onMounted(() => {
       firebase.apps.length === 0 &&
         firebase.initializeApp({
@@ -318,26 +338,6 @@ export default {
         Dark.set(LocalStorage.getItem('darkMode') || false)
       }
     })
-
-    function sendInfo() {
-      infoDialog.isBeingSent = true
-      firebase
-        .database()
-        .ref('where')
-        .push({
-          value: infoDialog.inputValue,
-        })
-        .then(() => {
-          LocalStorage.set('infoDialogSent', true)
-          infoDialog.isBeingSent = false
-          infoDialog.wasSend = true
-        })
-
-      setTimeout(() => {
-        infoDialog.isModalShown = false
-        infoDialog.cookie = true
-      }, 1500)
-    }
 
     function toggleDarkMode() {
       Dark.toggle()
