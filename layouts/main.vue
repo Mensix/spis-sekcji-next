@@ -296,20 +296,6 @@ export default {
         .then((output) => {
           if (output.isHighTraffic === true) isHighTraffic.value = true
           if (output.infoDialog === true) infoDialog.value = true
-          output.isUpdating === true &&
-            Notify.create({
-              message: 'Trwa aktualizacja spisu sekcji.',
-              icon: 'announcement',
-              position: 'bottom-right',
-              timeout: 3000,
-              progress: true,
-              actions: [
-                {
-                  label: 'OK',
-                  color: 'white',
-                },
-              ],
-            })
         })
 
       if (
