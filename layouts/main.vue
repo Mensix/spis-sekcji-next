@@ -291,23 +291,6 @@ export default {
           ],
         })
 
-      LocalStorage.getItem('v2read') === null &&
-        Notify.create({
-          message:
-            'Jesteś na stronie spisu sekcji v2. W tej wersji kod został przepisany na nowo, lekko odświeżony został wygląd strony, a także został dodany tryb ciemny. W zakładce Hades znajdują się natomiast grupy, które w ciągu tygodnia zostały zaarchiwizowane, usunięte przez Facebooka lub stały się tajne.',
-          icon: 'announcement',
-          position: 'bottom-right',
-          timeout: 15000,
-          progress: true,
-          actions: [
-            {
-              label: 'OK',
-              color: 'white',
-              handler: () => LocalStorage.set('v2read', true),
-            },
-          ],
-        })
-
       fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
         .then((output) => {
