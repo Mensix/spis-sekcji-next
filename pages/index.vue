@@ -5,6 +5,7 @@
     :data="computedGroups"
     dense
     :filter="table.search"
+    :filter-method="filterGroups"
     flat
     :grid="$device.isMobile"
     :loading="table.isLoading"
@@ -264,7 +265,7 @@ import { dataset, fetchGroups } from '~/store/sections'
 export default {
   layout: 'main',
   setup() {
-    const { table } = useTable()
+    const { table, filterGroups } = useTable()
 
     onMounted(() => {
       if (dataset.groups.length === 0) {
@@ -287,6 +288,7 @@ export default {
 
     return {
       table,
+      filterGroups,
       dataset,
       computedGroups,
     }

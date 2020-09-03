@@ -49,7 +49,25 @@ export default function () {
     },
   })
 
+  function filterGroups(rows, terms, cols, cellValue) {
+    const lowerTerms = terms ? terms.toLowerCase().trim() : ''
+    return rows.filter((row) =>
+      cols.some((col) => {
+        const val = cellValue(col, row) + ''
+        const haystack =
+          val === 'undefined' || val === 'null' ? '' : val.toLowerCase()
+        return (
+          (col.name === 'name' ||
+            col.name === 'link' ||
+            col.name === 'keywords') &&
+          haystack.includes(lowerTerms)
+        )
+      })
+    )
+  }
+
   return {
     table,
+    filterGroups,
   }
 }
