@@ -33,53 +33,7 @@
       <div
         :class="{
           'col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2': true,
-          'q-mb-md': $device.isMobile,
           'q-pr-sm': $device.isDesktopOrTablet,
-        }"
-      >
-        <q-img
-          basic
-          class="q-img__profile-photo"
-          src="https://scontent-frt3-2.xx.fbcdn.net/v/t1.0-9/69845501_2437071953046598_7557341617007362048_o.jpg?_nc_cat=103&_nc_sid=09cbfe&_nc_ohc=mrOXH7tJjKgAX9rHOdT&_nc_ht=scontent-frt3-2.xx&oh=a1c62557c061d524e3898fcc37ef8257&oe=5F69CBDA"
-        />
-        <q-card>
-          <q-card-section>
-            <h6 class="q-ma-none q-mb-sm">Daniel Nguyen</h6>
-            <p class="text-grey q-ma-none">UI, UX</p>
-            <q-separator class="q-my-md" />
-            <a
-              :class="{
-                'text-white': Dark.isActive === true,
-                'text-black': Dark.isActive === false,
-              }"
-              href="https://facebook.com/gott.erhalte"
-              rel="noopener noreferer"
-              target="_blank"
-            >
-              <font-awesome-icon class="text-h5" :icon="faFacebookIcon" />
-            </a>
-            <a
-              :class="{
-                'text-white': Dark.isActive === true,
-                'text-black': Dark.isActive === false,
-                'q-ml-sm': true,
-              }"
-              href="https://m.me/gott.erhalte"
-              rel="noopener noreferer"
-              target="_blank"
-            >
-              <font-awesome-icon
-                class="text-h5"
-                :icon="faFacebookMessengerIcon"
-              />
-            </a>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div
-        :class="{
-          'col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2': true,
-          'q-pl-sm': $device.isDesktopOrTablet,
         }"
       >
         <q-img
@@ -129,6 +83,52 @@
               target="_blank"
             >
               <font-awesome-icon class="text-h5" :icon="faGithubIcon" />
+            </a>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div
+        :class="{
+          'col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2': true,
+          'q-mb-md': $device.isMobile,
+          'q-pl-sm': $device.isDesktopOrTablet,
+        }"
+      >
+        <q-img
+          basic
+          class="q-img__profile-photo"
+          src="https://scontent-frt3-2.xx.fbcdn.net/v/t1.0-9/69845501_2437071953046598_7557341617007362048_o.jpg?_nc_cat=103&_nc_sid=09cbfe&_nc_ohc=mrOXH7tJjKgAX9rHOdT&_nc_ht=scontent-frt3-2.xx&oh=a1c62557c061d524e3898fcc37ef8257&oe=5F69CBDA"
+        />
+        <q-card>
+          <q-card-section>
+            <h6 class="q-ma-none q-mb-sm">Daniel Nguyen</h6>
+            <p class="text-grey q-ma-none">UI, UX</p>
+            <q-separator class="q-my-md" />
+            <a
+              :class="{
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
+              }"
+              href="https://facebook.com/gott.erhalte"
+              rel="noopener noreferer"
+              target="_blank"
+            >
+              <font-awesome-icon class="text-h5" :icon="faFacebookIcon" />
+            </a>
+            <a
+              :class="{
+                'text-white': Dark.isActive === true,
+                'text-black': Dark.isActive === false,
+                'q-ml-sm': true,
+              }"
+              href="https://m.me/gott.erhalte"
+              rel="noopener noreferer"
+              target="_blank"
+            >
+              <font-awesome-icon
+                class="text-h5"
+                :icon="faFacebookMessengerIcon"
+              />
             </a>
           </q-card-section>
         </q-card>
