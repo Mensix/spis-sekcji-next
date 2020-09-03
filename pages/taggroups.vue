@@ -26,6 +26,7 @@
           :debounce="250"
           dense
           label="Wyszukiwarka grup"
+          :readonly="dataset.groups.length === 0"
         >
           <template #append>
             <q-icon name="search" />

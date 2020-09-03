@@ -33,6 +33,7 @@
           :debounce="250"
           dense
           label="Wyszukiwarka grup"
+          :readonly="dataset.groups.length === 0"
         >
           <template #append>
             <q-icon name="search" />
@@ -48,6 +49,7 @@
           :options="dataset.categories"
           options-dense
           options-selected-class="text-secondary"
+          :readonly="dataset.groups.length === 0"
         />
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
