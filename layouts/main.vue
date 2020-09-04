@@ -123,8 +123,9 @@
     <q-footer v-else>
       <q-tabs
         :class="{
-          'bg-white text-secondary': Dark.isActive === false,
-          'shadow-up-2 bg-dark text-secondary': Dark.isActive === true,
+          'shadow-up-2 text-secondary': true,
+          'bg-white': Dark.isActive === false,
+          'bg-dark': Dark.isActive === true,
         }"
         no-caps
         shrink
