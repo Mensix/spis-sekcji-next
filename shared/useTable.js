@@ -11,8 +11,6 @@ export default function () {
         label: 'Nazwa',
         field: 'name',
         align: 'left',
-        sortable: true,
-        sort: (a, b) => a.localeCompare(b),
       },
       {
         name: 'members',
