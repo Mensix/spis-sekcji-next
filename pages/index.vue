@@ -275,16 +275,15 @@ export default {
       }
     })
 
-    const computedGroups = computed(() => {
-      if (table.selectedCategories.length > 0) {
-        return dataset.groups.filter((x) =>
-          Array.isArray(x.category)
-            ? table.selectedCategories.some((y) => x.category.includes(y))
-            : table.selectedCategories.includes(x.category)
-        )
-      }
-      return dataset.groups
-    })
+    const computedGroups = computed(() =>
+      table.selectedCategories.length > 0
+        ? dataset.groups.filter((x) =>
+            Array.isArray(x.category)
+              ? table.selectedCategories.some((y) => x.category.includes(y))
+              : table.selectedCategories.includes(x.category)
+          )
+        : dataset.groups
+    )
 
     return {
       table,
