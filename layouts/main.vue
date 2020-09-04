@@ -92,7 +92,7 @@
       <q-separator class="q-my-md" />
       <p class="q-ma-none">
         <span>v2.0.0-beta.2</span>
-        <span> | </span>
+        <span> • </span>
         <a
           class="text-secondary"
           href="https://facebook.com/groups/spis.sekcji/"
@@ -101,7 +101,7 @@
         >
           <span>Facebook</span>
         </a>
-        <span> | </span>
+        <span> • </span>
         <a
           class="text-secondary"
           href="https://github.com/Mensix/spis-sekcji/"
@@ -110,11 +110,11 @@
         >
           <span>GitHub</span>
         </a>
-        <span> | </span>
+        <span> • </span>
         <nuxt-link class="text-secondary" to="/contact">
           <span>Kontakt</span>
         </nuxt-link>
-        <span> | </span>
+        <span> • </span>
         <nuxt-link class="text-secondary" to="/privacy">
           <span>Polityka prywatności</span>
         </nuxt-link>
