@@ -62,7 +62,7 @@
           v-model="form.keywords.value"
           class="q-mb-md"
           color="secondary"
-          :disable="form.isBeingSent"
+          :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           :error="form.keywords.invalid"
           error-message="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
           hint="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
