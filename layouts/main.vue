@@ -40,21 +40,28 @@
     <q-page-container>
       <q-banner
         v-if="
-          ($nuxt.$route.name !== 'submissions' ||
+          (($nuxt.$route.name !== 'submissions' ||
             $nuxt.$route.name !== 'privacy' ||
             $nuxt.$route.name !== 'contact') &&
-          infoDialog.cookie === false &&
-          isHighTraffic === true
+            infoDialog.cookie === false &&
+            isHighTraffic === true) ||
+          infoMessage.length > 0
         "
         class="q-mt-lg"
       >
-        Skąd wiesz o spisie sekcji?
-        <a
-          class="text-secondary"
-          href="#"
-          @click="infoDialog.isModalShown = !infoDialog.isModalShown"
-          >Zostaw nam informację.</a
-        >
+        <span v-if="infoDialog.cookie === false && isHighTraffic === true">
+          Skąd wiesz o spisie sekcji?
+          <a
+            class="text-secondary"
+            href="#"
+            @click="infoDialog.isModalShown = !infoDialog.isModalShown"
+            >Zostaw nam informację.</a
+          >
+          <br />
+        </span>
+        <span v-if="infoMessage.length > 0">
+          {{ infoMessage }}
+        </span>
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
@@ -234,6 +241,7 @@ export default {
     const faListIcon = computed(() => faList)
 
     const isHighTraffic = ref(false)
+    const infoMessage = ref('')
     const infoDialog = reactive({
       value: false,
       isModalShown: false,
@@ -296,6 +304,7 @@ export default {
         .then((response) => response.json())
         .then((output) => {
           if (output.isHighTraffic === true) isHighTraffic.value = true
+          if (output.info.length > 0) infoMessage.value = output.info
           if (output.infoDialog === true) infoDialog.value = true
         })
 
@@ -318,6 +327,7 @@ export default {
       Dark,
       faListIcon,
       isHighTraffic,
+      infoMessage,
       infoDialog,
       sendInfo,
       toggleDarkMode,
