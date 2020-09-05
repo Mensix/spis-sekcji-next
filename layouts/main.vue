@@ -77,7 +77,7 @@
           rel="noopener noreferer"
           target="_blank"
         >
-          poprzedni spis sekcji
+          <span>poprzedni spis sekcji</span>
         </a>
         oraz Wojciechowi Kukli za
         <a
