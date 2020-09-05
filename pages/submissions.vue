@@ -49,6 +49,7 @@
         </q-input>
         <q-select
           v-model="form.category.value"
+          behavior="menu"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           label="Kategorie"
