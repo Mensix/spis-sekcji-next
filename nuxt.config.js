@@ -46,12 +46,22 @@ export default {
   css: ['quasar/dist/quasar.min.css', '~/assets/extend.css'],
   plugins: ['~/plugins/useQuasar'],
   components: true,
-  modules: ['@nuxtjs/device'],
+  modules: ['@nuxtjs/device', '@nuxtjs/gtm'],
+  gtm: {
+    id: 'GTM-K2QFVPC',
+  },
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/composition-api',
     '@nuxtjs/fontawesome',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-140414002-1',
+        set: [{ field: 'anonymizeIp', value: true }],
+      },
+    ],
   ],
   generate: {
     exclude: [/^\/admin/],
