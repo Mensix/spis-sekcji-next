@@ -43,7 +43,7 @@
         <q-select
           v-model="table.selectedCategories"
           behavior="menu"
-          class="q-mb-xs"
+          class="q-mb-sm"
           color="secondary"
           dense
           label="Pokaż kategorie"
