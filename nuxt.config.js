@@ -1,5 +1,5 @@
 export default {
-  mode: 'spa',
+  ssr: false,
   target: 'static',
   head: {
     title: 'Spis Sekcji JBwA i tag-grupek',
