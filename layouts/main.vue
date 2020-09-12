@@ -89,7 +89,7 @@
         oraz Wojciechowi Kukli za
         <a
           class="text-secondary"
-          href="http://akapedia.pl/Jak_b%C4%99dzie_w_akapie%3F/"
+          href="http://akapedia.pl/Jak_b%C4%99dzie_w_akapie%3F"
           rel="noopener noreferer"
           target="_blank"
         >
