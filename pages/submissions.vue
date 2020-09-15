@@ -100,6 +100,19 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="form.groupExists">
+      <q-card>
+        <q-card-section>
+          <h6 class="q-ma-none q-mb-md">Informacja</h6>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          Grupa, którą próbujesz przesłać, znajduje się już w spisie.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup color="secondary" flat label="OK" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -107,6 +120,11 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
+import {
+  dataset as sections,
+  fetchGroups as fetchSections,
+} from '~/store/sections'
+import { dataset as taggroups, fetchTaggroups } from '~/store/taggroups'
 export default {
   layout: 'main',
   setup() {
@@ -122,9 +140,13 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
-      fetch('https://spissekcji.firebaseio.com/settings/categories.json')
-        .then((response) => response.json())
-        .then((output) => (form.category.data = output))
+      if (sections.groups.length === 0) fetchSections()
+      if (taggroups.groups.length === 0) fetchTaggroups()
+      if (form.category.data.length === 0) {
+        fetch('https://spissekcji.firebaseio.com/settings/categories.json')
+          .then((response) => response.json())
+          .then((output) => (form.category.data = output))
+      }
     })
 
     const form = reactive({
@@ -144,6 +166,7 @@ export default {
       },
       isBeingSent: false,
       wasSend: false,
+      groupExists: false,
     })
 
     watch(
@@ -181,11 +204,23 @@ export default {
       ) {
         form.keywords.invalid = true
       }
+
       if (!form.link.value.includes('facebook.com/groups')) {
         form.link.invalid = true
       }
 
-      if (form.keywords.invalid === false && form.link.invalid === false) {
+      if (
+        sections.groups.filter((x) => x.name === form.name).length > 0 ||
+        taggroups.groups.filter((x) => x.name === form.name)
+      ) {
+        form.groupExists = true
+      }
+
+      if (
+        form.keywords.invalid === false &&
+        form.link.invalid === false &&
+        form.groupExists === false
+      ) {
         form.isBeingSent = true
         firebase
           .database()
