@@ -35,7 +35,7 @@
           </template>
         </q-input>
         <q-input
-          v-model="form.link"
+          v-model="form.link.value"
           color="secondary"
           :disable="form.isBeingSent"
           label="Link do grupy"
@@ -165,7 +165,7 @@ export default {
     })
 
     watch(
-      () => form.link.value,
+      () => form.link,
       (value, previousValue) => {
         if (form.link.invalid === true) {
           form.link.invalid = false
@@ -186,11 +186,11 @@ export default {
       form.link.length === 0
         ? (form.link = e.clipboardData
             .getData('text')
-            .replace('https://www.facebook.com/groups/', '')
-            .replace('https://m.facebook.com/groups/', '')
-            .replace('https://mbasic.facebook.com/groups/', '')
-            .replace('/?ref=share', '')
-            .replace('/', ''))
+            .substring(
+              e.clipboardData.getData('text').indexOf('/groups/') +
+                '/groups/'.length
+            )
+            .replace(/\/.*/, ''))
         : (form.link += e.clipboardData.getData('text'))
     }
 
