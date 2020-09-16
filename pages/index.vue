@@ -143,7 +143,7 @@
     <template #body-cell-link="props">
       <q-td :props="props">
         <a
-          :id="props.row.name.split(' ').join('^')"
+          :id="props.row.name.split(' ').join('@')"
           class="text-secondary"
           :href="`https://facebook.com/groups/${props.row.link}`"
           rel="noopener noreferer"
@@ -231,7 +231,7 @@
                 <q-item-label caption>{{ props.cols[3].label }}</q-item-label>
                 <q-item-label>
                   <a
-                    :id="props.row.name.split(' ').join('^')"
+                    :id="props.row.name.split(' ').join('@')"
                     class="text-secondary"
                     :href="`https://facebook.com/groups/${props.cols[3].value}`"
                     rel="noopener noreferer"
