@@ -191,7 +191,9 @@ export default {
         .getData('text')
         .replace('https://www.facebook.com/groups/', '')
         .replace('https://m.facebook.com/groups/', '')
+        .replace('https://mbasic.facebook.com/groups/', '')
         .replace('/?ref=share', '')
+        .replace('/', '')
     }
 
     function submitSubmission() {
