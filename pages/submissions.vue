@@ -17,6 +17,7 @@
           :disable="form.isBeingSent"
           label="Typ grupy"
           :options="['Sekcja', 'Tag-grupka']"
+          options-dense
           options-selected-class="text-secondary"
           outlined
           stack-label
@@ -57,6 +58,7 @@
           label="Kategorie"
           multiple
           :options="sections.categories"
+          options-dense
           outlined
           stack-label
         />
