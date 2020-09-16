@@ -194,6 +194,18 @@ export default {
 
     function submitSubmission() {
       if (
+        sections.groups.filter(
+          (x) => x.name === form.name || x.link === form.link
+        ).length > 0 ||
+        taggroups.groups.filter(
+          (x) => x.name === form.name || x.link === form.link
+        ).length > 0
+      ) {
+        form.groupExists = true
+      }
+
+      if (
+        form.groupExists === false &&
         form.keywords.value.length > 0 &&
         form.keywords.value
           .toLowerCase()
@@ -208,17 +220,6 @@ export default {
           )
       ) {
         form.keywords.invalid = true
-      }
-
-      if (
-        sections.groups.filter(
-          (x) => x.name === form.name || x.link === form.link
-        ).length > 0 ||
-        taggroups.groups.filter(
-          (x) => x.name === form.name || x.link === form.link
-        ).length > 0
-      ) {
-        form.groupExists = true
       }
 
       if (form.keywords.invalid === false && form.groupExists === false) {
