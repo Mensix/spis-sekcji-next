@@ -21,12 +21,12 @@
     }
   },
   "dependencies": {
-    "@nuxtjs/composition-api": "^0.12.2",
+    "@nuxtjs/composition-api": "^0.12.3",
     "@nuxtjs/device": "^1.2.7",
     "@nuxtjs/gtm": "^2.3.2",
-    "firebase": "^7.19.0",
-    "nuxt": "^2.14.0",
-    "quasar": "^1.12.13"
+    "firebase": "^7.20.0",
+    "nuxt": "^2.14.5",
+    "quasar": "^1.14.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
@@ -37,15 +37,15 @@
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
-    "stylelint": "^13.6.1",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
+    "stylelint": "^13.7.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0"
   }

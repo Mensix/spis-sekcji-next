@@ -26,8 +26,8 @@ Zrobione:
 
 1. `git clone https://github.com/Mensix/spis-sekcji.git`
 2. `cd spis-sekcji`
-3. `yarn`
-4. `yarn dev`
+3. `npm install`
+4. `npm install dev`
 
 ## Licencja
 
