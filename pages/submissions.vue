@@ -43,7 +43,7 @@
           prefix="https://facebook.com/groups/"
           required
           stack-label
-          @paste.prevent="trimLink"
+          @paste.prevent="pasteLink"
         >
           <template #append>
             <q-icon name="link" />
@@ -182,14 +182,16 @@ export default {
       }
     )
 
-    function trimLink(e) {
-      form.link = e.clipboardData
-        .getData('text')
-        .replace('https://www.facebook.com/groups/', '')
-        .replace('https://m.facebook.com/groups/', '')
-        .replace('https://mbasic.facebook.com/groups/', '')
-        .replace('/?ref=share', '')
-        .replace('/', '')
+    function pasteLink(e) {
+      form.link.length === 0
+        ? (form.link = e.clipboardData
+            .getData('text')
+            .replace('https://www.facebook.com/groups/', '')
+            .replace('https://m.facebook.com/groups/', '')
+            .replace('https://mbasic.facebook.com/groups/', '')
+            .replace('/?ref=share', '')
+            .replace('/', ''))
+        : (form.link += e.clipboardData.getData('text'))
     }
 
     function submitSubmission() {
@@ -250,7 +252,7 @@ export default {
       sections,
       taggroups,
       form,
-      trimLink,
+      pasteLink,
       submitSubmission,
     }
   },
