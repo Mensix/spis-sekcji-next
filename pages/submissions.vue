@@ -36,7 +36,7 @@
           </template>
         </q-input>
         <q-input
-          v-model="form.link.value"
+          v-model="form.link"
           color="secondary"
           :disable="form.isBeingSent"
           label="Link do grupy"
@@ -217,7 +217,7 @@ export default {
           .some(
             (x) =>
               form.name.toLowerCase().includes(x) ||
-              form.link.value.toLowerCase().includes(x) ||
+              form.link.toLowerCase().includes(x) ||
               form.category
                 .map((y) => y.toLowerCase())
                 .some((z) => z.includes(x))
