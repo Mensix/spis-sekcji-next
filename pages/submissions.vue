@@ -124,7 +124,8 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
+import { format } from 'date-fns'
+import { reactive, watch, onMounted, computed } from '@nuxtjs/composition-api'
 import {
   dataset as sections,
   fetchGroups as fetchSections,
@@ -196,6 +197,8 @@ export default {
         : (form.link += e.clipboardData.getData('text'))
     }
 
+    const currentDate = computed(() => format(new Date(), 'dd/MM/yyyy H:m'))
+
     function submitSubmission() {
       if (
         sections.groups.filter(
@@ -233,6 +236,7 @@ export default {
           .ref('submissions')
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
+            date: currentDate.value,
             category:
               form.type === 'Sekcja' && form.category.length === 1
                 ? form.category.toString()
@@ -255,6 +259,7 @@ export default {
       taggroups,
       form,
       pasteLink,
+      currentDate,
       submitSubmission,
     }
   },
