@@ -6,7 +6,10 @@
       'q-pa-lg': $device.isDesktopOrTablet,
     }"
   >
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+    <div
+      v-if="sections.groups.length > 0 && taggroups.groups.length > 0"
+      class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"
+    >
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
           v-model="form.type"
@@ -47,13 +50,13 @@
           </template>
         </q-input>
         <q-select
-          v-model="form.category.value"
+          v-model="form.category"
           behavior="menu"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           label="Kategorie"
           multiple
-          :options="form.category.data"
+          :options="sections.categories"
           outlined
           stack-label
         />
@@ -84,6 +87,7 @@
         />
       </q-form>
     </div>
+    <q-spinner v-else color="secondary" size="lg" />
     <q-dialog v-model="form.wasSend">
       <q-card>
         <q-card-section>
@@ -144,21 +148,13 @@ export default {
 
       if (sections.groups.length === 0) fetchSections()
       if (taggroups.groups.length === 0) fetchTaggroups()
-      if (form.category.data.length === 0) {
-        fetch('https://spissekcji.firebaseio.com/settings/categories.json')
-          .then((response) => response.json())
-          .then((output) => (form.category.data = output))
-      }
     })
 
     const form = reactive({
       type: 'Sekcja',
       name: '',
       link: '',
-      category: {
-        data: [],
-        value: [],
-      },
+      category: [],
       keywords: {
         invalid: false,
         value: '',
@@ -206,7 +202,7 @@ export default {
             (x) =>
               form.name.toLowerCase().includes(x) ||
               form.link.value.toLowerCase().includes(x) ||
-              form.category.value
+              form.category
                 .map((y) => y.toLowerCase())
                 .some((z) => z.includes(x))
           )
@@ -233,16 +229,16 @@ export default {
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
             category:
-              form.type === 'Sekcja' && form.category.value.length === 1
-                ? form.category.value.toString()
-                : form.category.value,
+              form.type === 'Sekcja' && form.category.length === 1
+                ? form.category.toString()
+                : form.category,
             name: form.name,
             link: form.link,
             keywords: form.keywords.value,
           })
           .then(() => {
             form.name = form.link = form.keywords.value = ''
-            form.category.value = []
+            form.category = []
             form.isBeingSent = false
             form.wasSend = true
           })
@@ -250,6 +246,8 @@ export default {
     }
 
     return {
+      sections,
+      taggroups,
       form,
       trimLink,
       submitSubmission,
