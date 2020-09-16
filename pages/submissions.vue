@@ -90,7 +90,7 @@
       </q-form>
     </div>
     <q-spinner v-else color="secondary" size="lg" />
-    <q-dialog v-model="form.wasSend">
+    <q-dialog v-model="form.wasSendUpdate">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -111,10 +111,20 @@
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          Grupa, którą próbujesz przesłać, znajduje się już w spisie.
+          Grupa, którą próbujesz przesłać, znajduje się już w spisie. Jednak w
+          przypadku, gdy chcesz zaaktualizować dane grupy, kliknij przycisk
+          Wyślij.
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn v-close-popup color="secondary" flat label="OK" />
+          <q-btn
+            color="secondary"
+            :disable="form.isBeingSentUpdate"
+            flat
+            label="Wyślij"
+            :loading="form.isBeingSentUpdate"
+            @click="submitUpdateSubmission()"
+          />
+          <q-btn v-close-popup color="secondary" flat label="Anuluj" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -125,7 +135,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { format } from 'date-fns'
-import { reactive, watch, onMounted, computed } from '@nuxtjs/composition-api'
+import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
 import {
   dataset as sections,
   fetchGroups as fetchSections,
@@ -163,7 +173,9 @@ export default {
         value: '',
       },
       isBeingSent: false,
+      isBeingSentUpdate: false,
       wasSend: false,
+      wasSendUpdate: false,
       groupExists: false,
     })
 
@@ -196,8 +208,6 @@ export default {
             .replace(/\/.*/, ''))
         : (form.link += e.clipboardData.getData('text'))
     }
-
-    const currentDate = computed(() => format(new Date(), 'dd/MM/yyyy H:m'))
 
     function submitSubmission() {
       if (
@@ -236,7 +246,7 @@ export default {
           .ref('submissions')
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
-            date: currentDate.value,
+            date: format(new Date(), 'dd/MM/yyyy H:m'),
             category:
               form.type === 'Sekcja' && form.category.length === 1
                 ? form.category.toString()
@@ -254,13 +264,39 @@ export default {
       }
     }
 
+    function submitUpdateSubmission() {
+      form.isBeingSentUpdate = true
+      firebase
+        .database()
+        .ref('submissions')
+        .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
+        .push({
+          date: format(new Date(), 'dd/MM/yyyy H:m'),
+          update: true,
+          category:
+            form.type === 'Sekcja' && form.category.length === 1
+              ? form.category.toString()
+              : form.category,
+          name: form.name,
+          link: form.link,
+          keywords: form.keywords.value,
+        })
+        .then(() => {
+          form.name = form.link = form.keywords.value = ''
+          form.category = []
+          form.isBeingSentUpdate = false
+          form.wasSendUpdate = true
+          form.groupExists = false
+        })
+    }
+
     return {
       sections,
       taggroups,
       form,
       pasteLink,
-      currentDate,
       submitSubmission,
+      submitUpdateSubmission,
     }
   },
 }
