@@ -32,16 +32,15 @@
           </template>
         </q-input>
         <q-input
-          v-model="form.link.value"
+          v-model="form.link"
           color="secondary"
           :disable="form.isBeingSent"
-          :error="form.link.invalid"
-          error-message="Link do grupy musi zawierać facebook.com/groups"
-          hint="Link do grupy musi zawierać facebook.com/groups"
           label="Link do grupy"
           outlined
+          prefix="https://facebook.com/groups/"
           required
           stack-label
+          @paste.prevent="trimLink"
         >
           <template #append>
             <q-icon name="link" />
@@ -124,7 +123,10 @@ import {
   dataset as sections,
   fetchGroups as fetchSections,
 } from '~/store/sections'
-import { dataset as taggroups, fetchTaggroups } from '~/store/taggroups'
+import {
+  dataset as taggroups,
+  fetchGroups as fetchTaggroups,
+} from '~/store/taggroups'
 export default {
   layout: 'main',
   setup() {
@@ -152,10 +154,7 @@ export default {
     const form = reactive({
       type: 'Sekcja',
       name: '',
-      link: {
-        invalid: false,
-        value: '',
-      },
+      link: '',
       category: {
         data: [],
         value: [],
@@ -187,6 +186,14 @@ export default {
       }
     )
 
+    function trimLink(e) {
+      form.link = e.clipboardData
+        .getData('text')
+        .replace('https://www.facebook.com/groups/', '')
+        .replace('https://m.facebook.com/groups/', '')
+        .replace('/?ref=share', '')
+    }
+
     function submitSubmission() {
       if (
         form.keywords.value.length > 0 &&
@@ -205,22 +212,18 @@ export default {
         form.keywords.invalid = true
       }
 
-      if (!form.link.value.includes('facebook.com/groups')) {
-        form.link.invalid = true
-      }
-
       if (
-        sections.groups.filter((x) => x.name === form.name).length > 0 ||
-        taggroups.groups.filter((x) => x.name === form.name)
+        sections.groups.filter(
+          (x) => x.name === form.name || x.link === form.link
+        ).length > 0 ||
+        taggroups.groups.filter(
+          (x) => x.name === form.name || x.link === form.link
+        ).length > 0
       ) {
         form.groupExists = true
       }
 
-      if (
-        form.keywords.invalid === false &&
-        form.link.invalid === false &&
-        form.groupExists === false
-      ) {
+      if (form.keywords.invalid === false && form.groupExists === false) {
         form.isBeingSent = true
         firebase
           .database()
@@ -232,11 +235,11 @@ export default {
                 ? form.category.value.toString()
                 : form.category.value,
             name: form.name,
-            link: form.link.value,
+            link: form.link,
             keywords: form.keywords.value,
           })
           .then(() => {
-            form.name = form.link.value = form.keywords.value = ''
+            form.name = form.link = form.keywords.value = ''
             form.category.value = []
             form.isBeingSent = false
             form.wasSend = true
@@ -246,6 +249,7 @@ export default {
 
     return {
       form,
+      trimLink,
       submitSubmission,
     }
   },
