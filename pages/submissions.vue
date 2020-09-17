@@ -13,6 +13,7 @@
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
           v-model="form.type"
+          behavior="menu"
           color="secondary"
           :disable="form.isBeingSent"
           label="Typ grupy"
