@@ -21,7 +21,7 @@
     }
   },
   "dependencies": {
-    "@nuxtjs/composition-api": "^0.12.3",
+    "@nuxtjs/composition-api": "^0.12.4",
     "@nuxtjs/device": "^1.2.7",
     "@nuxtjs/gtm": "^2.3.2",
     "date-fns": "^2.16.1",
