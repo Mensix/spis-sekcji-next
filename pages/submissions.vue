@@ -271,7 +271,7 @@ export default {
         .ref('submissions')
         .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
         .push({
-          date: format(new Date(), 'dd/MM/yyyy H:m'),
+          date: format(new Date(), 'dd/MM/yyyy kk:mm'),
           update: true,
           category:
             form.type === 'Sekcja' && form.category.length === 1
