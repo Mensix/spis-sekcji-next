@@ -98,7 +98,7 @@
       </p>
       <q-separator class="q-my-md" />
       <p class="q-ma-none">
-        <span>v2.0.0-beta.5</span>
+        <span>v2.0.0-rc.1</span>
         <span> • </span>
         <a
           class="text-secondary"
