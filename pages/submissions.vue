@@ -211,6 +211,9 @@ export default {
     }
 
     function submitSubmission() {
+      form.name = form.name.trim()
+      form.link = form.link.trim()
+
       if (
         sections.groups.filter(
           (x) => x.name === form.name || x.link === form.link
@@ -242,6 +245,7 @@ export default {
 
       if (form.keywords.invalid === false && form.groupExists === false) {
         form.isBeingSent = true
+
         firebase
           .database()
           .ref('submissions')
