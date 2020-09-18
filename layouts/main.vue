@@ -111,7 +111,7 @@
         <span> • </span>
         <a
           class="text-secondary"
-          href="https://github.com/Mensix/spis-sekcji/"
+          href="https://github.com/Mensix/spis-sekcji-next/"
           rel="noopener noreferer"
           target="_blank"
         >
