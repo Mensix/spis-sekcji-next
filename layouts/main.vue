@@ -46,7 +46,7 @@
           $nuxt.$route.name !== 'privacy' &&
           $nuxt.$route.name !== 'contact'
         "
-        class="q-mt-lg"
+        class="q-mt-md"
       >
         <span v-if="infoDialog.cookie === false && isHighTraffic === true">
           Skąd wiesz o spisie sekcji?
