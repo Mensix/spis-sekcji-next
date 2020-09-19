@@ -91,7 +91,7 @@
       </q-form>
     </div>
     <q-spinner v-else color="secondary" size="lg" />
-    <q-dialog v-model="form.wasSendUpdate">
+    <q-dialog v-model="form.wasSend">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -290,7 +290,7 @@ export default {
           form.name = form.link = form.keywords.value = ''
           form.category = []
           form.isBeingSentUpdate = false
-          form.wasSendUpdate = true
+          form.wasSend = true
           form.groupExists = false
         })
     }
