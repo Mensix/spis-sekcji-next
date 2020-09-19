@@ -283,6 +283,23 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
+      LocalStorage.getItem('v2InfoRead') === null &&
+        Notify.create({
+          message:
+            'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
+          icon: 'announcement',
+          position: 'bottom-right',
+          timeout: 0,
+          html: true,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('v2InfoRead', true),
+            },
+          ],
+        })
+
       LocalStorage.getItem('cookieConsent') === null &&
         Notify.create({
           message:
