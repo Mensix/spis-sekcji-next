@@ -100,6 +100,19 @@
           color="secondary"
           name="lock_open"
         />
+        <a
+          class="text-decoration-none"
+          :href="`https://jbwa.pl/${props.row.link}`"
+          rel="noopener noreferer"
+          target="_blank"
+        >
+          <q-icon
+            v-if="props.row.hasShortLink === true"
+            class="q-mr-xxs"
+            color="secondary"
+            name="link"
+          />
+        </a>
         <small v-if="props.row.isSection === false" class="text-grey q-mr-xxs">
           <del>JBWA</del>
         </small>
@@ -192,6 +205,19 @@
                     color="secondary"
                     name="lock_open"
                   />
+                  <a
+                    class="text-decoration-none"
+                    :href="`https://jbwa.pl/${props.row.link}`"
+                    rel="noopener noreferer"
+                    target="_blank"
+                  >
+                    <q-icon
+                      v-if="props.row.hasShortLink === true"
+                      class="q-mr-xxs"
+                      color="secondary"
+                      name="link"
+                    />
+                  </a>
                   <small
                     v-if="props.row.isSection === false"
                     class="text-grey q-mr-xxs"
@@ -298,3 +324,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.text-decoration-none {
+  text-decoration: none;
+}
+</style>

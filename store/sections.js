@@ -15,6 +15,7 @@ const fetchGroups = () => {
         ..._,
         category: Array.isArray(_.category) ? _.category.sort() : _.category,
         membersGrowth: _.membersGrowth || 0,
+        hasShortLink: _.members >= 5000 && !!parseInt(_.link) === false,
         index: idx + 1,
       }))
       dataset.categories = [
