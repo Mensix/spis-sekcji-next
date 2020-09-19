@@ -40,12 +40,11 @@
     <q-page-container>
       <q-banner
         v-if="
-          (($nuxt.$route.name !== 'submissions' ||
-            $nuxt.$route.name !== 'privacy' ||
-            $nuxt.$route.name !== 'contact') &&
-            infoDialog.cookie === false &&
-            isHighTraffic === true) ||
-          infoMessage.length > 0
+          ((infoDialog.cookie === false && isHighTraffic === true) ||
+            infoMessage.length > 0) &&
+          $nuxt.$route.name !== 'submissions' &&
+          $nuxt.$route.name !== 'privacy' &&
+          $nuxt.$route.name !== 'contact'
         "
         class="q-mt-lg"
       >
