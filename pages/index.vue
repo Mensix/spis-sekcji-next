@@ -102,7 +102,7 @@
         />
         <a
           class="text-decoration-none"
-          :href="`https://jbwa.pl/${props.row.link}`"
+          :href="`https://jbwa.pl/${props.row.link.toLowerCase()}`"
           rel="noopener noreferer"
           target="_blank"
         >
@@ -207,7 +207,7 @@
                   />
                   <a
                     class="text-decoration-none"
-                    :href="`https://jbwa.pl/${props.row.link}`"
+                    :href="`https://jbwa.pl/${props.row.link.toLowerCase()}`"
                     rel="noopener noreferer"
                     target="_blank"
                   >
