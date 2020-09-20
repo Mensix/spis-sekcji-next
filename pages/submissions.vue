@@ -13,7 +13,6 @@
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
           v-model="form.type"
-          behavior="menu"
           color="secondary"
           :disable="form.isBeingSent"
           label="Typ grupy"
@@ -53,7 +52,6 @@
         </q-input>
         <q-select
           v-model="form.category"
-          behavior="menu"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           label="Kategorie"

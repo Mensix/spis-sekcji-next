@@ -43,7 +43,6 @@
         </q-input>
         <q-select
           v-model="table.selectedCategories"
-          behavior="menu"
           class="q-mb-sm"
           color="secondary"
           dense
