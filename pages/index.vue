@@ -170,11 +170,7 @@
     <template #body-cell-category="props">
       <q-td :props="props">
         <span>
-          {{
-            Array.isArray(props.row.category)
-              ? props.row.category.join(', ')
-              : props.row.category
-          }}
+          {{ props.row.category && props.row.category.join(', ') }}
         </span>
       </q-td>
     </template>
@@ -271,11 +267,7 @@
                 </q-item-label>
                 <q-item-label v-if="props.cols[4].value !== undefined">
                   <span>
-                    {{
-                      Array.isArray(props.row.category)
-                        ? props.row.category.join(', ')
-                        : props.row.category
-                    }}
+                    {{ props.row.category && props.row.category.join(', ') }}
                   </span>
                 </q-item-label>
               </q-item-section>
@@ -306,10 +298,10 @@ export default {
 
     const computedGroups = computed(() =>
       table.selectedCategories.length > 0
-        ? dataset.groups.filter((x) =>
-            Array.isArray(x.category)
-              ? table.selectedCategories.some((y) => x.category.includes(y))
-              : table.selectedCategories.includes(x.category)
+        ? dataset.groups.filter(
+            (x) =>
+              x.category &&
+              table.selectedCategories.some((y) => x.category.includes(y))
           )
         : dataset.groups
     )
