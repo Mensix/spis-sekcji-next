@@ -16,20 +16,13 @@
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs v-if="!$device.isMobile" shrink stretch>
+        <q-tabs v-if="!$device.isMobile" class="q-mr-sm" shrink stretch>
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Hades" to="/deadgroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <q-btn
-          v-if="!$device.isMobile"
-          flat
-          :label="`Tryb ${Dark.isActive === false ? 'ciemny' : 'jasny'}`"
-          @click="toggleDarkMode()"
-        />
-        <q-btn
-          v-else
           flat
           :icon="Dark.isActive === false ? 'brightness_7' : 'brightness_3'"
           round
