@@ -204,7 +204,7 @@ export default {
               e.clipboardData.getData('text').indexOf('/groups/') +
                 '/groups/'.length
             )
-            .replace(/\/.*/, ''))
+            .replace(/(\/.*)|(\?.*)/, ''))
         : (form.link += e.clipboardData.getData('text'))
     }
 
