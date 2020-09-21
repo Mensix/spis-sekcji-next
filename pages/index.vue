@@ -108,7 +108,10 @@
         >
           <q-icon class="q-mr-xxs" color="secondary" name="link" />
         </a>
-        <small v-if="props.row.isSection === false" class="text-grey q-mr-xxs">
+        <small
+          v-if="props.row.isSection === false"
+          class="text-secondary q-mr-xxs"
+        >
           <del>JBWA</del>
         </small>
         <span>{{ props.row.name }}</span>
@@ -207,7 +210,7 @@
                   </a>
                   <small
                     v-if="props.row.isSection === false"
-                    class="text-grey q-mr-xxs"
+                    class="text-secondary q-mr-xxs"
                   >
                     <del>JBWA</del>
                   </small>
