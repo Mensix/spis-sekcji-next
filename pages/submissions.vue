@@ -20,6 +20,7 @@
           options-dense
           options-selected-class="text-secondary"
           outlined
+          square
           stack-label
         />
         <q-input
@@ -29,6 +30,7 @@
           label="Nazwa grupy"
           outlined
           required
+          square
           stack-label
         >
           <template #append>
@@ -43,6 +45,7 @@
           outlined
           prefix="https://facebook.com/groups/"
           required
+          square
           stack-label
           @paste.prevent="pasteLink"
         >
@@ -59,6 +62,7 @@
           :options="sections.categories"
           options-dense
           outlined
+          square
           stack-label
         />
         <q-input
@@ -71,6 +75,7 @@
           hint="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
           label="Słowa kluczowe"
           outlined
+          square
           stack-label
         >
           <template #append>
