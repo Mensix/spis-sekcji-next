@@ -233,6 +233,7 @@ export default {
         form.keywords.value
           .toLowerCase()
           .split(',')
+          .map((x) => x.trim())
           .some(
             (x) =>
               form.name.toLowerCase().includes(x) ||
