@@ -223,10 +223,14 @@ export default {
 
       if (
         sections.groups.filter(
-          (x) => x.name === form.name || x.link === form.link
+          (x) =>
+            x.name.toLowerCase() === form.name.toLowerCase() ||
+            x.link.toLowerCase() === form.link.toLowerCase()
         ).length > 0 ||
         taggroups.groups.filter(
-          (x) => x.name === form.name || x.link === form.link
+          (x) =>
+            x.name.toLowerCase() === form.name.toLowerCase() ||
+            x.link.toLowerCase() === form.link.toLowerCase()
         ).length > 0
       ) {
         form.groupExists = true
@@ -243,9 +247,9 @@ export default {
             (x) =>
               form.name.toLowerCase().includes(x) ||
               form.link.toLowerCase().includes(x) ||
-              form.category
-                .map((y) => y.toLowerCase())
-                .some((z) => z.includes(x))
+              form.category.some((z) =>
+                z.toLowerCase().includes(x.toLowerCase())
+              )
           )
       ) {
         form.keywords.invalid = true
