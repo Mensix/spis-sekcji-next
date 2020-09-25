@@ -25,7 +25,7 @@
           v-model.trim="table.search"
           class="q-mb-sm"
           color="secondary"
-          :debounce="250"
+          :debounce="500"
           dense
           label="Wyszukiwarka grup"
           :readonly="dataset.groups.length === 0"
