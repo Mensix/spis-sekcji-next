@@ -12,7 +12,7 @@
     >
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
-          v-model="form.type"
+          v-model.trim="form.type"
           color="secondary"
           :disable="form.isBeingSent"
           label="Typ grupy"
@@ -24,7 +24,7 @@
           stack-label
         />
         <q-input
-          v-model="form.name"
+          v-model.trim.trim="form.name"
           color="secondary"
           :disable="form.isBeingSent"
           label="Nazwa grupy"
@@ -38,7 +38,7 @@
           </template>
         </q-input>
         <q-input
-          v-model="form.link"
+          v-model.trim.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
           label="Link do grupy"
@@ -54,7 +54,7 @@
           </template>
         </q-input>
         <q-select
-          v-model="form.category"
+          v-model.trim="form.category"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           label="Kategorie"
@@ -66,7 +66,7 @@
           stack-label
         />
         <q-input
-          v-model="form.keywords.value"
+          v-model.trim.trim="form.keywords.value"
           class="q-mb-md"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
@@ -94,7 +94,7 @@
       </q-form>
     </div>
     <q-spinner v-else color="secondary" size="lg" />
-    <q-dialog v-model="form.wasSend">
+    <q-dialog v-model.trim="form.wasSend">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -113,7 +113,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="form.groupExists">
+    <q-dialog v-model.trim="form.groupExists">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -218,9 +218,6 @@ export default {
     }
 
     function submitSubmission() {
-      form.name = form.name.trim()
-      form.link = form.link.trim()
-
       if (
         sections.groups.filter(
           (x) =>

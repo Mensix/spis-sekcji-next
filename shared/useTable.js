@@ -49,7 +49,7 @@ export default function () {
   })
 
   function filterGroups(rows, terms, cols, cellValue) {
-    const lowerTerms = terms ? terms.toLowerCase().trim() : ''
+    const lowerTerms = terms ? terms.toLowerCase() : ''
     return rows.filter((row) =>
       cols.some((col) => {
         const val = cellValue(col, row) + ''

@@ -169,7 +169,7 @@
         />
       </q-tabs>
     </q-footer>
-    <q-dialog v-model="infoDialog.isModalShown">
+    <q-dialog v-model.trim="infoDialog.isModalShown">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Skąd wiesz o spisie sekcji?</h6>
@@ -180,7 +180,7 @@
             w pełni anonimowe.
           </p>
           <q-input
-            v-model="infoDialog.inputValue"
+            v-model.trim="infoDialog.inputValue"
             color="secondary"
             :disable="infoDialog.isBeingSent"
             label="Pisz tutaj..."

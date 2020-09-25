@@ -22,7 +22,7 @@
         }"
       >
         <q-input
-          v-model="table.search"
+          v-model.trim="table.search"
           class="q-mb-sm"
           color="secondary"
           :debounce="250"
