@@ -93,6 +93,59 @@
         </q-card>
       </div>
     </template>
+
+    <template v-slot:pagination="scope">
+      <span class="q-mr-sm">
+        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
+          scope.isLastPage === true
+            ? dataset.groups.length
+            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
+        }}
+        z {{ dataset.groups.length }}
+      </span>
+      <q-btn
+        v-if="scope.pagesNumber > 2"
+        color="secondary"
+        dense
+        :disable="scope.isFirstPage"
+        flat
+        icon="first_page"
+        round
+        style="font-size: 10px"
+        @click="scope.firstPage"
+      />
+      <q-btn
+        color="secondary"
+        dense
+        :disable="scope.isFirstPage"
+        flat
+        icon="chevron_left"
+        round
+        style="font-size: 10px"
+        @click="scope.prevPage"
+      />
+      <q-btn
+        color="secondary"
+        dense
+        :disable="scope.isLastPage"
+        flat
+        icon="chevron_right"
+        round
+        style="font-size: 10px"
+        @click="nextPage(scope)"
+      />
+      <q-btn
+        v-if="scope.pagesNumber > 2"
+        color="secondary"
+        dense
+        :disable="scope.isLastPage"
+        flat
+        icon="last_page"
+        round
+        style="font-size: 10px"
+        @click="scope.lastPage"
+      />
+    </template>
   </q-table>
 </template>
 
@@ -102,7 +155,7 @@ import useTable from '~/shared/useTable'
 import { dataset, fetchGroups } from '~/store/deadgroups'
 export default {
   layout: 'main',
-  setup() {
+  setup(props, { root }) {
     const { table, filterGroups } = useTable()
 
     const pagination = ref({
@@ -121,11 +174,18 @@ export default {
       }
     })
 
+    function nextPage(scope) {
+      scope.nextPage()
+      window.scrollTo(0, 0)
+      if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
+    }
+
     return {
       table,
       filterGroups,
       dataset,
       pagination,
+      nextPage,
     }
   },
 }
