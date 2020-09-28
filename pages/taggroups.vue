@@ -1,6 +1,6 @@
 <template>
   <q-table
-    ref="tableRef"
+    ref="taggroupsRef"
     binary-state-sort
     color="secondary"
     :columns="table.columns"
@@ -195,10 +195,10 @@
       <span class="q-mr-sm">
         {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
           scope.isLastPage === true
-            ? tableRef.computedRowsNumber
+            ? taggroupsRef.computedRowsNumber
             : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
         }}
-        z {{ tableRef.computedRowsNumber }}
+        z {{ taggroupsRef.computedRowsNumber }}
       </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
@@ -241,8 +241,8 @@
         round
         style="font-size: 10px"
         @click="scope.lastPage"
-      /> </template
-    >s
+      />
+    </template>
   </q-table>
 </template>
 
@@ -250,10 +250,11 @@
 import { onMounted } from '@nuxtjs/composition-api'
 import useTable from '~/shared/useTable'
 import { dataset, fetchGroups } from '~/store/taggroups'
+import { taggroupsRef } from '~/store/table'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, tableRef, filterTable } = useTable()
+    const { table, filterTable } = useTable()
 
     onMounted(() => {
       if (dataset.groups.length === 0) {
@@ -270,8 +271,8 @@ export default {
 
     return {
       table,
-      tableRef,
       filterTable,
+      taggroupsRef,
       dataset,
       nextPage,
     }

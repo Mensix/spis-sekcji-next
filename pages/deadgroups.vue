@@ -1,6 +1,6 @@
 <template>
   <q-table
-    ref="tableRef"
+    ref="deadgroupsRef"
     binary-state-sort
     color="secondary"
     :columns="table.columns"
@@ -99,10 +99,10 @@
       <span class="q-mr-sm">
         {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
           scope.isLastPage === true
-            ? tableRef.computedRowsNumber
+            ? deadgroupsRef.computedRowsNumber
             : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
         }}
-        z {{ tableRef.computedRowsNumber }}
+        z {{ deadgroupsRef.computedRowsNumber }}
       </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
@@ -154,10 +154,11 @@
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import useTable from '~/shared/useTable'
 import { dataset, fetchGroups } from '~/store/deadgroups'
+import { deadgroupsRef } from '~/store/table'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, tableRef, filterTable } = useTable()
+    const { table, filterTable } = useTable()
 
     const pagination = ref({
       sortBy: 'name',
@@ -182,8 +183,8 @@ export default {
 
     return {
       table,
-      tableRef,
       filterTable,
+      deadgroupsRef,
       dataset,
       pagination,
       nextPage,
