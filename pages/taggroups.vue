@@ -1,5 +1,6 @@
 <template>
   <q-table
+    ref="tableRef"
     binary-state-sort
     color="secondary"
     :columns="table.columns"
@@ -191,6 +192,14 @@
     </template>
 
     <template v-slot:pagination="scope">
+      <span class="q-mr-sm">
+        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
+          scope.isLastPage === true
+            ? tableRef.computedRowsNumber
+            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
+        }}
+        z {{ tableRef.computedRowsNumber }}
+      </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
         color="secondary"
@@ -244,7 +253,7 @@ import { dataset, fetchGroups } from '~/store/taggroups'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, filterGroups } = useTable()
+    const { table, tableRef, filterGroups } = useTable()
 
     onMounted(() => {
       if (dataset.groups.length === 0) {
@@ -261,6 +270,7 @@ export default {
 
     return {
       table,
+      tableRef,
       filterGroups,
       dataset,
       nextPage,

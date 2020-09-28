@@ -1,4 +1,4 @@
-import { reactive } from '@nuxtjs/composition-api'
+import { reactive, ref } from '@nuxtjs/composition-api'
 
 export default function () {
   const table = reactive({
@@ -47,6 +47,7 @@ export default function () {
       rowsCount: 0,
     },
   })
+  const tableRef = ref(null)
 
   function filterGroups(rows, terms, cols, cellValue) {
     const lowerTerms = terms ? terms.toLowerCase() : ''
@@ -67,6 +68,7 @@ export default function () {
 
   return {
     table,
+    tableRef,
     filterGroups,
   }
 }
