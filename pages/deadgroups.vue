@@ -176,7 +176,6 @@ export default {
 
     function nextPage(scope) {
       scope.nextPage()
-      window.scrollTo(0, 0)
       if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
