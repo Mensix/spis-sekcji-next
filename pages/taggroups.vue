@@ -191,14 +191,6 @@
     </template>
 
     <template v-slot:pagination="scope">
-      <span class="q-mr-sm">
-        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
-          scope.isLastPage === true
-            ? dataset.groups.length
-            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
-        }}
-        z {{ dataset.groups.length }}
-      </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
         color="secondary"

@@ -24,7 +24,7 @@
           stack-label
         />
         <q-input
-          v-model.trim.trim="form.name"
+          v-model.trim="form.name"
           color="secondary"
           :disable="form.isBeingSent"
           label="Nazwa grupy"
@@ -38,7 +38,7 @@
           </template>
         </q-input>
         <q-input
-          v-model.trim.trim="form.link"
+          v-model.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
           label="Link do grupy"
@@ -66,7 +66,7 @@
           stack-label
         />
         <q-input
-          v-model.trim.trim="form.keywords.value"
+          v-model.trim="form.keywords.value"
           class="q-mb-md"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
