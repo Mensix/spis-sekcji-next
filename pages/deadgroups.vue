@@ -7,7 +7,7 @@
     :data="dataset.groups"
     dense
     :filter="table.search"
-    :filter-method="filterGroups"
+    :filter-method="filterTable"
     flat
     :grid="$device.isMobile"
     :loading="table.isLoading"
@@ -157,7 +157,7 @@ import { dataset, fetchGroups } from '~/store/deadgroups'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, tableRef, filterGroups } = useTable()
+    const { table, tableRef, filterTable } = useTable()
 
     const pagination = ref({
       sortBy: 'name',
@@ -183,7 +183,7 @@ export default {
     return {
       table,
       tableRef,
-      filterGroups,
+      filterTable,
       dataset,
       pagination,
       nextPage,

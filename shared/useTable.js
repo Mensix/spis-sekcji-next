@@ -49,7 +49,7 @@ export default function () {
   })
   const tableRef = ref(null)
 
-  function filterGroups(rows, terms, cols, cellValue) {
+  function filterTable(rows, terms, cols, cellValue) {
     const lowerTerms = terms ? terms.toLowerCase() : ''
     return rows.filter((row) =>
       cols.some((col) => {
@@ -69,6 +69,6 @@ export default function () {
   return {
     table,
     tableRef,
-    filterGroups,
+    filterTable,
   }
 }
