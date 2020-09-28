@@ -267,7 +267,7 @@ export default {
                 : form.category,
             name: form.name,
             link: form.link,
-            keywords: form.keywords.value,
+            keywords: form.keywords.value.split(',').map((x) => x.trim()),
           })
           .then(() => {
             form.name = form.link = form.keywords.value = ''
@@ -293,7 +293,7 @@ export default {
               : form.category,
           name: form.name,
           link: form.link,
-          keywords: form.keywords.value,
+          keywords: form.keywords.value.split(',').map((x) => x.trim()),
         })
         .then(() => {
           form.name = form.link = form.keywords.value = ''
