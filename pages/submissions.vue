@@ -261,10 +261,7 @@ export default {
           .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
           .push({
             date: format(new Date(), 'dd/MM/yyyy H:m'),
-            category:
-              form.type === 'Sekcja' && form.category.length === 1
-                ? form.category.toString()
-                : form.category,
+            category: form.type === 'Sekcja' && form.category,
             name: form.name,
             link: form.link,
             keywords: form.keywords.value.split(',').map((x) => x.trim()),
@@ -287,10 +284,7 @@ export default {
         .push({
           date: format(new Date(), 'dd/MM/yyyy kk:mm'),
           update: true,
-          category:
-            form.type === 'Sekcja' && form.category.length === 1
-              ? form.category.toString()
-              : form.category,
+          category: form.type === 'Sekcja' && form.category,
           name: form.name,
           link: form.link,
           keywords: form.keywords.value.split(',').map((x) => x.trim()),
