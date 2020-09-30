@@ -264,7 +264,9 @@ export default {
             category: form.type === 'Sekcja' && form.category,
             name: form.name,
             link: form.link,
-            keywords: form.keywords.value.split(',').map((x) => x.trim()),
+            keywords: form.keywords.value
+              .split(',')
+              .map((x) => x.trim().toLowerCase()),
           })
           .then(() => {
             form.name = form.link = form.keywords.value = ''
@@ -287,7 +289,9 @@ export default {
           category: form.type === 'Sekcja' && form.category,
           name: form.name,
           link: form.link,
-          keywords: form.keywords.value.split(',').map((x) => x.trim()),
+          keywords: form.keywords.value
+            .split(',')
+            .map((x) => x.trim().toLowerCase()),
         })
         .then(() => {
           form.name = form.link = form.keywords.value = ''
