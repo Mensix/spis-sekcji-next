@@ -33,27 +33,14 @@
     <q-page-container>
       <q-banner
         v-if="
-          ((infoDialog.cookie === false && isHighTraffic === true) ||
-            infoMessage.length > 0) &&
+          infoMessage.length > 0 &&
           $nuxt.$route.name !== 'submissions' &&
           $nuxt.$route.name !== 'privacy' &&
           $nuxt.$route.name !== 'contact'
         "
         class="q-mt-md"
       >
-        <span v-if="infoDialog.cookie === false && isHighTraffic === true">
-          Skąd wiesz o spisie sekcji?
-          <a
-            class="text-secondary"
-            href="#"
-            @click="infoDialog.isModalShown = !infoDialog.isModalShown"
-            >Zostaw nam informację.</a
-          >
-          <br />
-        </span>
-        <span v-if="infoMessage.length > 0">
-          {{ infoMessage }}
-        </span>
+        {{ infoMessage }}
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
@@ -169,100 +156,19 @@
         />
       </q-tabs>
     </q-footer>
-    <q-dialog v-model.trim="infoDialog.isModalShown">
-      <q-card>
-        <q-card-section>
-          <h6 class="q-ma-none q-mb-md">Skąd wiesz o spisie sekcji?</h6>
-        </q-card-section>
-        <q-card-section class="q-pt-none">
-          <p class="q-ma-none q-mb-md">
-            Zostaw nam informację, skąd wiesz o spisie sekcji. Zbierane dane są
-            w pełni anonimowe.
-          </p>
-          <q-input
-            v-model.trim="infoDialog.inputValue"
-            color="secondary"
-            :disable="infoDialog.isBeingSent"
-            label="Pisz tutaj..."
-            outlined
-            required
-          />
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn
-            v-if="
-              infoDialog.isBeingSent === false && infoDialog.wasSend === false
-            "
-            color="secondary"
-            flat
-            label="Wyślij"
-            @click="sendInfo()"
-          />
-          <q-btn
-            v-else-if="
-              infoDialog.isBeingSent === true && infoDialog.wasSend === false
-            "
-            color="secondary"
-            disable
-            flat
-            loading
-          />
-          <q-btn
-            v-else-if="
-              infoDialog.isBeingSent === false && infoDialog.wasSend === true
-            "
-            color="secondary"
-            disable
-            flat
-            icon="check"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-layout>
 </template>
 
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { computed, onMounted, ref, reactive } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
   setup() {
     const faListIcon = computed(() => faList)
-
-    const isHighTraffic = ref(false)
     const infoMessage = ref('')
-    const infoDialog = reactive({
-      value: false,
-      isModalShown: false,
-      inputValue: '',
-      isBeingSent: false,
-      wasSend: false,
-      cookie: false,
-    })
-
-    function sendInfo() {
-      infoDialog.isBeingSent = true
-      firebase
-        .database()
-        .ref('where')
-        .push({
-          value: infoDialog.inputValue,
-        })
-        .then(() => {
-          LocalStorage.set('infoDialogSent', true)
-          infoDialog.isBeingSent = false
-          infoDialog.wasSend = true
-        })
-        .then(() =>
-          setTimeout(() => {
-            infoDialog.isModalShown = false
-            infoDialog.cookie = true
-          }, 1500)
-        )
-    }
 
     onMounted(() => {
       firebase.apps.length === 0 &&
@@ -313,9 +219,7 @@ export default {
       fetch('https://spissekcji.firebaseio.com/settings.json')
         .then((response) => response.json())
         .then((output) => {
-          if (output.isHighTraffic === true) isHighTraffic.value = true
           if (output.info.length > 0) infoMessage.value = output.info
-          if (output.infoDialog === true) infoDialog.value = true
         })
 
       if (
@@ -336,10 +240,7 @@ export default {
     return {
       Dark,
       faListIcon,
-      isHighTraffic,
       infoMessage,
-      infoDialog,
-      sendInfo,
       toggleDarkMode,
     }
   },
