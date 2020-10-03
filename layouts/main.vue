@@ -256,11 +256,12 @@ export default {
           infoDialog.isBeingSent = false
           infoDialog.wasSend = true
         })
-
-      setTimeout(() => {
-        infoDialog.isModalShown = false
-        infoDialog.cookie = true
-      }, 1500)
+        .then(() =>
+          setTimeout(() => {
+            infoDialog.isModalShown = false
+            infoDialog.cookie = true
+          }, 1500)
+        )
     }
 
     onMounted(() => {
