@@ -24,10 +24,10 @@ Zrobione:
 
 ## Instalacja
 
-1. `git clone https://github.com/Mensix/spis-sekcji.git`
-2. `cd spis-sekcji`
+1. `git clone https://github.com/Mensix/spis-sekcji-next.git`
+2. `cd spis-sekcji-next`
 3. `npm install`
-4. `npm install dev`
+4. `npm run dev`
 
 ## Licencja
 
