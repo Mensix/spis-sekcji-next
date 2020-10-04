@@ -12,22 +12,24 @@ export default {
         content:
           'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej.',
       },
+
+      { property: 'og:type', content: 'website', hid: 'og:type' },
       {
         property: 'og:title',
         content: 'Spis Sekcji JBwA i tag-grupek',
         hid: 'og:title',
+      },
+
+      {
+        property: 'og:url',
+        content: 'https://sekcje.github.io/',
+        hid: 'og:url',
       },
       {
         property: 'og:description',
         content:
           'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej',
         hid: 'og:description',
-      },
-      { property: 'og:type', content: 'website', hid: 'og:type' },
-      {
-        property: 'og:url',
-        content: 'https://sekcje.github.io/',
-        hid: 'og:url',
       },
       {
         property: 'og:image',

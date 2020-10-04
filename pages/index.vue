@@ -329,15 +329,13 @@
 </template>
 
 <script>
-import { onMounted, computed } from '@nuxtjs/composition-api'
-import useTable from '~/shared/useTable'
+import { computed, onMounted } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/sections'
 import { sectionsRef } from '~/store/table'
+import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, filterTable } = useTable()
-
     onMounted(() => {
       if (dataset.groups.length === 0) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -345,6 +343,8 @@ export default {
         table.isLoading = false
       }
     })
+
+    const { table, filterTable } = useTable()
 
     const computedGroups = computed(() =>
       table.selectedCategories.length > 0
@@ -362,10 +362,11 @@ export default {
     }
 
     return {
+      dataset,
+      fetchGroups,
+      sectionsRef,
       table,
       filterTable,
-      sectionsRef,
-      dataset,
       computedGroups,
       nextPage,
     }

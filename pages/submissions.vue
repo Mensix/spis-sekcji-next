@@ -142,8 +142,8 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
+import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
 import { format, getDay } from 'date-fns'
-import { reactive, watch, onMounted } from '@nuxtjs/composition-api'
 import {
   dataset as sections,
   fetchGroups as fetchSections,

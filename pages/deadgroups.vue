@@ -152,12 +152,20 @@
 
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
-import useTable from '~/shared/useTable'
 import { dataset, fetchGroups } from '~/store/deadgroups'
 import { deadgroupsRef } from '~/store/table'
+import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
   setup(props, { root }) {
+    onMounted(() => {
+      if (dataset.groups.length === 0) {
+        fetchGroups().then(() => (table.isLoading = false))
+      } else if (dataset.groups.length > 0 && table.isLoading === true) {
+        table.isLoading = false
+      }
+    })
+
     const { table, filterTable } = useTable()
 
     const pagination = ref({
@@ -168,24 +176,17 @@ export default {
       rowsCount: 0,
     })
 
-    onMounted(() => {
-      if (dataset.groups.length === 0) {
-        fetchGroups().then(() => (table.isLoading = false))
-      } else if (dataset.groups.length > 0 && table.isLoading === true) {
-        table.isLoading = false
-      }
-    })
-
     function nextPage(scope) {
       scope.nextPage()
       if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
     return {
+      dataset,
+      fetchGroups,
+      deadgroupsRef,
       table,
       filterTable,
-      deadgroupsRef,
-      dataset,
       pagination,
       nextPage,
     }

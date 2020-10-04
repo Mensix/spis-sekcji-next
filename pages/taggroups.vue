@@ -248,14 +248,12 @@
 
 <script>
 import { onMounted } from '@nuxtjs/composition-api'
-import useTable from '~/shared/useTable'
 import { dataset, fetchGroups } from '~/store/taggroups'
 import { taggroupsRef } from '~/store/table'
+import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
   setup(props, { root }) {
-    const { table, filterTable } = useTable()
-
     onMounted(() => {
       if (dataset.groups.length === 0) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -264,16 +262,18 @@ export default {
       }
     })
 
+    const { table, filterTable } = useTable()
+
     function nextPage(scope) {
       scope.nextPage()
       if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
     return {
+      dataset,
+      taggroupsRef,
       table,
       filterTable,
-      taggroupsRef,
-      dataset,
       nextPage,
     }
   },

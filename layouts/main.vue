@@ -167,8 +167,8 @@ import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
   setup() {
-    const faListIcon = computed(() => faList)
     const infoMessage = ref('')
+    const faListIcon = computed(() => faList)
 
     onMounted(() => {
       firebase.apps.length === 0 &&
@@ -182,21 +182,10 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
-      LocalStorage.getItem('v2InfoRead') === null &&
-        Notify.create({
-          message:
-            'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
-          icon: 'announcement',
-          position: 'bottom-right',
-          timeout: 0,
-          html: true,
-          actions: [
-            {
-              label: 'OK',
-              color: 'white',
-              handler: () => LocalStorage.set('v2InfoRead', true),
-            },
-          ],
+      fetch('https://spissekcji.firebaseio.com/settings.json')
+        .then((response) => response.json())
+        .then((output) => {
+          if (output.info.length > 0) infoMessage.value = output.info
         })
 
       LocalStorage.getItem('cookieConsent') === null &&
@@ -216,10 +205,21 @@ export default {
           ],
         })
 
-      fetch('https://spissekcji.firebaseio.com/settings.json')
-        .then((response) => response.json())
-        .then((output) => {
-          if (output.info.length > 0) infoMessage.value = output.info
+      LocalStorage.getItem('v2InfoRead') === null &&
+        Notify.create({
+          message:
+            'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
+          icon: 'announcement',
+          position: 'bottom-right',
+          timeout: 0,
+          html: true,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('v2InfoRead', true),
+            },
+          ],
         })
 
       if (
@@ -239,8 +239,8 @@ export default {
 
     return {
       Dark,
-      faListIcon,
       infoMessage,
+      faListIcon,
       toggleDarkMode,
     }
   },

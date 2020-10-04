@@ -138,13 +138,13 @@
 </template>
 
 <script>
+import { computed } from '@nuxtjs/composition-api'
 import { Dark } from 'quasar'
 import {
   faFacebook,
   faFacebookMessenger,
   faGithub,
 } from '@fortawesome/free-brands-svg-icons'
-import { computed } from '@nuxtjs/composition-api'
 export default {
   layout: 'main',
   setup() {
