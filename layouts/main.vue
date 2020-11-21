@@ -35,8 +35,7 @@
         v-if="
           infoMessage.length > 0 &&
           $nuxt.$route.name !== 'submissions' &&
-          $nuxt.$route.name !== 'privacy' &&
-          $nuxt.$route.name !== 'contact'
+          $nuxt.$route.name !== 'privacy'
         "
         class="q-mt-md"
       >
@@ -97,10 +96,6 @@
           <span>GitHub</span>
         </a>
         <span> • </span>
-        <nuxt-link class="text-secondary" to="/contact">
-          <span>Kontakt</span>
-        </nuxt-link>
-        <span> • </span>
         <nuxt-link class="text-secondary" to="/privacy">
           <span>Polityka prywatności</span>
         </nuxt-link>
@@ -147,12 +142,6 @@
           icon="lock_open"
           label="Prywatność"
           to="/privacy"
-        />
-        <q-route-tab
-          class="text-secondary"
-          icon="call"
-          label="Kontakt"
-          to="/contact"
         />
       </q-tabs>
     </q-footer>
