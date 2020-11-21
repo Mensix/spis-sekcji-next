@@ -95,7 +95,7 @@
       </div>
     </template>
 
-    <template v-slot:pagination="scope">
+    <template #pagination="scope">
       <span class="q-mr-sm">
         {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
           scope.isLastPage === true
