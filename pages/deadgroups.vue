@@ -22,19 +22,6 @@
           'q-py-lg': $device.isDesktopOrTablet,
         }"
       >
-        <q-input
-          v-model.trim="table.search"
-          class="q-mb-sm"
-          color="secondary"
-          :debounce="500"
-          dense
-          label="Wyszukiwarka grup"
-          :readonly="dataset.groups.length === 0"
-        >
-          <template #append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
           :class="{
