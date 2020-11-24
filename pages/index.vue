@@ -100,15 +100,6 @@
           color="secondary"
           name="lock_open"
         />
-        <a
-          v-if="props.row.hasShortLink === true"
-          class="text-decoration-none"
-          :href="`https://jbwa.pl/${props.row.link.toLowerCase()}`"
-          rel="noopener noreferer"
-          target="_blank"
-        >
-          <q-icon class="q-mr-xxs" color="secondary" name="link" />
-        </a>
         <small
           v-if="props.row.isSection === false"
           class="text-secondary q-mr-xxs"
@@ -200,15 +191,6 @@
                     color="secondary"
                     name="lock_open"
                   />
-                  <a
-                    v-if="props.row.hasShortLink === true"
-                    class="text-decoration-none"
-                    :href="`https://jbwa.pl/${props.row.link.toLowerCase()}`"
-                    rel="noopener noreferer"
-                    target="_blank"
-                  >
-                    <q-icon class="q-mr-xxs" color="secondary" name="link" />
-                  </a>
                   <small
                     v-if="props.row.isSection === false"
                     class="text-secondary q-mr-xxs"
@@ -373,9 +355,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.text-decoration-none {
-  text-decoration: none;
-}
-</style>
