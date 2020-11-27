@@ -207,13 +207,15 @@ export default {
 
     function pasteLink(e) {
       form.link.length === 0
-        ? (form.link = e.clipboardData
-            .getData('text')
-            .substring(
-              e.clipboardData.getData('text').indexOf('/groups/') +
-                '/groups/'.length
-            )
-            .replace(/(\/.*)|(\?.*)/, ''))
+        ? (form.link = !e.clipboardData.getData('text').includes('/groups')
+            ? e.clipboardData.getData('text')
+            : e.clipboardData
+                .getData('text')
+                .substring(
+                  e.clipboardData.getData('text').indexOf('/groups/') +
+                    '/groups/'.length
+                )
+                .replace(/(\/.*)|(\?.*)/, ''))
         : (form.link += e.clipboardData.getData('text'))
     }
 
