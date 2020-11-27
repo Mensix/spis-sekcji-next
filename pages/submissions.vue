@@ -57,6 +57,7 @@
           v-model.trim="form.jbwaLink"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
+          hint="Jeśli chcesz, aby twoja sekcja była dostępna również pod adresem jbwa.pl/<alias>, możesz wpisać pożądany alias w polu powyżej. Wówczas po wejściu w taki link, odwiedzający zostanie przekierowany bezpośrednio do twojej grupy."
           label="Skrócony link do grupy"
           outlined
           prefix="jbwa.pl/"
