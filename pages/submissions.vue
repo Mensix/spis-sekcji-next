@@ -53,6 +53,20 @@
             <q-icon name="link" />
           </template>
         </q-input>
+        <q-input
+          v-model.trim="form.jbwaLink"
+          color="secondary"
+          :disable="form.isBeingSent || form.type === 'Tag-grupka'"
+          label="Skrócony link do grupy"
+          outlined
+          prefix="jbwa.pl/"
+          square
+          stack-label
+        >
+          <template #append>
+            <q-icon name="link" />
+          </template>
+        </q-input>
         <q-select
           v-model.trim="form.category"
           color="secondary"
@@ -175,6 +189,7 @@ export default {
       type: 'Sekcja',
       name: '',
       link: '',
+      jbwaLink: '',
       category: [],
       keywords: {
         invalid: false,
@@ -266,12 +281,13 @@ export default {
             category: form.type === 'Sekcja' && form.category,
             name: form.name,
             link: form.link,
+            jbwaLink: form.jbwaLink,
             keywords: form.keywords.value
               .split(',')
               .map((x) => x.trim().toLowerCase()),
           })
           .then(() => {
-            form.name = form.link = form.keywords.value = ''
+            form.name = form.link = form.jbwaLink = form.keywords.value = ''
             form.category = []
             form.isBeingSent = false
             form.wasSend = true
@@ -291,12 +307,13 @@ export default {
           category: form.type === 'Sekcja' && form.category,
           name: form.name,
           link: form.link,
+          jbwaLink: form.jbwaLink,
           keywords: form.keywords.value
             .split(',')
             .map((x) => x.trim().toLowerCase()),
         })
         .then(() => {
-          form.name = form.link = form.keywords.value = ''
+          form.name = form.link = form.jbwaLink = form.keywords.value = ''
           form.category = []
           form.isBeingSentUpdate = false
           form.wasSend = true
