@@ -172,17 +172,6 @@ export default {
   layout: 'main',
   setup() {
     onMounted(() => {
-      firebase.apps.length === 0 &&
-        firebase.initializeApp({
-          apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
-          authDomain: 'spissekcji.firebaseapp.com',
-          databaseURL: 'https://spissekcji.firebaseio.com',
-          projectId: 'spissekcji',
-          storageBucket: 'spissekcji.appspot.com',
-          messagingSenderId: '752464608547',
-          appId: '1:752464608547:web:7786ca37c8ae1dd0',
-        })
-
       if (sections.groups.length === 0) fetchSections()
       if (taggroups.groups.length === 0) fetchTaggroups()
     })
