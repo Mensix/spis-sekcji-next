@@ -46,7 +46,7 @@ export default {
     ],
   },
   css: ['quasar/dist/quasar.min.css', '~/assets/extend.css'],
-  plugins: ['~/plugins/useQuasar'],
+  plugins: ['~/plugins/useQuasar', '~/plugins/useGtag'],
   components: true,
   modules: ['@nuxtjs/device', '@nuxtjs/gtm'],
   gtm: {
@@ -57,13 +57,6 @@ export default {
     '@nuxtjs/stylelint-module',
     '@nuxtjs/composition-api',
     '@nuxtjs/fontawesome',
-    [
-      '@nuxtjs/google-analytics',
-      {
-        id: 'UA-140414002-1',
-        set: [{ field: 'anonymizeIp', value: true }],
-      },
-    ],
   ],
   generate: {
     exclude: [/^\/admin/],

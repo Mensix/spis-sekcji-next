@@ -27,7 +27,8 @@
     "date-fns": "^2.16.1",
     "firebase": "^8.1.1",
     "nuxt": "^2.14.7",
-    "quasar": "^1.14.5"
+    "quasar": "^1.14.5",
+    "vue-gtag": "^1.10.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
@@ -35,7 +36,6 @@
     "@nuxtjs/eslint-config": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.1",
     "@nuxtjs/fontawesome": "^1.1.2",
-    "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.14.0",
