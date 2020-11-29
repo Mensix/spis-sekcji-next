@@ -36,10 +36,14 @@
           :debounce="500"
           dense
           label="Wyszukiwarka grup"
+          :loading="dataset.groups.length === 0"
           :readonly="dataset.groups.length === 0"
         >
-          <template #append>
+          <template v-if="dataset.groups.length > 0" #append>
             <q-icon name="search" />
+          </template>
+          <template #loading>
+            <q-spinner />
           </template>
         </q-input>
         <q-select
@@ -48,12 +52,17 @@
           color="secondary"
           dense
           label="Pokaż kategorie"
+          :loading="dataset.groups.length === 0"
           multiple
           :options="dataset.categories"
           options-dense
           options-selected-class="text-secondary"
           :readonly="dataset.groups.length === 0"
-        />
+        >
+          <template #loading>
+            <q-spinner />
+          </template>
+        </q-select>
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
           :class="{
