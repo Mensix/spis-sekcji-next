@@ -24,20 +24,6 @@
           stack-label
         />
         <q-input
-          v-model.trim="form.name"
-          color="secondary"
-          :disable="form.isBeingSent"
-          label="Nazwa grupy"
-          outlined
-          required
-          square
-          stack-label
-        >
-          <template #append>
-            <q-icon name="edit" />
-          </template>
-        </q-input>
-        <q-input
           v-model.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
@@ -159,6 +145,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
+import { LocalStorage, Notify } from 'quasar'
 import { format, getDay } from 'date-fns'
 import {
   dataset as sections,
@@ -174,11 +161,27 @@ export default {
     onMounted(() => {
       if (sections.groups.length === 0) fetchSections()
       if (taggroups.groups.length === 0) fetchTaggroups()
+
+      LocalStorage.getItem('submissionsInfoRead') === null &&
+        Notify.create({
+          message:
+            'Od 8 stycznia 2021 roku podanie nazwy grupy nie jest wymagane.',
+          icon: 'announcement',
+          position: 'bottom',
+          timeout: 0,
+          html: true,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('submissionsInfoRead', true),
+            },
+          ],
+        })
     })
 
     const form = reactive({
       type: 'Sekcja',
-      name: '',
       link: '',
       jbwaLink: '',
       category: [],
@@ -228,14 +231,10 @@ export default {
     function submitSubmission() {
       if (
         sections.groups.filter(
-          (x) =>
-            x.name.toLowerCase() === form.name.toLowerCase() ||
-            x.link.toLowerCase() === form.link.toLowerCase()
+          (x) => x.link.toLowerCase() === form.link.toLowerCase()
         ).length > 0 ||
         taggroups.groups.filter(
-          (x) =>
-            x.name.toLowerCase() === form.name.toLowerCase() ||
-            x.link.toLowerCase() === form.link.toLowerCase()
+          (x) => x.link.toLowerCase() === form.link.toLowerCase()
         ).length > 0
       ) {
         form.groupExists = true
@@ -250,7 +249,6 @@ export default {
           .map((x) => x.trim())
           .some(
             (x) =>
-              form.name.toLowerCase().includes(x) ||
               form.link.toLowerCase().includes(x) ||
               form.category.some((z) =>
                 z.toLowerCase().includes(x.toLowerCase())
@@ -270,7 +268,6 @@ export default {
           .push({
             date: format(new Date(), 'dd/MM/yyyy kk:mm'),
             category: form.type === 'Sekcja' && form.category,
-            name: form.name,
             link: form.link,
             jbwaLink: form.jbwaLink,
             keywords: form.keywords.value
@@ -278,7 +275,7 @@ export default {
               .map((x) => x.trim().toLowerCase()),
           })
           .then(() => {
-            form.name = form.link = form.jbwaLink = form.keywords.value = ''
+            form.link = form.jbwaLink = form.keywords.value = ''
             form.category = []
             form.isBeingSent = false
             form.wasSend = true
@@ -296,7 +293,6 @@ export default {
           date: format(new Date(), 'dd/MM/yyyy kk:mm'),
           update: true,
           category: form.type === 'Sekcja' && form.category,
-          name: form.name,
           link: form.link,
           jbwaLink: form.jbwaLink,
           keywords: form.keywords.value
@@ -304,7 +300,7 @@ export default {
             .map((x) => x.trim().toLowerCase()),
         })
         .then(() => {
-          form.name = form.link = form.jbwaLink = form.keywords.value = ''
+          form.link = form.jbwaLink = form.keywords.value = ''
           form.category = []
           form.isBeingSentUpdate = false
           form.wasSend = true

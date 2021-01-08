@@ -183,39 +183,41 @@ export default {
           if (output.info.length > 0) infoMessage.value = output.info
         })
 
-      LocalStorage.getItem('cookieConsent') === null &&
-        Notify.create({
-          message:
-            'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
-          icon: 'announcement',
-          position: 'bottom-right',
-          timeout: 0,
-          html: true,
-          actions: [
-            {
-              label: 'OK',
-              color: 'white',
-              handler: () => LocalStorage.set('cookieConsent', true),
-            },
-          ],
-        })
+      if (['/', '/taggroups', 'sections'].some((x) => root.$route.path === x)) {
+        LocalStorage.getItem('cookieConsent') === null &&
+          Notify.create({
+            message:
+              'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 0,
+            html: true,
+            actions: [
+              {
+                label: 'OK',
+                color: 'white',
+                handler: () => LocalStorage.set('cookieConsent', true),
+              },
+            ],
+          })
 
-      LocalStorage.getItem('v2InfoRead') === null &&
-        Notify.create({
-          message:
-            'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
-          icon: 'announcement',
-          position: 'bottom-right',
-          timeout: 0,
-          html: true,
-          actions: [
-            {
-              label: 'OK',
-              color: 'white',
-              handler: () => LocalStorage.set('v2InfoRead', true),
-            },
-          ],
-        })
+        LocalStorage.getItem('v2InfoRead') === null &&
+          Notify.create({
+            message:
+              'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 0,
+            html: true,
+            actions: [
+              {
+                label: 'OK',
+                color: 'white',
+                handler: () => LocalStorage.set('v2InfoRead', true),
+              },
+            ],
+          })
+      }
 
       if (
         window.matchMedia &&
