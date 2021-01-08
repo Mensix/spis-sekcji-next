@@ -12,7 +12,7 @@
     >
       <q-form class="q-gutter-y-md" @submit="submitSubmission()">
         <q-select
-          v-model.trim="form.type"
+          v-model="form.type"
           color="secondary"
           :disable="form.isBeingSent"
           label="Typ grupy"
@@ -69,7 +69,7 @@
           </template>
         </q-input>
         <q-select
-          v-model.trim="form.category"
+          v-model="form.category"
           class="q-mt-xl"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
@@ -110,7 +110,7 @@
       </q-form>
     </div>
     <q-spinner v-else color="secondary" size="lg" />
-    <q-dialog v-model.trim="form.wasSend">
+    <q-dialog v-model="form.wasSend">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -129,7 +129,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model.trim="form.groupExists">
+    <q-dialog v-model="form.groupExists">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>

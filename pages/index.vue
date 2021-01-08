@@ -47,7 +47,7 @@
           </template>
         </q-input>
         <q-select
-          v-model.trim="table.selectedCategories"
+          v-model="table.selectedCategories"
           class="q-mb-sm"
           color="secondary"
           dense
