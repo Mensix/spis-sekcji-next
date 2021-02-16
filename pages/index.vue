@@ -109,6 +109,12 @@
           color="secondary"
           name="lock_open"
         />
+        <q-icon
+          class="q-mr-xxs cursor-pointer"
+          color="secondary"
+          name="bar_chart"
+          @click="showArchiveDialog(props.row.index)"
+        />
         <small
           v-if="props.row.isSection === false"
           class="text-secondary q-mr-xxs"
@@ -320,13 +326,15 @@
 </template>
 
 <script>
-import { computed, onMounted } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import { Dialog } from 'quasar'
 import { dataset, fetchGroups } from '~/store/sections'
 import { sectionsRef } from '~/store/table'
+import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
-  setup(props, { root }) {
+  setup({ root }) {
     onMounted(() => {
       if (dataset.groups.length === 0) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -352,6 +360,15 @@ export default {
       if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
+    const isArchiveShown = ref(false)
+
+    function showArchiveDialog(index) {
+      Dialog.create({
+        component: archive,
+        id: index - 1,
+      })
+    }
+
     return {
       dataset,
       fetchGroups,
@@ -360,6 +377,8 @@ export default {
       filterTable,
       computedGroups,
       nextPage,
+      isArchiveShown,
+      showArchiveDialog,
     }
   },
 }
