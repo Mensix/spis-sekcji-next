@@ -1,7 +1,7 @@
 <template>
   <q-dialog ref="archiveDialogRef">
     <q-card v-if="isChartReady === false && isCardReady === false">
-      <q-card-section class="q-pa-md flex justify-center items-center">
+      <q-card-section class="flex items-center justify-center q-pa-md">
         <q-spinner color="secondary" size="lg" />
       </q-card-section>
     </q-card>
@@ -13,16 +13,22 @@
         <g-chart
           :data="chartData"
           :options="{
-            hAxis: { slantedText: true, slantedTextAngle: 45 },
+            hAxis: {
+              slantedText: true,
+              slantedTextAngle: 45,
+            },
             legend: { position: 'none' },
             colors: ['#26A69A'],
+            chartArea: {
+              top: 55,
+              height: '40%',
+            },
           }"
           type="LineChart"
           @ready="isChartReady = true"
         />
       </q-card-section>
-      <q-separator inset />
-      <q-card-section class="bg-grey-12 text-center">
+      <q-card-section class="text-center bg-grey-12">
         <small>
           Przedstawione dane są oparte na rzeczywistych danych z Facebooka
           zbieranych przez spis sekcji.
