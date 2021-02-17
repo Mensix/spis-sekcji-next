@@ -51,6 +51,10 @@ export default {
       type: Number,
       default: 0,
     },
+    endpoint: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['hide'],
   setup(props, { emit }) {
@@ -61,7 +65,9 @@ export default {
     const isChartReady = ref(false)
 
     onMounted(() =>
-      fetch(`https://spissekcji.firebaseio.com/archive/${props.id}.json`)
+      fetch(
+        `https://spissekcji.firebaseio.com/${props.endpoint}/${props.id}.json`
+      )
         .then((response) => response.json())
         .then((output) => {
           groupData.value = output

@@ -110,7 +110,7 @@
           name="lock_open"
         />
         <q-icon
-          class="q-mr-xxs cursor-pointer"
+          class="cursor-pointer q-mr-xxs"
           color="secondary"
           name="bar_chart"
           @click="showArchiveDialog(props.row.index)"
@@ -366,6 +366,7 @@ export default {
       Dialog.create({
         component: archive,
         id: index - 1,
+        endpoint: 'archive',
       })
     }
 
