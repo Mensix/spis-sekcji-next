@@ -206,6 +206,12 @@
                     color="secondary"
                     name="lock_open"
                   />
+                  <q-icon
+                    class="cursor-pointer q-mr-xxs"
+                    color="secondary"
+                    name="bar_chart"
+                    @click="showArchiveDialog(props.row.index)"
+                  />
                   <small
                     v-if="props.row.isSection === false"
                     class="text-secondary q-mr-xxs"

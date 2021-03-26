@@ -43,7 +43,7 @@
         "
         class="q-mt-md"
       >
-        {{ infoMessage }}
+        <span v-html="infoMessage" />
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
