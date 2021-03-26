@@ -366,7 +366,7 @@ export default {
       Dialog.create({
         component: archive,
         id: index - 1,
-        endpoint: 'archive',
+        endpoint: 'sections',
       })
     }
 

@@ -1,34 +1,25 @@
 <template>
   <q-dialog ref="archiveDialogRef">
-    <q-card v-if="isChartReady === false && isCardReady === false">
-      <q-card-section class="flex items-center justify-center q-pa-md">
-        <q-spinner color="secondary" size="lg" />
-      </q-card-section>
-    </q-card>
-    <q-card v-else>
-      <q-card-section class="q-pb-none">
+    <q-card>
+      <q-card-section
+        v-if="Object.values(groupData).length > 0"
+        class="q-pb-md"
+      >
         <div class="text-center text-h6">{{ groupData.name }}</div>
       </q-card-section>
-      <q-card-section class="q-pt-none">
-        <g-chart
-          :data="chartData"
-          :options="{
-            hAxis: {
-              slantedText: true,
-              slantedTextAngle: 45,
-            },
-            legend: { position: 'none' },
-            colors: ['#26A69A'],
-            chartArea: {
-              top: 55,
-              height: '40%',
-            },
-          }"
-          type="LineChart"
-          @ready="isChartReady = true"
-        />
+      <q-card-section
+        v-if="Object.values(groupData).length === 0"
+        class="flex justify-center q-pb-md"
+      >
+        <q-spinner color="secondary" size="3em" />
       </q-card-section>
-      <q-card-section class="text-center bg-grey-12">
+      <q-card-section
+        id="archive-chart-container"
+        class="flex justify-center q-pt-none"
+      >
+        <!--  -->
+      </q-card-section>
+      <q-card-section class="text-center">
         <small>
           Przedstawione dane są oparte na rzeczywistych danych z Facebooka
           zbieranych przez spis sekcji.
@@ -40,12 +31,10 @@
 
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
+import { Dark } from 'quasar'
 import { addWeeks, format, lastDayOfWeek } from 'date-fns'
-import { GChart } from 'vue-google-charts'
+import Chart from 'chart.js'
 export default {
-  components: {
-    GChart,
-  },
   props: {
     id: {
       type: Number,
@@ -66,24 +55,54 @@ export default {
 
     onMounted(() =>
       fetch(
-        `https://spissekcji.firebaseio.com/${props.endpoint}/${props.id}.json`
+        `https://spissekcji.firebaseio.com/archive/${props.endpoint}/${props.id}.json`
       )
         .then((response) => response.json())
         .then((output) => {
           groupData.value = output
-          chartData.value.push([['Dzień', 'Liczba członków']])
-          chartData.value.push(
-            groupData.value.history.map((_, idx) => [
-              format(
-                addWeeks(lastDayOfWeek(new Date(2021, 0, 1)), idx),
-                'dd/MM/yyyy'
-              ),
-              _,
-            ])
-          )
+          const container = document.getElementById('archive-chart-container')
+          const c = document.createElement('canvas')
+          container.appendChild(c)
+          const ctx = c.getContext('2d')
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400)
+          gradient.addColorStop(0, '#26A69AFF')
+          gradient.addColorStop(1, 'transparent')
 
-          chartData.value = chartData.value.flat()
-          isCardReady.value = true
+          // eslint-disable-next-line no-new
+          new Chart(c, {
+            type: 'line',
+            options: {
+              legend: {
+                display: false,
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      stepSize: 1000,
+                    },
+                  },
+                ],
+              },
+            },
+            data: {
+              labels: groupData.value.history.map((_, idx) =>
+                format(
+                  addWeeks(lastDayOfWeek(new Date(2021, 0, 1)), idx),
+                  'dd/MM/yyyy'
+                )
+              ),
+              datasets: [
+                {
+                  label: 'Liczba członków',
+                  data: groupData.value.history,
+                  backgroundColor: gradient,
+                  borderColor: '#26A69A',
+                  borderWidth: 3,
+                },
+              ],
+            },
+          })
         })
     )
 
@@ -100,6 +119,7 @@ export default {
     }
 
     return {
+      Dark,
       archiveDialogRef,
       groupData,
       chartData,

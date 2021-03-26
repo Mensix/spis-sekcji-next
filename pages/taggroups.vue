@@ -78,12 +78,6 @@
           color="secondary"
           name="star"
         />
-        <q-icon
-          class="cursor-pointer q-mr-xxs"
-          color="secondary"
-          name="bar_chart"
-          @click="showArchiveDialog(props.row.index)"
-        />
         <span>{{ props.row.name }}</span>
       </q-td>
     </template>
@@ -257,15 +251,13 @@
 </template>
 
 <script>
-import { onMounted, ref } from '@nuxtjs/composition-api'
-import { Dialog } from 'quasar'
+import { onMounted } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/taggroups'
 import { taggroupsRef } from '~/store/table'
-import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
-  setup(props, { root }) {
+  setup({ root }) {
     onMounted(() => {
       if (dataset.groups.length === 0) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -281,24 +273,12 @@ export default {
       if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
-    const isArchiveShown = ref(false)
-
-    function showArchiveDialog(index) {
-      Dialog.create({
-        component: archive,
-        id: index - 1,
-        endpoint: 'archive-t',
-      })
-    }
-
     return {
       dataset,
       taggroupsRef,
       table,
       filterTable,
       nextPage,
-      isArchiveShown,
-      showArchiveDialog,
     }
   },
 }
