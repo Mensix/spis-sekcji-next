@@ -9,7 +9,7 @@
       </q-card-section>
       <q-card-section
         v-if="Object.values(groupData).length === 0"
-        class="flex justify-center q-pb-md"
+        class="flex justify-center q-py-md"
       >
         <q-spinner color="secondary" size="3em" />
       </q-card-section>
