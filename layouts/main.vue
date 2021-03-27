@@ -183,7 +183,7 @@ export default {
           if (output.info.length > 0) infoMessage.value = output.info
         })
 
-      if (['/', '/taggroups', 'sections'].some((x) => root.$route.path === x)) {
+      if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
         LocalStorage.getItem('cookieConsent') === null &&
           Notify.create({
             message:
