@@ -62,7 +62,7 @@ export default {
           groupData.value = output
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
-          container.appendChild(c)
+          container?.appendChild(c)
           const ctx = c.getContext('2d')
           const gradient = ctx.createLinearGradient(0, 0, 0, 400)
           gradient.addColorStop(0, '#26A69AFF')
