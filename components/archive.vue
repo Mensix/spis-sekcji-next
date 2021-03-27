@@ -32,7 +32,7 @@
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark } from 'quasar'
-import { addWeeks, format, lastDayOfWeek } from 'date-fns'
+import { addDays, addWeeks, format, lastDayOfWeek } from 'date-fns'
 import Chart from 'chart.js'
 export default {
   props: {
@@ -88,7 +88,10 @@ export default {
             data: {
               labels: groupData.value.history.map((_, idx) =>
                 format(
-                  addWeeks(lastDayOfWeek(new Date(2021, 0, 1)), idx),
+                  addWeeks(
+                    addDays(lastDayOfWeek(new Date(2021, 0, 1)), 1),
+                    idx
+                  ),
                   'dd/MM/yyyy'
                 )
               ),
