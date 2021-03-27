@@ -257,7 +257,7 @@ import { taggroupsRef } from '~/store/table'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
-  setup({ root }) {
+  setup(props, { root }) {
     onMounted(() => {
       if (dataset.groups.length === 0) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -270,7 +270,7 @@ export default {
 
     function nextPage(scope) {
       scope.nextPage()
-      if (root.$options.$device.isMobile === true) window.scrollTo(0, 0)
+      if (root.$device.isMobile === true) window.scrollTo(0, 0)
     }
 
     return {
