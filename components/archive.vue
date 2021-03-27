@@ -75,15 +75,6 @@ export default {
               legend: {
                 display: false,
               },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      stepSize: 1000,
-                    },
-                  },
-                ],
-              },
             },
             data: {
               labels: groupData.value.history.map((_, idx) =>
