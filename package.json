@@ -15,40 +15,34 @@
     "*.{js,vue}": "eslint",
     "*.{css,vue}": "stylelint"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
-    "@nuxtjs/composition-api": "^0.18.0",
-    "@nuxtjs/device": "^1.2.7",
+    "@nuxtjs/composition-api": "^0.22.4",
+    "@nuxtjs/device": "^2.0.1",
     "@nuxtjs/gtm": "^2.4.0",
     "chart.js": "^2.9.4",
-    "date-fns": "^2.16.1",
-    "firebase": "^8.2.2",
-    "nuxt": "^2.14.12",
-    "quasar": "^1.15.0",
-    "vue-gtag": "^1.10.0"
+    "date-fns": "^2.19.0",
+    "firebase": "^8.3.1",
+    "nuxt": "^2.15.3",
+    "quasar": "^1.15.9",
+    "vue-gtag": "^1.11.0"
   },
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.15.1",
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@nuxtjs/eslint-config": "^5.0.0",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.17.0",
-    "eslint-config-prettier": "^7.1.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "husky": "^4.3.7",
-    "lint-staged": "^10.5.3",
+    "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
-    "stylelint": "^13.8.0",
+    "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-standard": "^20.0.0"
+    "stylelint-config-standard": "^21.0.0"
   }
 }
