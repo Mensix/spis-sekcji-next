@@ -63,17 +63,15 @@ export default {
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)
-          const ctx = c.getContext('2d')
-          const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-          gradient.addColorStop(0, '#26A69AFF')
-          gradient.addColorStop(1, 'transparent')
-
           // eslint-disable-next-line no-new
           new Chart(c, {
             type: 'line',
             options: {
               legend: {
                 display: false,
+              },
+              tooltips: {
+                displayColors: false,
               },
             },
             data: {
@@ -90,9 +88,10 @@ export default {
                 {
                   label: 'Liczba członków',
                   data: groupData.value.history,
-                  backgroundColor: gradient,
+                  backgroundColor: '#26A69A00',
                   borderColor: '#26A69A',
                   borderWidth: 3,
+                  pointBorderWidth: 4,
                 },
               ],
             },
