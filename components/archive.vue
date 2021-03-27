@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="archiveDialogRef">
-    <q-card>
+    <q-card style="width: 700px; max-width: 80vw">
       <q-card-section
         v-if="Object.values(groupData).length > 0"
         class="q-pb-md"
