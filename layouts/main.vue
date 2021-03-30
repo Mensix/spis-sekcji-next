@@ -21,6 +21,14 @@
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Hades" to="/deadgroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
+          <a
+            class="text-white no-underline"
+            href="https://m.me/grzegorz.perun"
+            rel="noopener noreferer"
+            target="_blank"
+          >
+            <q-btn flat label="Kontakt" />
+          </a>
         </q-tabs>
         <q-btn
           flat
@@ -200,23 +208,6 @@ export default {
               },
             ],
           })
-
-        LocalStorage.getItem('v2InfoRead') === null &&
-          Notify.create({
-            message:
-              'Jesteś na stronie spisu sekcji v2. W tej wersji został dodany tryb ciemny, lekko ulepszony został wygląd strony, a w zakładce Hades znajdują się grupy, które pomiędzy aktualizacjami spisu stały się tajne, zarchiwizowane lub usunięte przez Facebooka.',
-            icon: 'announcement',
-            position: 'bottom-right',
-            timeout: 0,
-            html: true,
-            actions: [
-              {
-                label: 'OK',
-                color: 'white',
-                handler: () => LocalStorage.set('v2InfoRead', true),
-              },
-            ],
-          })
       }
 
       if (
@@ -252,5 +243,9 @@ export default {
 <style scoped>
 .q-icon__toolbar-title {
   font-size: 19px;
+}
+
+.no-underline {
+  text-decoration: none;
 }
 </style>

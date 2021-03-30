@@ -145,7 +145,6 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
-import { LocalStorage, Notify } from 'quasar'
 import { format, getDay } from 'date-fns'
 import {
   dataset as sections,
@@ -161,23 +160,6 @@ export default {
     onMounted(() => {
       if (sections.groups.length === 0) fetchSections()
       if (taggroups.groups.length === 0) fetchTaggroups()
-
-      LocalStorage.getItem('submissionsInfoRead') === null &&
-        Notify.create({
-          message:
-            'Od 8 stycznia 2021 roku podanie nazwy grupy nie jest wymagane.',
-          icon: 'announcement',
-          position: 'bottom',
-          timeout: 0,
-          html: true,
-          actions: [
-            {
-              label: 'OK',
-              color: 'white',
-              handler: () => LocalStorage.set('submissionsInfoRead', true),
-            },
-          ],
-        })
     })
 
     const form = reactive({
