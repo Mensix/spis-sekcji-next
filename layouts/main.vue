@@ -21,15 +21,15 @@
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Hades" to="/deadgroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
-          <a
-            class="text-white no-underline"
-            href="https://m.me/grzegorz.perun"
-            rel="noopener noreferer"
-            target="_blank"
-          >
-            <q-btn flat label="Kontakt" />
-          </a>
         </q-tabs>
+        <a
+          class="text-white no-underline"
+          href="https://m.me/grzegorz.perun"
+          rel="noopener noreferer"
+          target="_blank"
+        >
+          <q-btn flat label="Kontakt" />
+        </a>
         <q-btn
           flat
           :icon="Dark.isActive === false ? 'brightness_7' : 'brightness_3'"
