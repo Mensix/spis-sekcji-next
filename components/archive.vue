@@ -63,6 +63,13 @@ export default {
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)
+
+          const fixedGroupData = groupData.value.history.filter(
+            (x) => x !== 'N/A'
+          )
+          const weeksToSkip = groupData.value.history.filter((x) => x === 'N/A')
+            .length
+
           // eslint-disable-next-line no-new
           new Chart(c, {
             type: 'line',
@@ -75,11 +82,11 @@ export default {
               },
             },
             data: {
-              labels: groupData.value.history.map((_, idx) =>
+              labels: fixedGroupData.map((_, idx) =>
                 format(
                   addWeeks(
                     addDays(lastDayOfWeek(new Date(2021, 0, 1)), 1),
-                    idx
+                    weeksToSkip.length === 0 ? idx : weeksToSkip + idx
                   ),
                   'dd/MM/yyyy'
                 )
@@ -87,7 +94,7 @@ export default {
               datasets: [
                 {
                   label: 'Liczba członków',
-                  data: groupData.value.history,
+                  data: fixedGroupData,
                   backgroundColor: '#26A69A00',
                   borderColor: '#26A69A',
                   borderWidth: 3,
