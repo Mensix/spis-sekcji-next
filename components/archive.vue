@@ -80,6 +80,15 @@ export default {
               tooltips: {
                 displayColors: false,
               },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      precision: 0,
+                    },
+                  },
+                ],
+              },
             },
             data: {
               labels: fixedGroupData.map((_, idx) =>
