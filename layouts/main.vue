@@ -23,7 +23,11 @@
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <a
-          class="text-white no-underline"
+          :class="{
+            'no-underline': true,
+            'text-white': Dark.isActive === false,
+            'text-secondary': Dark.isActive === true,
+          }"
           href="https://m.me/grzegorz.perun"
           rel="noopener noreferer"
           target="_blank"
