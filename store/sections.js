@@ -1,3 +1,6 @@
+import 'firebase/database'
+
+import firebase from 'firebase/app'
 import { reactive } from '@nuxtjs/composition-api'
 
 const dataset = reactive({
@@ -7,11 +10,13 @@ const dataset = reactive({
 })
 
 const fetchGroups = () => {
-  return fetch('https://spissekcji.firebaseio.com/sections.json')
-    .then((response) => response.json())
-    .then((output) => {
-      dataset.lastUpdateDate = output.lastUpdateDate
-      dataset.groups = output.groups.map((_, idx) => ({
+  return firebase
+    .database()
+    .ref('sections')
+    .once('value')
+    .then((snapshot) => {
+      dataset.lastUpdateDate = snapshot.val().lastUpdateDate
+      dataset.groups = snapshot.val().groups.map((_, idx) => ({
         ..._,
         category: Array.isArray(_.category) ? _.category.sort() : _.category,
         membersGrowth: _.membersGrowth || 0,
@@ -19,7 +24,7 @@ const fetchGroups = () => {
       }))
       dataset.categories = [
         ...new Set(
-          output.groups
+          dataset.groups
             .filter((x) => x.category)
             .flatMap((x) => x.category)
             .sort()

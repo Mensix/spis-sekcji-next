@@ -1,3 +1,6 @@
+import 'firebase/database'
+
+import firebase from 'firebase/app'
 import { reactive } from '@nuxtjs/composition-api'
 
 const dataset = reactive({
@@ -6,11 +9,13 @@ const dataset = reactive({
 })
 
 const fetchGroups = () => {
-  return fetch('https://spissekcji.firebaseio.com/taggroups.json')
-    .then((response) => response.json())
-    .then((output) => {
-      dataset.lastUpdateDate = output.lastUpdateDate
-      dataset.groups = output.groups.map((_, idx) => ({
+  return firebase
+    .database()
+    .ref('taggroups')
+    .once('value')
+    .then((snapshot) => {
+      dataset.lastUpdateDate = snapshot.val().lastUpdateDate
+      dataset.groups = snapshot.val().groups.map((_, idx) => ({
         ..._,
         membersGrowth: _.membersGrowth || 0,
         index: idx + 1,

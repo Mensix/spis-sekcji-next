@@ -34,6 +34,8 @@ import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark } from 'quasar'
 import { addDays, addWeeks, format, lastDayOfWeek } from 'date-fns'
 import Chart from 'chart.js'
+import 'firebase/database'
+import firebase from 'firebase/app'
 export default {
   props: {
     id: {
@@ -54,12 +56,12 @@ export default {
     const isChartReady = ref(false)
 
     onMounted(() =>
-      fetch(
-        `https://spissekcji.firebaseio.com/archive/${props.endpoint}/${props.id}.json`
-      )
-        .then((response) => response.json())
-        .then((output) => {
-          groupData.value = output
+      firebase
+        .database()
+        .ref(`archive/${props.endpoint}/${props.id}`)
+        .once('value')
+        .then((snapshot) => {
+          groupData.value = snapshot.val()
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)

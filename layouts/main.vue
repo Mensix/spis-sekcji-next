@@ -167,7 +167,12 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
-import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+} from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
@@ -177,8 +182,9 @@ export default {
     const infoMessage = ref('')
     const faListIcon = computed(() => faList)
 
-    onMounted(() => {
-      firebase.apps.length === 0 &&
+    onBeforeMount(
+      () =>
+        firebase.apps.length === 0 &&
         firebase.initializeApp({
           apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
           authDomain: 'spissekcji.firebaseapp.com',
@@ -188,41 +194,45 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
+    )
 
-      fetch('https://spissekcji.firebaseio.com/settings.json')
-        .then((response) => response.json())
-        .then((output) => {
-          if (output.info.length > 0) infoMessage.value = output.info
+    onMounted(() =>
+      firebase
+        .database()
+        .ref('settings')
+        .once('value')
+        .then((snapshot) => {
+          infoMessage.value = snapshot.val().info
+
+          if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
+            LocalStorage.getItem('cookieConsent') === null &&
+              Notify.create({
+                message:
+                  'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
+                icon: 'announcement',
+                position: 'bottom-right',
+                timeout: 0,
+                html: true,
+                actions: [
+                  {
+                    label: 'OK',
+                    color: 'white',
+                    handler: () => LocalStorage.set('cookieConsent', true),
+                  },
+                ],
+              })
+          }
+
+          if (
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+          ) {
+            Dark.set(true)
+          } else {
+            Dark.set(LocalStorage.getItem('darkMode') || false)
+          }
         })
-
-      if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
-        LocalStorage.getItem('cookieConsent') === null &&
-          Notify.create({
-            message:
-              'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
-            icon: 'announcement',
-            position: 'bottom-right',
-            timeout: 0,
-            html: true,
-            actions: [
-              {
-                label: 'OK',
-                color: 'white',
-                handler: () => LocalStorage.set('cookieConsent', true),
-              },
-            ],
-          })
-      }
-
-      if (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        Dark.set(true)
-      } else {
-        Dark.set(LocalStorage.getItem('darkMode') || false)
-      }
-    })
+    )
 
     function toggleDarkMode() {
       Dark.toggle()
