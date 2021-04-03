@@ -182,9 +182,17 @@ export default {
     const infoMessage = ref('')
     const faListIcon = computed(() => faList)
 
-    onBeforeMount(
-      () =>
-        firebase.apps.length === 0 &&
+    onBeforeMount(() => {
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        Dark.set(true)
+      } else {
+        Dark.set(LocalStorage.getItem('darkMode') || false)
+      }
+
+      firebase.apps.length === 0 &&
         firebase.initializeApp({
           apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
           authDomain: 'spissekcji.firebaseapp.com',
@@ -194,7 +202,7 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
-    )
+    })
 
     onMounted(() =>
       firebase
@@ -221,15 +229,6 @@ export default {
                   },
                 ],
               })
-          }
-
-          if (
-            window.matchMedia &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches
-          ) {
-            Dark.set(true)
-          } else {
-            Dark.set(LocalStorage.getItem('darkMode') || false)
           }
         })
     )
