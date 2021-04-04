@@ -97,12 +97,12 @@
     <template #body-cell-name="props">
       <q-td :props="props">
         <small class="text-grey q-mr-xxs">{{ props.row.index }}. </small>
-        <q-icon
+        <small
           v-if="props.row.members >= 10000"
-          class="q-mr-xxs"
-          color="secondary"
-          name="star"
-        />
+          class="text-secondary q-mr-xxs"
+        >
+          10K+
+        </small>
         <q-icon
           v-if="props.row.isOpen === true"
           class="q-mr-xxs"
@@ -194,12 +194,12 @@
                   <small class="text-grey q-mr-xxs">
                     {{ props.row.index }}.
                   </small>
-                  <q-icon
+                  <small
                     v-if="props.row.members >= 10000"
-                    class="q-mr-xxs"
-                    color="secondary"
-                    name="star"
-                  />
+                    class="text-secondary q-mr-xxs"
+                  >
+                    10K+
+                  </small>
                   <q-icon
                     v-if="props.row.isOpen === true"
                     class="q-mr-xxs"
