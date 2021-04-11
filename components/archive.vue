@@ -8,7 +8,7 @@
         <div class="text-center text-h6">{{ groupData.name }}</div>
       </q-card-section>
       <q-card-section
-        v-if="Object.values(groupData).length === 0"
+        v-if="!Object.values(groupData).length"
         class="flex justify-center q-py-md"
       >
         <q-spinner color="secondary" size="3em" />

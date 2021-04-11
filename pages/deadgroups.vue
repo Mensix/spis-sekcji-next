@@ -26,7 +26,7 @@
         <p
           :class="{
             'q-ma-none': true,
-            'text-transparent': dataset.lastUpdateDate.length === 0,
+            'text-transparent': !dataset.lastUpdateDate.length,
           }"
         >
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
@@ -141,9 +141,9 @@ export default {
   layout: 'main',
   setup(props, { root }) {
     onMounted(() => {
-      if (dataset.groups.length === 0) {
+      if (!dataset.groups.length) {
         fetchGroups().then(() => (table.isLoading = false))
-      } else if (dataset.groups.length > 0 && table.isLoading === true) {
+      } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
     })
@@ -160,7 +160,7 @@ export default {
 
     function nextPage(scope) {
       scope.nextPage()
-      if (root.$device.isMobile === true) window.scrollTo(0, 0)
+      if (root.$device.isMobile) window.scrollTo(0, 0)
     }
 
     return {

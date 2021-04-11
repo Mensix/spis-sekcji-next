@@ -29,8 +29,8 @@
           :debounce="500"
           dense
           label="Wyszukiwarka grup"
-          :loading="dataset.groups.length === 0"
-          :readonly="dataset.groups.length === 0"
+          :loading="!dataset.groups.length"
+          :readonly="!dataset.groups.length"
         >
           <template v-if="dataset.groups.length > 0" #append>
             <q-icon name="search" />
@@ -254,9 +254,9 @@ export default {
   layout: 'main',
   setup(props, { root }) {
     onMounted(() => {
-      if (dataset.groups.length === 0) {
+      if (!dataset.groups.length) {
         fetchGroups().then(() => (table.isLoading = false))
-      } else if (dataset.groups.length > 0 && table.isLoading === true) {
+      } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
     })
@@ -265,7 +265,7 @@ export default {
 
     function nextPage(scope) {
       scope.nextPage()
-      if (root.$device.isMobile === true) window.scrollTo(0, 0)
+      if (root.$device.isMobile) window.scrollTo(0, 0)
     }
 
     return {

@@ -36,8 +36,8 @@
           :debounce="500"
           dense
           label="Wyszukiwarka grup"
-          :loading="dataset.groups.length === 0"
-          :readonly="dataset.groups.length === 0"
+          :loading="!dataset.groups.length"
+          :readonly="!dataset.groups.length"
         >
           <template v-if="dataset.groups.length > 0" #append>
             <q-icon name="search" />
@@ -52,12 +52,12 @@
           color="secondary"
           dense
           label="Pokaż kategorie"
-          :loading="dataset.groups.length === 0"
+          :loading="!dataset.groups.length"
           multiple
           :options="dataset.categories"
           options-dense
           options-selected-class="text-secondary"
-          :readonly="dataset.groups.length === 0"
+          :readonly="!dataset.groups.length"
         >
           <template #loading>
             <q-spinner />
@@ -67,7 +67,7 @@
         <p
           :class="{
             'q-ma-none': true,
-            'text-transparent': dataset.lastUpdateDate.length === 0,
+            'text-transparent': !dataset.lastUpdateDate.length,
           }"
         >
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
@@ -104,7 +104,7 @@
           10K+
         </small>
         <q-icon
-          v-if="props.row.isOpen === true"
+          v-if="props.row.isOpen"
           class="q-mr-xxs"
           color="secondary"
           name="lock_open"
@@ -201,7 +201,7 @@
                     10K+
                   </small>
                   <q-icon
-                    v-if="props.row.isOpen === true"
+                    v-if="props.row.isOpen"
                     class="q-mr-xxs"
                     color="secondary"
                     name="lock_open"
@@ -261,10 +261,10 @@
                     /{{ props.cols[3].value }}
                   </a>
                 </q-item-label>
-                <q-item-label v-if="props.cols[4].value !== undefined" caption>
+                <q-item-label v-if="props.cols[4].value" caption>
                   {{ props.cols[4].label }}
                 </q-item-label>
-                <q-item-label v-if="props.cols[4].value !== undefined">
+                <q-item-label v-if="props.cols[4].value">
                   <span>
                     {{ props.row.category && props.row.category.join(', ') }}
                   </span>
@@ -337,9 +337,9 @@ export default {
   layout: 'main',
   setup(props, { root }) {
     onMounted(() => {
-      if (dataset.groups.length === 0) {
+      if (!dataset.groups.length) {
         fetchGroups().then(() => (table.isLoading = false))
-      } else if (dataset.groups.length > 0 && table.isLoading === true) {
+      } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
     })
@@ -358,7 +358,7 @@ export default {
 
     function nextPage(scope) {
       scope.nextPage()
-      if (root.$device.isMobile === true) window.scrollTo(0, 0)
+      if (root.$device.isMobile) window.scrollTo(0, 0)
     }
 
     const isArchiveShown = ref(false)

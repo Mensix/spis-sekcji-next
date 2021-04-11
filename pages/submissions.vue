@@ -158,8 +158,8 @@ export default {
   layout: 'main',
   setup() {
     onMounted(() => {
-      if (sections.groups.length === 0) fetchSections()
-      if (taggroups.groups.length === 0) fetchTaggroups()
+      if (!sections.groups.length) fetchSections()
+      if (!taggroups.groups.length) fetchTaggroups()
     })
 
     const form = reactive({
@@ -180,8 +180,8 @@ export default {
 
     watch(
       () => form.link,
-      (value, previousValue) => {
-        if (form.link.invalid === true) {
+      () => {
+        if (form.link.invalid) {
           form.link.invalid = false
         }
       }
@@ -189,15 +189,15 @@ export default {
 
     watch(
       () => form.keywords.value,
-      (value, previousValue) => {
-        if (form.keywords.invalid === true) {
+      () => {
+        if (form.keywords.invalid) {
           form.keywords.invalid = false
         }
       }
     )
 
     function pasteLink(e) {
-      form.link.length === 0
+      !form.link.length
         ? (form.link = !e.clipboardData.getData('text').includes('/groups')
             ? e.clipboardData.getData('text')
             : e.clipboardData
@@ -223,7 +223,7 @@ export default {
       }
 
       if (
-        form.groupExists === false &&
+        !form.groupExists &&
         form.keywords.value.length > 0 &&
         form.keywords.value
           .toLowerCase()
@@ -240,7 +240,7 @@ export default {
         form.keywords.invalid = true
       }
 
-      if (form.keywords.invalid === false && form.groupExists === false) {
+      if (!form.keywords.invalid && !form.groupExists) {
         form.isBeingSent = true
 
         firebase

@@ -12,8 +12,8 @@
       <div>
         <h5
           :class="{
-            'text-white': Dark.isActive === true,
-            'text-black': Dark.isActive === false,
+            'text-white': Dark.isActive,
+            'text-black': !Dark.isActive,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -38,8 +38,8 @@
       <div>
         <h6
           :class="{
-            'text-white': Dark.isActive === true,
-            'text-black': Dark.isActive === false,
+            'text-white': Dark.isActive,
+            'text-black': !Dark.isActive,
             'q-ma-none q-mb-md': true,
           }"
         >
@@ -53,8 +53,8 @@
       <div>
         <h6
           :class="{
-            'text-white': Dark.isActive === true,
-            'text-black': Dark.isActive === false,
+            'text-white': Dark.isActive,
+            'text-black': !Dark.isActive,
             'q-ma-none q-mb-md': true,
           }"
         >

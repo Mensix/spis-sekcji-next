@@ -6,7 +6,7 @@ const deadgroupsRef = ref(null)
 
 function getPaginationText(scope, ref) {
   return `${(scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1}-${
-    scope.isLastPage === true
+    scope.isLastPage
       ? ref?.computedRowsNumber
       : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
   }

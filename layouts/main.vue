@@ -3,8 +3,8 @@
     <q-header
       :class="{
         'shadow-2': true,
-        'bg-secondary text-white': Dark.isActive === false,
-        'bg-dark text-secondary': Dark.isActive === true,
+        'bg-secondary text-white': !Dark.isActive,
+        'bg-dark text-secondary': Dark.isActive,
       }"
     >
       <q-toolbar>
@@ -25,8 +25,8 @@
         <a
           :class="{
             'no-underline': true,
-            'text-white': Dark.isActive === false,
-            'text-secondary': Dark.isActive === true,
+            'text-white': !Dark.isActive,
+            'text-secondary': Dark.isActive,
           }"
           href="https://m.me/grzegorz.perun"
           rel="noopener noreferer"
@@ -36,12 +36,12 @@
         </a>
         <q-btn
           flat
-          :icon="Dark.isActive === false ? 'brightness_7' : 'brightness_3'"
+          :icon="!Dark.isActive ? 'brightness_7' : 'brightness_3'"
           round
           @click="toggleDarkMode()"
         >
           <q-tooltip v-if="$device.isDesktop" ref="tooltipRef">
-            {{ Dark.isActive === false ? 'Tryb ciemny' : 'Tryb jasny' }}
+            {{ !Dark.isActive ? 'Tryb ciemny' : 'Tryb jasny' }}
           </q-tooltip>
         </q-btn>
       </q-toolbar>
@@ -65,8 +65,8 @@
     <q-footer
       v-if="!$device.isMobile"
       :class="{
-        'bg-grey-2 text-black': Dark.isActive === false,
-        'shadow-up-2 bg-dark text-white': Dark.isActive === true,
+        'bg-grey-2 text-black': !Dark.isActive,
+        'shadow-up-2 bg-dark text-white': Dark.isActive,
         'text-center q-pa-lg': true,
       }"
     >
@@ -121,8 +121,8 @@
       <q-tabs
         :class="{
           'shadow-up-2 text-secondary': true,
-          'bg-white': Dark.isActive === false,
-          'bg-dark': Dark.isActive === true,
+          'bg-white': !Dark.isActive,
+          'bg-dark': Dark.isActive,
         }"
         no-caps
         shrink
@@ -189,7 +189,7 @@ export default {
         Dark.set(LocalStorage.getItem('darkMode') || false)
       }
 
-      firebase.apps.length === 0 &&
+      !firebase.apps.length &&
         firebase.initializeApp({
           apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
           authDomain: 'spissekcji.firebaseapp.com',
