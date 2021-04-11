@@ -31,7 +31,7 @@
 
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
-import { Dark } from 'quasar'
+import { Dark, LocalStorage, Notify } from 'quasar'
 import { addDays, addWeeks, format, lastDayOfWeek } from 'date-fns'
 import Chart from 'chart.js'
 import 'firebase/database'
@@ -55,7 +55,23 @@ export default {
     const isCardReady = ref(false)
     const isChartReady = ref(false)
 
-    onMounted(() =>
+    onMounted(() => {
+      !LocalStorage.getItem('archiveInfoRead') &&
+        Notify.create({
+          message:
+            'Na urządzeniach mobilnych zalecamy zmianę orientacji na poziomą dla czytelności wykresów.',
+          icon: 'announcement',
+          position: 'bottom-right',
+          timeout: 0,
+          actions: [
+            {
+              label: 'OK',
+              color: 'white',
+              handler: () => LocalStorage.set('archiveInfoRead', true),
+            },
+          ],
+        })
+
       firebase
         .database()
         .ref(`archive/${props.endpoint}/${props.id}`)
@@ -115,7 +131,7 @@ export default {
             },
           })
         })
-    )
+    })
 
     function show() {
       archiveDialogRef.value.show()
