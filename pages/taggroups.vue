@@ -197,12 +197,7 @@
 
     <template #pagination="scope">
       <span class="q-mr-sm">
-        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
-          scope.isLastPage === true
-            ? taggroupsRef.computedRowsNumber
-            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
-        }}
-        z {{ taggroupsRef.computedRowsNumber }}
+        {{ getPaginationText(scope, taggroupsRef) }}
       </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
@@ -253,7 +248,7 @@
 <script>
 import { onMounted } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/taggroups'
-import { taggroupsRef } from '~/store/table'
+import getPaginationText, { taggroupsRef } from '~/store/table'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
@@ -275,6 +270,7 @@ export default {
 
     return {
       dataset,
+      getPaginationText,
       taggroupsRef,
       table,
       filterTable,

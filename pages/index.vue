@@ -278,12 +278,7 @@
 
     <template #pagination="scope">
       <span class="q-mr-sm">
-        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
-          scope.isLastPage === true
-            ? sectionsRef.computedRowsNumber
-            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
-        }}
-        z {{ sectionsRef.computedRowsNumber }}
+        {{ getPaginationText(scope, sectionsRef) }}
       </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
@@ -335,7 +330,7 @@
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog } from 'quasar'
 import { dataset, fetchGroups } from '~/store/sections'
-import { sectionsRef } from '~/store/table'
+import getPaginationText, { sectionsRef } from '~/store/table'
 import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
 export default {
@@ -379,6 +374,7 @@ export default {
     return {
       dataset,
       fetchGroups,
+      getPaginationText,
       sectionsRef,
       table,
       filterTable,

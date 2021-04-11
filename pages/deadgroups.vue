@@ -84,12 +84,7 @@
 
     <template #pagination="scope">
       <span class="q-mr-sm">
-        {{ (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 1 }}-{{
-          scope.isLastPage === true
-            ? deadgroupsRef.computedRowsNumber
-            : (scope.pagination.page - 1) * scope.pagination.rowsPerPage + 20
-        }}
-        z {{ deadgroupsRef.computedRowsNumber }}
+        {{ getPaginationText(scope, deadgroupsRef) }}
       </span>
       <q-btn
         v-if="scope.pagesNumber > 2"
@@ -140,7 +135,7 @@
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/deadgroups'
-import { deadgroupsRef } from '~/store/table'
+import getPaginationText, { deadgroupsRef } from '~/store/table'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
@@ -171,6 +166,7 @@ export default {
     return {
       dataset,
       fetchGroups,
+      getPaginationText,
       deadgroupsRef,
       table,
       filterTable,
