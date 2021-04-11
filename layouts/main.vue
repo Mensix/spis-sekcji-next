@@ -183,10 +183,7 @@ export default {
     const faListIcon = computed(() => faList)
 
     onBeforeMount(() => {
-      if (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
+      if (window.matchMedia('(prefers-color-scheme: dark)')?.matches) {
         Dark.set(true)
       } else {
         Dark.set(LocalStorage.getItem('darkMode') || false)
