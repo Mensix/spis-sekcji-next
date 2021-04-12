@@ -48,7 +48,7 @@ export default {
     },
   },
   emits: ['hide'],
-  setup(props, { emit }) {
+  setup(props, { emit, root }) {
     const archiveDialogRef = ref()
     const groupData = ref([])
     const chartData = ref([])
@@ -57,6 +57,7 @@ export default {
 
     onMounted(() => {
       !LocalStorage.getItem('archiveInfoRead') &&
+        root.$nuxt.$device.isMobile &&
         Notify.create({
           message:
             'Na urządzeniach mobilnych zalecamy zmianę orientacji na poziomą dla czytelności wykresów.',
