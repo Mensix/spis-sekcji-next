@@ -16,15 +16,15 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@nuxtjs/composition-api": "^0.22.4",
-    "@nuxtjs/device": "^2.0.1",
+    "@nuxtjs/composition-api": "^0.23.0",
+    "@nuxtjs/device": "^2.1.0",
     "@nuxtjs/gtm": "^2.4.0",
     "chart.js": "^2.9.4",
-    "date-fns": "^2.20.1",
-    "firebase": "^8.3.3",
+    "date-fns": "^2.20.3",
+    "firebase": "^8.4.1",
     "nuxt": "^2.15.4",
     "quasar": "^1.15.10",
-    "vue-gtag": "^1.11.0"
+    "vue-gtag": "^1.14.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
@@ -35,7 +35,7 @@
     "@nuxtjs/stylelint-module": "^4.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.24.0",
-    "eslint-config-prettier": "^8.1.0",
+    "eslint-config-prettier": "^8.2.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
