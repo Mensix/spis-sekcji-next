@@ -115,18 +115,16 @@
         </nuxt-link>
       </p>
     </q-footer>
-    <q-footer v-else bordered>
-      <q-tabs
-        :class="{
-          'text-secondary': true,
-          'bg-white': !Dark.isActive,
-          'bg-dark': Dark.isActive,
-        }"
-        no-caps
-        shrink
-        stretch
-        switch-indicator
-      >
+    <q-footer
+      v-else
+      bordered
+      :class="{
+        'text-secondary': true,
+        'bg-white': !Dark.isActive,
+        'bg-dark': Dark.isActive,
+      }"
+    >
+      <q-tabs no-caps shrink stretch switch-indicator>
         <q-route-tab
           class="text-secondary"
           icon="view_list"
