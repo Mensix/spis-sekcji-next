@@ -19,10 +19,10 @@ script:
 
 deploy:
   provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_ACCESS_TOKEN
-  target-branch: master
-  local-dir: dist
+  skip_cleanup: true
+  github_token: $GITHUB_ACCESS_TOKEN
+  target_branch: master
+  local_dir: dist
   repo: sekcje/sekcje.github.io
   on:
     branch: master
