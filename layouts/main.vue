@@ -1,10 +1,11 @@
 <template>
   <q-layout :view="$device.isDesktop ? 'hHh lpR fff' : 'hHh lpR fFf'">
     <q-header
+      bordered
       :class="{
-        'shadow-2': true,
-        'bg-secondary text-white': !Dark.isActive,
-        'bg-dark text-secondary': Dark.isActive,
+        'text-secondary': true,
+        'bg-dark': Dark.isActive,
+        'q-toolbar--blurry': !Dark.isActive,
       }"
     >
       <q-toolbar>
@@ -23,11 +24,7 @@
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <a
-          :class="{
-            'no-underline': true,
-            'text-white': !Dark.isActive,
-            'text-secondary': Dark.isActive,
-          }"
+          class="no-underline text-secondary"
           href="https://m.me/grzegorz.perun"
           rel="noopener noreferer"
           target="_blank"
@@ -64,9 +61,10 @@
     </q-page-container>
     <q-footer
       v-if="!$device.isMobile"
+      bordered
       :class="{
-        'bg-grey-2 text-black': !Dark.isActive,
-        'shadow-up-2 bg-dark text-white': Dark.isActive,
+        'bg-grey-1 text-black': !Dark.isActive,
+        'bg-dark text-white': Dark.isActive,
         'text-center q-pa-lg': true,
       }"
     >
@@ -117,10 +115,10 @@
         </nuxt-link>
       </p>
     </q-footer>
-    <q-footer v-else>
+    <q-footer v-else bordered>
       <q-tabs
         :class="{
-          'shadow-up-2 text-secondary': true,
+          'text-secondary': true,
           'bg-white': !Dark.isActive,
           'bg-dark': Dark.isActive,
         }"
@@ -253,6 +251,11 @@ export default {
 <style scoped>
 .q-icon__toolbar-title {
   font-size: 19px;
+}
+
+.q-toolbar--blurry {
+  backdrop-filter: blur(6px);
+  background-color: rgba(238, 238, 238, 0.2);
 }
 
 .no-underline {
