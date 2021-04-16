@@ -115,29 +115,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="form.groupExists">
-      <q-card>
-        <q-card-section>
-          <h6 class="q-ma-none q-mb-md">Informacja</h6>
-        </q-card-section>
-        <q-card-section class="q-pt-none">
-          Grupa, którą próbujesz przesłać, znajduje się już w spisie. Jednak w
-          przypadku, gdy chcesz zaaktualizować dane grupy, kliknij przycisk
-          Wyślij.
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn
-            color="secondary"
-            :disable="form.isBeingSentUpdate"
-            flat
-            label="Wyślij"
-            :loading="form.isBeingSentUpdate"
-            @click="submitUpdateSubmission()"
-          />
-          <q-btn v-close-popup color="secondary" flat label="Anuluj" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -146,6 +123,7 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
 import { format, getDay } from 'date-fns'
+import { Notify } from 'quasar'
 import {
   dataset as sections,
   fetchGroups as fetchSections,
@@ -172,9 +150,7 @@ export default {
         value: '',
       },
       isBeingSent: false,
-      isBeingSentUpdate: false,
       wasSend: false,
-      wasSendUpdate: false,
       groupExists: false,
     })
 
@@ -197,17 +173,21 @@ export default {
     )
 
     function pasteLink(e) {
-      !form.link.length
-        ? (form.link = !e.clipboardData.getData('text').includes('/groups')
-            ? e.clipboardData.getData('text')
-            : e.clipboardData
-                .getData('text')
-                .substring(
-                  e.clipboardData.getData('text').indexOf('/groups/') +
-                    '/groups/'.length
-                )
-                .replace(/(\/.*)|(\?.*)/, ''))
-        : (form.link += e.clipboardData.getData('text'))
+      const clipboardData = e.clipboardData.getData('text')
+
+      if (clipboardData.includes('facebook.com/groups')) {
+        form.link = clipboardData
+          .substring(clipboardData.indexOf('/groups/') + '/groups/'.length)
+          .replace(/[^a-zA-Z0-9].*/gu, '')
+      } else {
+        Notify.create({
+          message:
+            'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.',
+          icon: 'announcement',
+          position: 'bottom',
+          timeout: 5000,
+        })
+      }
     }
 
     function submitSubmission() {
@@ -223,7 +203,6 @@ export default {
       }
 
       if (
-        !form.groupExists &&
         form.keywords.value.length > 0 &&
         form.keywords.value
           .toLowerCase()
@@ -240,21 +219,24 @@ export default {
         form.keywords.invalid = true
       }
 
-      if (!form.keywords.invalid && !form.groupExists) {
+      if (!form.keywords.invalid) {
+        const isSectionSent = form.type === 'Sekcja'
         form.isBeingSent = true
 
         firebase
           .database()
           .ref('submissions')
-          .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
+          .child(isSectionSent ? 'sections' : 'taggroups')
           .push({
+            category: isSectionSent ? form.category : null,
             date: format(new Date(), 'dd/MM/yyyy kk:mm'),
-            category: form.type === 'Sekcja' && form.category,
+            keywords: isSectionSent
+              ? form.keywords.value
+                  .split(',')
+                  .map((x) => x.trim().toLowerCase())
+              : null,
+            jbwaLink: isSectionSent ? form.jbwaLink : null,
             link: form.link,
-            jbwaLink: form.jbwaLink,
-            keywords: form.keywords.value
-              .split(',')
-              .map((x) => x.trim().toLowerCase()),
           })
           .then(() => {
             form.link = form.jbwaLink = form.keywords.value = ''
@@ -265,31 +247,6 @@ export default {
       }
     }
 
-    function submitUpdateSubmission() {
-      form.isBeingSentUpdate = true
-      firebase
-        .database()
-        .ref('submissions')
-        .child(form.type === 'Sekcja' ? 'sections' : 'taggroups')
-        .push({
-          date: format(new Date(), 'dd/MM/yyyy kk:mm'),
-          update: true,
-          category: form.type === 'Sekcja' && form.category,
-          link: form.link,
-          jbwaLink: form.jbwaLink,
-          keywords: form.keywords.value
-            .split(',')
-            .map((x) => x.trim().toLowerCase()),
-        })
-        .then(() => {
-          form.link = form.jbwaLink = form.keywords.value = ''
-          form.category = []
-          form.isBeingSentUpdate = false
-          form.wasSend = true
-          form.groupExists = false
-        })
-    }
-
     return {
       getDay,
       sections,
@@ -297,7 +254,6 @@ export default {
       form,
       pasteLink,
       submitSubmission,
-      submitUpdateSubmission,
     }
   },
 }
