@@ -30,9 +30,16 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
-import { addDays, addWeeks, format, lastDayOfWeek } from 'date-fns'
+import {
+  addDays,
+  addWeeks,
+  differenceInWeeks,
+  format,
+  lastDayOfWeek,
+} from 'date-fns'
 import Chart from 'chart.js'
 import 'firebase/database'
 import firebase from 'firebase/app'
@@ -78,16 +85,35 @@ export default {
         .ref(`archive/${props.endpoint}/${props.id}`)
         .once('value')
         .then((snapshot) => {
-          groupData.value = snapshot.val()
+          groupData.value = { ...snapshot.val(), dates: [] }
+
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)
 
-          const fixedGroupData = groupData.value.history.filter(
-            (x) => x !== 'N/A'
+          const weeksIn2021 = differenceInWeeks(
+            new Date(),
+            new Date(2021, 0, 1)
           )
-          const weeksToSkip = groupData.value.history.filter((x) => x === 'N/A')
-            .length
+          const historyItemsCount = groupData.value.history.length
+          const weeksToSkip = weeksIn2021 - historyItemsCount
+
+          groupData.value.dates = groupData.value.history.map((_, idx) =>
+            format(
+              addWeeks(
+                lastDayOfWeek(new Date(2021, 0, 1)),
+                weeksToSkip === 0 ? idx : weeksToSkip + idx
+              ),
+              'dd/MM/yyyy'
+            )
+          )
+
+          if (historyItemsCount !== weeksIn2021) {
+            groupData.value.history.unshift(
+              new Array(weeksToSkip).fill('N/A').flat()
+            )
+            groupData.value.history = groupData.value.history.flat()
+          }
 
           // eslint-disable-next-line no-new
           new Chart(c, {
@@ -110,19 +136,11 @@ export default {
               },
             },
             data: {
-              labels: fixedGroupData.map((_, idx) =>
-                format(
-                  addWeeks(
-                    addDays(lastDayOfWeek(new Date(2021, 0, 1)), 1),
-                    weeksToSkip.length === 0 ? idx : weeksToSkip + idx
-                  ),
-                  'dd/MM/yyyy'
-                )
-              ),
+              labels: groupData.value.dates,
               datasets: [
                 {
                   label: 'Liczba członków',
-                  data: fixedGroupData,
+                  data: groupData.value.history.filter((x) => x !== 'N/A'),
                   backgroundColor: '#26A69A00',
                   borderColor: '#26A69A',
                   borderWidth: 3,
