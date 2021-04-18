@@ -34,10 +34,10 @@
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import {
-  addDays,
   addWeeks,
   differenceInWeeks,
   format,
+  getDay,
   lastDayOfWeek,
 } from 'date-fns'
 import Chart from 'chart.js'
@@ -91,10 +91,9 @@ export default {
           const c = document.createElement('canvas')
           container?.appendChild(c)
 
-          const weeksIn2021 = differenceInWeeks(
-            new Date(),
-            new Date(2021, 0, 1)
-          )
+          const weeksIn2021 =
+            differenceInWeeks(new Date(), new Date(2021, 0, 1)) +
+            (getDay(new Date()) === 0 ? 1 : 0)
           const historyItemsCount = groupData.value.history.length
           const weeksToSkip = weeksIn2021 - historyItemsCount
 
