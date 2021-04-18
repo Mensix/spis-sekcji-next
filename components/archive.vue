@@ -30,10 +30,10 @@
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import {
+  addDays,
   addWeeks,
   differenceInWeeks,
   format,
@@ -99,9 +99,12 @@ export default {
 
           groupData.value.dates = groupData.value.history.map((_, idx) =>
             format(
-              addWeeks(
-                lastDayOfWeek(new Date(2021, 0, 1)),
-                weeksToSkip === 0 ? idx : weeksToSkip + idx
+              addDays(
+                addWeeks(
+                  lastDayOfWeek(new Date(2021, 0, 1)),
+                  weeksToSkip === 0 ? idx : weeksToSkip + idx
+                ),
+                1
               ),
               'dd/MM/yyyy'
             )
