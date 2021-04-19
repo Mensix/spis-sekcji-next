@@ -37,6 +37,7 @@ import {
   addWeeks,
   differenceInWeeks,
   format,
+  getDay,
   lastDayOfWeek,
 } from 'date-fns'
 import Chart from 'chart.js'
@@ -84,6 +85,7 @@ export default {
         .ref(`archive/${props.endpoint}/${props.id}`)
         .once('value')
         .then((snapshot) => {
+          const todayDate = new Date()
           groupData.value = { ...snapshot.val(), dates: [] }
 
           const container = document.getElementById('archive-chart-container')
@@ -91,7 +93,8 @@ export default {
           container?.appendChild(c)
 
           const weeksIn2021 =
-            differenceInWeeks(new Date(), new Date(2021, 0, 1)) + 1
+            differenceInWeeks(todayDate, new Date(2021, 0, 1)) +
+            ([5, 6, 0].includes(getDay(todayDate)) ? 0 : 1)
           const historyItemsCount = groupData.value.history.length
           const weeksToSkip = weeksIn2021 - historyItemsCount
 
