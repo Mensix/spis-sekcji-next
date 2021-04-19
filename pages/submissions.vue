@@ -76,7 +76,7 @@
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           :error="form.keywords.invalid"
           error-message="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
-          hint="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
+          hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać."
           label="Słowa kluczowe"
           outlined
           square
