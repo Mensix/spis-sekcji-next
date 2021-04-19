@@ -37,7 +37,6 @@ import {
   addWeeks,
   differenceInWeeks,
   format,
-  getDay,
   lastDayOfWeek,
 } from 'date-fns'
 import Chart from 'chart.js'
@@ -92,8 +91,7 @@ export default {
           container?.appendChild(c)
 
           const weeksIn2021 =
-            differenceInWeeks(new Date(), new Date(2021, 0, 1)) +
-            (getDay(new Date()) === 0 ? 1 : 0)
+            differenceInWeeks(new Date(), new Date(2021, 0, 1)) + 1
           const historyItemsCount = groupData.value.history.length
           const weeksToSkip = weeksIn2021 - historyItemsCount
 
