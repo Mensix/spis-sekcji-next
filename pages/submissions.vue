@@ -27,6 +27,7 @@
           v-model.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
+          hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
           label="Link do grupy"
           outlined
           prefix="https://facebook.com/groups/"
@@ -41,6 +42,7 @@
         </q-input>
         <q-input
           v-model.trim="form.jbwaLink"
+          class="q-mt-lg"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           hint="Jeśli chcesz, aby twoja sekcja była dostępna również pod adresem jbwa.pl/<alias>, możesz wpisać pożądany alias w polu powyżej. Wówczas po wejściu w taki link, odwiedzający zostanie przekierowany bezpośrednio do twojej grupy."
