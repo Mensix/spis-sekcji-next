@@ -62,14 +62,6 @@ export default {
     exclude: [/^\/admin/],
   },
   build: {
-    filenames: {
-      app: '[name].js',
-      chunk: '[name].js',
-      css: '[name].css',
-      img: '[path][name].[ext]',
-      font: '[path][name].[ext]',
-      video: '[path][name].[ext]',
-    },
     extend(config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
