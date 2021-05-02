@@ -36,11 +36,7 @@
           :icon="!Dark.isActive ? 'brightness_7' : 'brightness_3'"
           round
           @click="toggleDarkMode()"
-        >
-          <q-tooltip v-if="$device.isDesktop" ref="tooltipRef">
-            {{ !Dark.isActive ? 'Tryb ciemny' : 'Tryb jasny' }}
-          </q-tooltip>
-        </q-btn>
+        />
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -173,8 +169,6 @@ import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 export default {
   setup(props, { root }) {
-    const tooltipRef = ref(null)
-
     const infoMessage = ref('')
     const faListIcon = computed(() => faList)
 
@@ -229,15 +223,10 @@ export default {
     function toggleDarkMode() {
       Dark.toggle()
       LocalStorage.set('darkMode', Dark.isActive)
-      if (root.$nuxt.$device.isDesktop) {
-        tooltipRef.value.hide()
-        setTimeout(() => tooltipRef.value.show(), 250)
-      }
     }
 
     return {
       Dark,
-      tooltipRef,
       infoMessage,
       faListIcon,
       toggleDarkMode,
