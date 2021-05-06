@@ -20,11 +20,11 @@
     "@nuxtjs/device": "^2.1.0",
     "@nuxtjs/gtm": "^2.4.0",
     "chart.js": "2.9.4",
-    "date-fns": "^2.21.1",
-    "firebase": "^8.4.3",
+    "date-fns": "^2.21.2",
+    "firebase": "^8.5.0",
     "nuxt": "^2.15.4",
-    "quasar": "^1.15.12",
-    "vue-gtag": "^1.14.0"
+    "quasar": "^1.15.13",
+    "vue-gtag": "^1.16.1"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
