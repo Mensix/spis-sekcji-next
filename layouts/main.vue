@@ -20,7 +20,6 @@
         <q-tabs v-if="!$device.isMobile" class="q-mr-sm" shrink stretch>
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
-          <q-route-tab label="Hades" to="/deadgroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <a
@@ -132,12 +131,6 @@
           icon="list"
           label="Tag-grupki"
           to="/taggroups"
-        />
-        <q-route-tab
-          class="text-secondary"
-          icon="link_off"
-          label="Hades"
-          to="/deadgroups"
         />
         <q-route-tab
           class="text-secondary"
