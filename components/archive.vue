@@ -94,7 +94,7 @@ export default {
 
           const weeksIn2021 =
             differenceInWeeks(todayDate, new Date(2021, 0, 1)) +
-            ([5, 6, 0].includes(getDay(todayDate)) ? 0 : 1)
+            ([5, 6].includes(getDay(todayDate)) ? 0 : 1)
           const historyItemsCount = groupData.value.history.length
           const weeksToSkip = weeksIn2021 - historyItemsCount
 
