@@ -6,8 +6,26 @@ import { reactive } from '@nuxtjs/composition-api'
 const dataset = reactive({
   lastUpdateDate: '',
   groups: [],
+  favouriteGroups: [],
   categories: [],
 })
+
+const fetchFavouriteGroups = (uid) => {
+  return firebase
+    .database()
+    .ref(`users/${uid}`)
+    .once('value')
+    .then((snapshot) => {
+      dataset.favouriteGroups = snapshot.val()
+      dataset.groups = dataset.groups
+        .map((x) => ({
+          ...x,
+          isFavorite: Object.values(dataset.favouriteGroups).includes(x.link),
+        }))
+        .sort((e, a) => a.isFavorite - e.isFavorite)
+        .map((_, idx) => ({ ..._, index: idx + 1 }))
+    })
+}
 
 const fetchGroups = () => {
   return firebase
@@ -16,12 +34,16 @@ const fetchGroups = () => {
     .once('value')
     .then((snapshot) => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
-      dataset.groups = snapshot.val().groups.map((_, idx) => ({
-        ..._,
-        category: _.category?.sort(),
-        membersGrowth: _.membersGrowth || 0,
-        index: idx + 1,
-      }))
+      dataset.groups = snapshot
+        .val()
+        .groups.map((_, idx) => ({
+          ..._,
+          category: _.category?.sort(),
+          membersGrowth: _.membersGrowth || 0,
+          index: idx + 1,
+          isStarIconHovered: false,
+        }))
+        .sort((e, a) => a.members - e.members)
       dataset.categories = [
         ...new Set(
           dataset.groups
@@ -33,4 +55,4 @@ const fetchGroups = () => {
     })
 }
 
-export { dataset, fetchGroups }
+export { dataset, fetchGroups, fetchFavouriteGroups }

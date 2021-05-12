@@ -121,7 +121,20 @@
         >
           <del>JBWA</del>
         </small>
-        <span>{{ props.row.name }}</span>
+        <span class="q-mr-sm">{{ props.row.name }}</span>
+        <q-icon
+          v-if="userState.isLoggedIn"
+          class="cursor-pointer"
+          color="secondary"
+          :name="!props.row.isFavorite ? 'star_border' : 'star'"
+          @click="toggleFavoriteGroup(props, props.row.link)"
+          @mouseleave="props.row.isStarIconHovered = false"
+          @mouseover="props.row.isStarIconHovered = true"
+        >
+          <q-tooltip v-if="!props.row.isFavorite">
+            Dodaj grupę do ulubionych
+          </q-tooltip>
+        </q-icon>
       </q-td>
     </template>
 
@@ -328,11 +341,15 @@
 
 <script>
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
-import { Dialog } from 'quasar'
+import { Dialog, Notify } from 'quasar'
+import firebase from 'firebase/app'
 import { dataset, fetchGroups } from '~/store/sections'
 import getPaginationText, { sectionsRef } from '~/store/table'
+import { state as userState } from '~/store/user'
 import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
+import 'firebase/database'
+import 'firebase/auth'
 export default {
   layout: 'main',
   setup(props, { root }) {
@@ -371,10 +388,27 @@ export default {
       })
     }
 
+    function toggleFavoriteGroup(props, link) {
+      const userRef = firebase.database().ref('users').child(userState.data.uid)
+
+      if (!props.row.isFavorite) {
+        userRef.push(props.row.link).then(() => {
+          props.row.isFavorite = true
+          Notify.create({
+            message: 'Pomyślnie dodano grupę do ulubionych.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 2500,
+          })
+        })
+      }
+    }
+
     return {
       dataset,
       fetchGroups,
       getPaginationText,
+      userState,
       sectionsRef,
       table,
       filterTable,
@@ -382,6 +416,7 @@ export default {
       nextPage,
       isArchiveShown,
       showArchiveDialog,
+      toggleFavoriteGroup,
     }
   },
 }

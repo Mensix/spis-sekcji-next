@@ -22,14 +22,19 @@
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
-        <a
-          class="no-underline text-secondary"
-          href="https://m.me/grzegorz.perun"
-          rel="noopener noreferer"
-          target="_blank"
-        >
-          <q-btn flat label="Kontakt" />
-        </a>
+        <q-btn
+          v-if="userState.isLoggedIn === false"
+          flat
+          label="Zaloguj się"
+          :loading="userState.isLoggingIn === true"
+          @click="loginWithFacebook()"
+        />
+        <q-avatar v-else class="q-mr-sm" size="28px">
+          <img id="userPhoto" :src="userState.data.photoURL" />
+          <q-tooltip target="#userPhoto">
+            Witaj, {{ userState.data.displayName.split(' ')[0] }}
+          </q-tooltip>
+        </q-avatar>
         <q-btn
           flat
           :icon="!Dark.isActive ? 'brightness_7' : 'brightness_3'"
@@ -152,6 +157,7 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
+import 'firebase/auth'
 import {
   computed,
   onBeforeMount,
@@ -160,6 +166,8 @@ import {
 } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
+import { state as userState } from '~/store/user'
+import { fetchFavouriteGroups } from '~/store/sections'
 export default {
   setup(props, { root }) {
     const infoMessage = ref('')
@@ -184,7 +192,7 @@ export default {
         })
     })
 
-    onMounted(() =>
+    onMounted(() => {
       firebase
         .database()
         .ref('settings')
@@ -211,11 +219,43 @@ export default {
               })
           }
         })
-    )
+    })
 
     function toggleDarkMode() {
       Dark.toggle()
       LocalStorage.set('darkMode', Dark.isActive)
+    }
+
+    function loginWithFacebook() {
+      const provider = new firebase.auth.FacebookAuthProvider()
+      userState.isLoggingIn = true
+
+      const dismiss = Notify.create({
+        message: 'Oczekiwanie na zalogowanie się...',
+        icon: 'announcement',
+        position: 'bottom-right',
+        timeout: 0,
+      })
+
+      firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(() =>
+          firebase
+            .auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+              const accessToken = result.credential.accessToken
+
+              userState.isLoggedIn = true
+              userState.isLoggingIn = false
+              userState.data = result.user
+
+              userState.data.photoURL += `?access_token=${accessToken.toString()}`
+              dismiss()
+            })
+        )
+        .then(() => fetchFavouriteGroups(userState.data.uid))
     }
 
     return {
@@ -223,6 +263,8 @@ export default {
       infoMessage,
       faListIcon,
       toggleDarkMode,
+      userState,
+      loginWithFacebook,
     }
   },
 }
