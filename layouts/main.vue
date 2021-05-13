@@ -299,7 +299,7 @@ export default {
         .then(() =>
           firebase
             .auth()
-            .signInWithPopup(provider)
+            .signInWithRedirect(provider)
             .then((result) => {
               const accessToken = result.credential.accessToken
 
