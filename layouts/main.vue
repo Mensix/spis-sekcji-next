@@ -203,15 +203,32 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
+
+      firebase.auth().onAuthStateChanged((result) => {
+        let accessToken
+        if (result) {
+          result
+            .getIdToken()
+            .then((token) => (accessToken = token))
+            .then(() => {
+              userState.isLoggedIn = true
+              userState.isLoggingIn = false
+              userState.data = result
+              userState.data.photoURL += `?access_token=${accessToken.toString()}`
+
+              firebase
+                .database()
+                .ref(`users/${userState.data.uid}/settings/darkModeEnabled`)
+                .once('value')
+                .then((snapshot) => Dark.set(snapshot.val()))
+            })
+        } else {
+          userState.isLoggingIn = false
+        }
+      })
     })
 
     onMounted(() => {
-      firebase
-        .database()
-        .ref(`users/${userState.data.uid}/settings/darkModeEnabled`)
-        .once('value')
-        .then((snapshot) => Dark.set(snapshot.val()))
-
       firebase
         .database()
         .ref('settings')
@@ -227,12 +244,28 @@ export default {
                 icon: 'announcement',
                 position: 'bottom-right',
                 timeout: 0,
-                html: true,
+                html: false,
                 actions: [
                   {
                     label: 'OK',
                     color: 'white',
                     handler: () => LocalStorage.set('cookieConsent', true),
+                  },
+                ],
+              })
+
+            LocalStorage.getItem('accountInfoRead') === null &&
+              Notify.create({
+                message: 'Zaloguj się, aby móc zapisywać swoje ulubione grupy.',
+                icon: 'announcement',
+                position: 'bottom-right',
+                timeout: 0,
+                html: true,
+                actions: [
+                  {
+                    label: 'OK',
+                    color: 'white',
+                    handler: () => LocalStorage.set('accountInfoRead', true),
                   },
                 ],
               })
@@ -242,10 +275,11 @@ export default {
 
     function toggleDarkMode() {
       Dark.toggle()
+      LocalStorage.set('darkMode', Dark.isActive)
       firebase
         .database()
         .ref(`users/${userState.data.uid}/settings`)
-        .set({ darkModeEnabled: Dark.isActive() })
+        .set({ darkModeEnabled: Dark.isActive })
     }
 
     function loginWithFacebook() {

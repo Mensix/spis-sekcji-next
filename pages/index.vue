@@ -126,14 +126,14 @@
           v-if="userState.isLoggedIn"
           class="cursor-pointer"
           color="secondary"
-          :name="!props.row.isFavorite ? 'star_border' : 'star'"
-          @click="toggleFavoriteGroup(props, props.row.link)"
+          :name="!props.row.isFavourite ? 'star_border' : 'star'"
+          @click="toggleFavouriteGroup(props, props.row.link)"
           @mouseleave="props.row.isStarIconHovered = false"
           @mouseover="props.row.isStarIconHovered = true"
         >
           <q-tooltip>
             {{
-              props.row.isFavorite
+              props.row.isFavourite
                 ? 'Usuń grupę z ulubionych'
                 : 'Dodaj grupę  do ulubionych'
             }}
@@ -359,7 +359,12 @@ export default {
   setup(props, { root }) {
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups().then(() => (table.isLoading = false))
+        fetchGroups()
+          .then(() => (table.isLoading = false))
+          .then(
+            () =>
+              userState.isLoggedIn && fetchFavouriteGroups(userState.data.uid)
+          )
       } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
@@ -392,26 +397,23 @@ export default {
       })
     }
 
-    function toggleFavoriteGroup(props) {
+    function toggleFavouriteGroup(props) {
       const userRef = firebase
         .database()
         .ref('users')
         .child(userState.data.uid)
         .child('favourite-groups')
 
-      if (!props.row.isFavorite) {
-        userRef
-          .push(props.row.link)
-          .then(() => {
-            props.row.isFavorite = true
-            Notify.create({
-              message: 'Pomyślnie dodano grupę do ulubionych.',
-              icon: 'announcement',
-              position: 'bottom-right',
-              timeout: 2500,
-            })
+      if (!props.row.isFavourite) {
+        userRef.push(props.row.link).then(() => {
+          props.row.isFavourite = true
+          Notify.create({
+            message: 'Pomyślnie dodano grupę do ulubionych.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 2500,
           })
-          .then(() => fetchFavouriteGroups(userState.data.uid))
+        })
       } else {
         userRef
           .child(
@@ -422,7 +424,7 @@ export default {
 
           .remove()
           .then(() => {
-            props.row.isFavorite = false
+            props.row.isFavourite = false
             Notify.create({
               message: 'Pomyślnie usunięto grupę z ulubionych.',
               icon: 'announcement',
@@ -445,7 +447,7 @@ export default {
       nextPage,
       isArchiveShown,
       showArchiveDialog,
-      toggleFavoriteGroup,
+      toggleFavouriteGroup,
     }
   },
 }

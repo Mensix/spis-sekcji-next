@@ -38,7 +38,6 @@ const fetchGroups = () => {
           category: _.category?.sort(),
           membersGrowth: _.membersGrowth || 0,
           index: idx + 1,
-          isStarIconHovered: false,
         }))
         .sort((e, a) => a.members - e.members)
       dataset.categories = [
