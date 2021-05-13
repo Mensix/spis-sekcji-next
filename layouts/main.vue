@@ -31,9 +31,22 @@
         />
         <q-avatar v-else class="q-mr-sm" size="28px">
           <img id="userPhoto" :src="userState.data.photoURL" />
-          <q-tooltip target="#userPhoto">
-            Witaj, {{ userState.data.displayName.split(' ')[0] }}
-          </q-tooltip>
+          <q-badge class="cursor-pointer" color="secondary" floating rounded>
+            <q-icon
+              :name="shouldShowAccountMenu ? 'expand_less' : 'expand_more'"
+            />
+          </q-badge>
+          <q-menu
+            v-model="shouldShowAccountMenu"
+            transition-hide="jump-up"
+            transition-show="jump-down"
+          >
+            <q-list class="min-width: 100px">
+              <q-item v-close-popup clickable @click="signOut()">
+                <q-item-section>Wyloguj się</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-avatar>
         <q-btn
           flat
@@ -195,6 +208,12 @@ export default {
     onMounted(() => {
       firebase
         .database()
+        .ref(`users/${userState.data.uid}/settings/darkModeEnabled`)
+        .once('value')
+        .then((snapshot) => Dark.set(snapshot.val()))
+
+      firebase
+        .database()
         .ref('settings')
         .once('value')
         .then((snapshot) => {
@@ -223,7 +242,10 @@ export default {
 
     function toggleDarkMode() {
       Dark.toggle()
-      LocalStorage.set('darkMode', Dark.isActive)
+      firebase
+        .database()
+        .ref(`users/${userState.data.uid}/settings`)
+        .set({ darkModeEnabled: Dark.isActive() })
     }
 
     function loginWithFacebook() {
@@ -256,6 +278,19 @@ export default {
             })
         )
         .then(() => fetchFavouriteGroups(userState.data.uid))
+        .catch(() => {
+          userState.isLoggingIn = false
+          dismiss()
+        })
+    }
+
+    const shouldShowAccountMenu = ref(false)
+    function signOut() {
+      shouldShowAccountMenu.value = false
+      firebase
+        .auth()
+        .signOut()
+        .then(() => (userState.isLoggedIn = false))
     }
 
     return {
@@ -265,6 +300,8 @@ export default {
       toggleDarkMode,
       userState,
       loginWithFacebook,
+      shouldShowAccountMenu,
+      signOut,
     }
   },
 }

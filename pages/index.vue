@@ -131,8 +131,12 @@
           @mouseleave="props.row.isStarIconHovered = false"
           @mouseover="props.row.isStarIconHovered = true"
         >
-          <q-tooltip v-if="!props.row.isFavorite">
-            Dodaj grupę do ulubionych
+          <q-tooltip>
+            {{
+              props.row.isFavorite
+                ? 'Usuń grupę z ulubionych'
+                : 'Dodaj grupę  do ulubionych'
+            }}
           </q-tooltip>
         </q-icon>
       </q-td>
@@ -343,7 +347,7 @@
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
-import { dataset, fetchGroups } from '~/store/sections'
+import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
 import getPaginationText, { sectionsRef } from '~/store/table'
 import { state as userState } from '~/store/user'
 import archive from '~/components/archive'
@@ -388,19 +392,44 @@ export default {
       })
     }
 
-    function toggleFavoriteGroup(props, link) {
-      const userRef = firebase.database().ref('users').child(userState.data.uid)
+    function toggleFavoriteGroup(props) {
+      const userRef = firebase
+        .database()
+        .ref('users')
+        .child(userState.data.uid)
+        .child('favourite-groups')
 
       if (!props.row.isFavorite) {
-        userRef.push(props.row.link).then(() => {
-          props.row.isFavorite = true
-          Notify.create({
-            message: 'Pomyślnie dodano grupę do ulubionych.',
-            icon: 'announcement',
-            position: 'bottom-right',
-            timeout: 2500,
+        userRef
+          .push(props.row.link)
+          .then(() => {
+            props.row.isFavorite = true
+            Notify.create({
+              message: 'Pomyślnie dodano grupę do ulubionych.',
+              icon: 'announcement',
+              position: 'bottom-right',
+              timeout: 2500,
+            })
           })
-        })
+          .then(() => fetchFavouriteGroups(userState.data.uid))
+      } else {
+        userRef
+          .child(
+            Object.entries(dataset.favouriteGroups).filter(
+              (x) => x[1] === props.row.link
+            )[0][0]
+          )
+
+          .remove()
+          .then(() => {
+            props.row.isFavorite = false
+            Notify.create({
+              message: 'Pomyślnie usunięto grupę z ulubionych.',
+              icon: 'announcement',
+              position: 'bottom-right',
+              timeout: 2500,
+            })
+          })
       }
     }
 

@@ -13,17 +13,14 @@ const dataset = reactive({
 const fetchFavouriteGroups = (uid) => {
   return firebase
     .database()
-    .ref(`users/${uid}`)
+    .ref(`users/${uid}/favourite-groups`)
     .once('value')
     .then((snapshot) => {
       dataset.favouriteGroups = snapshot.val()
-      dataset.groups = dataset.groups
-        .map((x) => ({
-          ...x,
-          isFavorite: Object.values(dataset.favouriteGroups).includes(x.link),
-        }))
-        .sort((e, a) => a.isFavorite - e.isFavorite)
-        .map((_, idx) => ({ ..._, index: idx + 1 }))
+      dataset.groups = dataset.groups.map((x) => ({
+        ...x,
+        isFavourite: Object.values(dataset.favouriteGroups).includes(x.link),
+      }))
     })
 }
 
