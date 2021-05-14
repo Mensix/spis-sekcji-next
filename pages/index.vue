@@ -66,12 +66,19 @@
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
           :class="{
-            'q-ma-none': true,
+            'q-mb-sm': true,
             'text-transparent': !dataset.lastUpdateDate.length,
           }"
         >
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
         </p>
+        <q-toggle
+          v-if="userState.isLoggedIn"
+          v-model="shouldShowOnlyFavouriteGroups"
+          color="secondary"
+          label="Wyświetl tylko ulubione grupy"
+          left-label
+        />
       </div>
     </template>
 
@@ -235,7 +242,13 @@
                   >
                     <del>JBWA</del>
                   </small>
-                  <span>{{ props.row.name }}</span>
+                  <span class="q-mr-sm">{{ props.row.name }}</span>
+                  <q-icon
+                    v-if="userState.isLoggedIn"
+                    color="secondary"
+                    :name="!props.row.isFavourite ? 'star_border' : 'star'"
+                    @click="toggleFavouriteGroup(props, props.row.link)"
+                  />
                 </q-item-label>
                 <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
@@ -373,13 +386,16 @@ export default {
     const { table, filterTable } = useTable()
 
     const computedGroups = computed(() =>
-      table.selectedCategories.length > 0
-        ? dataset.groups.filter(
-            (x) =>
-              x.category &&
+      dataset.groups
+        .filter((x) =>
+          table.selectedCategories.length
+            ? x.category &&
               table.selectedCategories.some((y) => x.category.includes(y))
-          )
-        : dataset.groups
+            : x
+        )
+        .filter((x) =>
+          shouldShowOnlyFavouriteGroups.value ? x.isFavourite : x
+        )
     )
 
     function nextPage(scope) {
@@ -435,6 +451,8 @@ export default {
       }
     }
 
+    const shouldShowOnlyFavouriteGroups = ref(false)
+
     return {
       dataset,
       fetchGroups,
@@ -448,6 +466,7 @@ export default {
       isArchiveShown,
       showArchiveDialog,
       toggleFavouriteGroup,
+      shouldShowOnlyFavouriteGroups,
     }
   },
 }
