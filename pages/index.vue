@@ -73,7 +73,7 @@
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
         </p>
         <q-toggle
-          v-if="userState.isLoggedIn"
+          v-if="userState.isLoggedIn && dataset.groups.length"
           v-model="shouldShowOnlyFavouriteGroups"
           color="secondary"
           label="Wyświetl tylko ulubione grupy"
