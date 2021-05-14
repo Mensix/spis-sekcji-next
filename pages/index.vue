@@ -66,12 +66,19 @@
         <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
         <p
           :class="{
-            'q-ma-none': true,
+            'q-mb-sm': true,
             'text-transparent': !dataset.lastUpdateDate.length,
           }"
         >
           Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
         </p>
+        <q-toggle
+          v-if="userState.isLoggedIn && dataset.groups.length"
+          v-model="shouldShowOnlyFavouriteGroups"
+          color="secondary"
+          label="Wyświetl tylko ulubione grupy"
+          left-label
+        />
       </div>
     </template>
 
@@ -121,7 +128,24 @@
         >
           <del>JBWA</del>
         </small>
-        <span>{{ props.row.name }}</span>
+        <span class="q-mr-sm">{{ props.row.name }}</span>
+        <q-icon
+          v-if="userState.isLoggedIn"
+          class="cursor-pointer"
+          color="secondary"
+          :name="!props.row.isFavourite ? 'star_border' : 'star'"
+          @click="toggleFavouriteGroup(props, props.row.link)"
+          @mouseleave="props.row.isStarIconHovered = false"
+          @mouseover="props.row.isStarIconHovered = true"
+        >
+          <q-tooltip>
+            {{
+              props.row.isFavourite
+                ? 'Usuń grupę z ulubionych'
+                : 'Dodaj grupę  do ulubionych'
+            }}
+          </q-tooltip>
+        </q-icon>
       </q-td>
     </template>
 
@@ -218,7 +242,13 @@
                   >
                     <del>JBWA</del>
                   </small>
-                  <span>{{ props.row.name }}</span>
+                  <span class="q-mr-sm">{{ props.row.name }}</span>
+                  <q-icon
+                    v-if="userState.isLoggedIn"
+                    color="secondary"
+                    :name="!props.row.isFavourite ? 'star_border' : 'star'"
+                    @click="toggleFavouriteGroup(props, props.row.link)"
+                  />
                 </q-item-label>
                 <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
@@ -328,17 +358,26 @@
 
 <script>
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
-import { Dialog } from 'quasar'
-import { dataset, fetchGroups } from '~/store/sections'
+import { Dialog, Notify } from 'quasar'
+import firebase from 'firebase/app'
+import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
 import getPaginationText, { sectionsRef } from '~/store/table'
+import { state as userState } from '~/store/user'
 import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
+import 'firebase/database'
+import 'firebase/auth'
 export default {
   layout: 'main',
   setup(props, { root }) {
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups().then(() => (table.isLoading = false))
+        fetchGroups()
+          .then(() => (table.isLoading = false))
+          .then(
+            () =>
+              userState.isLoggedIn && fetchFavouriteGroups(userState.data.uid)
+          )
       } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
@@ -347,13 +386,16 @@ export default {
     const { table, filterTable } = useTable()
 
     const computedGroups = computed(() =>
-      table.selectedCategories.length > 0
-        ? dataset.groups.filter(
-            (x) =>
-              x.category &&
+      dataset.groups
+        .filter((x) =>
+          table.selectedCategories.length
+            ? x.category &&
               table.selectedCategories.some((y) => x.category.includes(y))
-          )
-        : dataset.groups
+            : x
+        )
+        .filter((x) =>
+          shouldShowOnlyFavouriteGroups.value ? x.isFavourite : x
+        )
     )
 
     function nextPage(scope) {
@@ -371,10 +413,51 @@ export default {
       })
     }
 
+    function toggleFavouriteGroup(props) {
+      const userRef = firebase
+        .database()
+        .ref('users')
+        .child(userState.data.uid)
+        .child('favourite-groups')
+
+      if (!props.row.isFavourite) {
+        userRef.push(props.row.link).then(() => {
+          props.row.isFavourite = true
+          Notify.create({
+            message: 'Pomyślnie dodano grupę do ulubionych.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 2500,
+          })
+        })
+      } else {
+        userRef
+          .child(
+            Object.entries(dataset.favouriteGroups).filter(
+              (x) => x[1] === props.row.link
+            )[0][0]
+          )
+
+          .remove()
+          .then(() => {
+            props.row.isFavourite = false
+            Notify.create({
+              message: 'Pomyślnie usunięto grupę z ulubionych.',
+              icon: 'announcement',
+              position: 'bottom-right',
+              timeout: 2500,
+            })
+          })
+      }
+    }
+
+    const shouldShowOnlyFavouriteGroups = ref(false)
+
     return {
       dataset,
       fetchGroups,
       getPaginationText,
+      userState,
       sectionsRef,
       table,
       filterTable,
@@ -382,6 +465,8 @@ export default {
       nextPage,
       isArchiveShown,
       showArchiveDialog,
+      toggleFavouriteGroup,
+      shouldShowOnlyFavouriteGroups,
     }
   },
 }

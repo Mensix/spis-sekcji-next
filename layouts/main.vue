@@ -22,14 +22,32 @@
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
-        <a
-          class="no-underline text-secondary"
-          href="https://m.me/grzegorz.perun"
-          rel="noopener noreferer"
-          target="_blank"
-        >
-          <q-btn flat label="Kontakt" />
-        </a>
+        <q-btn
+          v-if="userState.isLoggedIn === false"
+          flat
+          label="Zaloguj się"
+          :loading="userState.isLoggingIn === true"
+          @click="loginWithFacebook()"
+        />
+        <q-avatar v-else class="q-mr-sm" size="28px">
+          <img id="userPhoto" :src="userState.data.photoURL" />
+          <q-badge class="cursor-pointer" color="secondary" floating rounded>
+            <q-icon
+              :name="shouldShowAccountMenu ? 'expand_less' : 'expand_more'"
+            />
+          </q-badge>
+          <q-menu
+            v-model="shouldShowAccountMenu"
+            transition-hide="jump-up"
+            transition-show="jump-down"
+          >
+            <q-list class="min-width: 100px">
+              <q-item v-close-popup clickable @click="signOut()">
+                <q-item-section>Wyloguj się</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-avatar>
         <q-btn
           flat
           :icon="!Dark.isActive ? 'brightness_7' : 'brightness_3'"
@@ -152,6 +170,7 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/database'
+import 'firebase/auth'
 import {
   computed,
   onBeforeMount,
@@ -160,6 +179,8 @@ import {
 } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
+import { state as userState } from '~/store/user'
+import { fetchFavouriteGroups } from '~/store/sections'
 export default {
   setup(props, { root }) {
     const infoMessage = ref('')
@@ -182,9 +203,32 @@ export default {
           messagingSenderId: '752464608547',
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
+
+      firebase.auth().onAuthStateChanged((result) => {
+        let accessToken
+        if (result) {
+          result
+            .getIdToken()
+            .then((token) => (accessToken = token))
+            .then(() => {
+              userState.isLoggedIn = true
+              userState.isLoggingIn = false
+              userState.data = result
+              userState.data.photoURL += `?access_token=${accessToken.toString()}`
+
+              firebase
+                .database()
+                .ref(`users/${userState.data.uid}/settings/darkModeEnabled`)
+                .once('value')
+                .then((snapshot) => Dark.set(snapshot.val()))
+            })
+        } else {
+          userState.isLoggingIn = false
+        }
+      })
     })
 
-    onMounted(() =>
+    onMounted(() => {
       firebase
         .database()
         .ref('settings')
@@ -200,7 +244,7 @@ export default {
                 icon: 'announcement',
                 position: 'bottom-right',
                 timeout: 0,
-                html: true,
+                html: false,
                 actions: [
                   {
                     label: 'OK',
@@ -209,13 +253,78 @@ export default {
                   },
                 ],
               })
+
+            LocalStorage.getItem('accountInfoRead') === null &&
+              Notify.create({
+                message: 'Zaloguj się, aby móc zapisywać swoje ulubione grupy.',
+                icon: 'announcement',
+                position: 'bottom-right',
+                timeout: 0,
+                html: true,
+                actions: [
+                  {
+                    label: 'OK',
+                    color: 'white',
+                    handler: () => LocalStorage.set('accountInfoRead', true),
+                  },
+                ],
+              })
           }
         })
-    )
+    })
 
     function toggleDarkMode() {
       Dark.toggle()
       LocalStorage.set('darkMode', Dark.isActive)
+      firebase
+        .database()
+        .ref(`users/${userState.data.uid}/settings`)
+        .set({ darkModeEnabled: Dark.isActive })
+    }
+
+    function loginWithFacebook() {
+      const provider = new firebase.auth.FacebookAuthProvider()
+      userState.isLoggingIn = true
+
+      const dismiss = Notify.create({
+        message: 'Oczekiwanie na zalogowanie się...',
+        icon: 'announcement',
+        position: 'bottom-right',
+        timeout: 0,
+      })
+
+      firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(() =>
+          firebase
+            .auth()
+            .signInWithRedirect(provider)
+            .then((result) => {
+              const accessToken = result.credential.accessToken
+
+              userState.isLoggedIn = true
+              userState.isLoggingIn = false
+              userState.data = result.user
+
+              userState.data.photoURL += `?access_token=${accessToken.toString()}`
+              dismiss()
+            })
+        )
+        .then(() => fetchFavouriteGroups(userState.data.uid))
+        .catch(() => {
+          userState.isLoggingIn = false
+          dismiss()
+        })
+    }
+
+    const shouldShowAccountMenu = ref(false)
+    function signOut() {
+      shouldShowAccountMenu.value = false
+      firebase
+        .auth()
+        .signOut()
+        .then(() => (userState.isLoggedIn = false))
     }
 
     return {
@@ -223,6 +332,10 @@ export default {
       infoMessage,
       faListIcon,
       toggleDarkMode,
+      userState,
+      loginWithFacebook,
+      shouldShowAccountMenu,
+      signOut,
     }
   },
 }

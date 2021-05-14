@@ -40,7 +40,6 @@ export default function () {
       },
     ],
     pagination: {
-      sortBy: 'members',
       descending: true,
       page: 0,
       rowsPerPage: 20,
