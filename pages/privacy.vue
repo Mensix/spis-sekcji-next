@@ -23,21 +23,15 @@
         >
           Polityka prywatności
         </h5>
-        <p class="q-ma-none">Ta strona używa następujących serwisów</p>
+        <p class="q-ma-none">Ta strona używa następujących serwisów:</p>
         <ul class="q-ma-none q-ma-sm">
+          <li>Firebase - baza danych</li>
           <li>
             Google Analytics - zbieranie informacji dotyczących statystyk
             wyświetleń strony
           </li>
-          <li>
-            Google Tag Manager - zbieranie informacji dotyczących kliknięć w
-            poszczególne elementy w celu badania zachowań użytkowników
-          </li>
+          <li>Facebook Login - konto użytkownika</li>
         </ul>
-        <p class="q-ma-none">
-          Zbierane dane są zanonimizowane. Żadne dane osobowe nie są
-          przetwarzane.
-        </p>
       </div>
       <div>
         <h6
@@ -62,11 +56,27 @@
             'q-ma-none q-mb-md': true,
           }"
         >
+          Konto
+        </h6>
+        <p class="q-ma-none">
+          Konto użytkownika służy do zapisywania Twoich ulubionych grup. W bazie
+          danych przechowywane są twój e-mail oraz wcześniej wspomniane dane.
+        </p>
+      </div>
+      <div>
+        <h6
+          :class="{
+            'text-white': Dark.isActive,
+            'text-black': !Dark.isActive,
+            'q-ma-none q-mb-md': true,
+          }"
+        >
           Kontakt
         </h6>
         <p class="q-ma-none">
           Administratorem strony jest Grzegorz Perun. W przypadku jakichkolwiek
-          wątpliwości związanych z polityką prywatności,
+          wątpliwości związanych z polityką prywatności lub chęci usunięcia
+          twoich danych,
           <a
             class="text-secondary"
             href="https://facebook.com/grzegorz.perun"
