@@ -40,7 +40,15 @@ import {
   getDay,
   lastDayOfWeek,
 } from 'date-fns'
-import Chart from 'chart.js'
+import {
+  Chart,
+  LineController,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement,
+  Tooltip,
+} from 'chart.js'
 import 'firebase/database'
 import firebase from 'firebase/app'
 export default {
@@ -63,6 +71,15 @@ export default {
     const isChartReady = ref(false)
 
     onMounted(() => {
+      Chart.register(
+        LineController,
+        LineElement,
+        LinearScale,
+        CategoryScale,
+        PointElement,
+        Tooltip
+      )
+
       !LocalStorage.getItem('archiveInfoRead') &&
         root.$nuxt.$device.isMobile &&
         Notify.create({
@@ -121,21 +138,9 @@ export default {
           // eslint-disable-next-line no-new
           new Chart(c, {
             type: 'line',
-            options: {
-              legend: {
-                display: false,
-              },
-              tooltips: {
-                displayColors: false,
-              },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      precision: 0,
-                    },
-                  },
-                ],
+            plugins: {
+              tooltip: {
+                display: true,
               },
             },
             data: {

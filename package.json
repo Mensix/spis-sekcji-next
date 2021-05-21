@@ -19,11 +19,11 @@
     "@nuxtjs/composition-api": "^0.23.4",
     "@nuxtjs/device": "^2.1.0",
     "@nuxtjs/gtm": "^2.4.0",
-    "chart.js": "2.9.4",
+    "chart.js": "3.2.1",
     "date-fns": "^2.21.3",
-    "firebase": "^8.5.0",
-    "nuxt": "^2.15.5",
-    "quasar": "^1.15.13",
+    "firebase": "^8.6.2",
+    "nuxt": "^2.15.6",
+    "quasar": "^1.15.15",
     "vue-gtag": "^1.16.1"
   },
   "devDependencies": {
