@@ -33,12 +33,11 @@
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import {
-  addDays,
   addWeeks,
-  differenceInWeeks,
   format,
+  lastDayOfISOWeek,
+  differenceInCalendarISOWeeks,
   getDay,
-  lastDayOfWeek,
 } from 'date-fns'
 import {
   Chart,
@@ -99,48 +98,53 @@ export default {
 
       firebase
         .database()
-        .ref(`archive/${props.endpoint}/${props.id}`)
+        .ref(`archive-s/${props.id}`)
         .once('value')
         .then((snapshot) => {
-          const todayDate = new Date()
+          let twoWeeksPeriods = differenceInCalendarISOWeeks(
+            new Date(),
+            new Date(2021, 0, 1)
+          )
+          twoWeeksPeriods =
+            (twoWeeksPeriods - (twoWeeksPeriods % 2)) / 2 +
+            (getDay(new Date()) === 0 ? 1 : 0)
+
           groupData.value = { ...snapshot.val(), dates: [] }
+          const missingHistoryItems =
+            twoWeeksPeriods - groupData.value.history.length
 
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)
 
-          const weeksIn2021 =
-            differenceInWeeks(todayDate, new Date(2021, 0, 1)) +
-            ([5, 6].includes(getDay(todayDate)) ? 0 : 1)
-          const historyItemsCount = groupData.value.history.length
-          const weeksToSkip = weeksIn2021 - historyItemsCount
-
           groupData.value.dates = groupData.value.history.map((_, idx) =>
             format(
-              addDays(
-                addWeeks(
-                  lastDayOfWeek(new Date(2021, 0, 1)),
-                  weeksToSkip === 0 ? idx : weeksToSkip + idx
-                ),
-                1
+              addWeeks(
+                lastDayOfISOWeek(new Date(2021, 0, 1)),
+                missingHistoryItems === 0
+                  ? idx * 2
+                  : missingHistoryItems * 2 + idx * 2
               ),
               'dd/MM/yyyy'
             )
           )
-
-          if (historyItemsCount !== weeksIn2021) {
-            groupData.value.history.unshift(
-              new Array(weeksToSkip).fill('N/A').flat()
-            )
-            groupData.value.history = groupData.value.history.flat()
-          }
+          groupData.value.history = groupData.value.history.flat()
 
           // eslint-disable-next-line no-new
           new Chart(c, {
             type: 'line',
-            plugins: {
-              tooltip: {
-                display: true,
+            options: {
+              plugins: {
+                tooltip: {
+                  display: true,
+                },
+              },
+              scales: {
+                y: {
+                  ticks: {
+                    precision: 0,
+                  },
+                },
               },
             },
             data: {
