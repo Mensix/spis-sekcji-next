@@ -361,7 +361,7 @@ import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
-import getPaginationText, { sectionsRef } from '~/store/table'
+import { sectionsRef } from '~/store/table'
 import { state as userState } from '~/store/user'
 import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
@@ -383,7 +383,7 @@ export default {
       }
     })
 
-    const { table, filterTable } = useTable()
+    const { table, filterTable, getPaginationText } = useTable()
 
     const computedGroups = computed(() =>
       dataset.groups

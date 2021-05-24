@@ -248,7 +248,7 @@
 <script>
 import { onMounted } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/taggroups'
-import getPaginationText, { taggroupsRef } from '~/store/table'
+import { taggroupsRef } from '~/store/table'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
@@ -261,7 +261,7 @@ export default {
       }
     })
 
-    const { table, filterTable } = useTable()
+    const { table, filterTable, getPaginationText } = useTable()
 
     function nextPage(scope) {
       scope.nextPage()
