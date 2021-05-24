@@ -394,7 +394,9 @@ export default {
             : x
         )
         .filter((x) =>
-          shouldShowOnlyFavouriteGroups.value ? x.isFavourite : x
+          shouldShowOnlyFavouriteGroups.value && userState.isLoggedIn
+            ? x.isFavourite
+            : x
         )
     )
 
