@@ -196,63 +196,20 @@
     </template>
 
     <template #pagination="scope">
-      <span class="q-mr-sm">
-        {{ getPaginationText(scope, taggroupsRef) }}
-      </span>
-      <q-btn
-        v-if="scope.pagesNumber > 2"
-        color="secondary"
-        dense
-        :disable="scope.isFirstPage"
-        flat
-        icon="first_page"
-        round
-        style="font-size: 10px"
-        @click="scope.firstPage"
-      />
-      <q-btn
-        color="secondary"
-        dense
-        :disable="scope.isFirstPage"
-        flat
-        icon="chevron_left"
-        round
-        style="font-size: 10px"
-        @click="scope.prevPage"
-      />
-      <q-btn
-        color="secondary"
-        dense
-        :disable="scope.isLastPage"
-        flat
-        icon="chevron_right"
-        round
-        style="font-size: 10px"
-        @click="nextPage(scope)"
-      />
-      <q-btn
-        v-if="scope.pagesNumber > 2"
-        color="secondary"
-        dense
-        :disable="scope.isLastPage"
-        flat
-        icon="last_page"
-        round
-        style="font-size: 10px"
-        @click="scope.lastPage"
-      />
+      <pagination :reference="taggroupsRef" :scope="scope" />
     </template>
   </q-table>
 </template>
 
 <script>
-import { onMounted } from '@nuxtjs/composition-api'
+import { onMounted, ref } from '@nuxtjs/composition-api'
 import { dataset, fetchGroups } from '~/store/taggroups'
-import { taggroupsRef } from '~/store/table'
 import useTable from '~/shared/useTable'
 export default {
   layout: 'main',
   setup(props, { root }) {
+    const taggroupsRef = ref(null)
+
     onMounted(() => {
       if (!dataset.groups.length) {
         fetchGroups().then(() => (table.isLoading = false))
@@ -263,18 +220,12 @@ export default {
 
     const { table, filterTable, getPaginationText } = useTable()
 
-    function nextPage(scope) {
-      scope.nextPage()
-      if (root.$device.isMobile) window.scrollTo(0, 0)
-    }
-
     return {
       dataset,
       getPaginationText,
       taggroupsRef,
       table,
       filterTable,
-      nextPage,
     }
   },
 }
