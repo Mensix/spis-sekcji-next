@@ -105,12 +105,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">
           Prośba o dodanie grupy do spisu sekcji została pomyślnie wysłana.
-          Twoja grupa zostanie dodana
-          {{
-            getDay(new Date()) === 0
-              ? `jeszcze dziś.`
-              : `wraz z aktualizacją całego spisu w najbliższą niedzielę.`
-          }}
+          Twoja grupa zostanie dodana wraz z aktualizacją całego spisu.
         </q-card-section>
         <q-card-actions align="right">
           <q-btn v-close-popup color="secondary" flat label="OK" />
@@ -124,7 +119,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
-import { format, getDay } from 'date-fns'
+import { format } from 'date-fns'
 import { Notify } from 'quasar'
 import {
   dataset as sections,
@@ -250,7 +245,6 @@ export default {
     }
 
     return {
-      getDay,
       sections,
       taggroups,
       form,
