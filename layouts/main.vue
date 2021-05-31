@@ -284,6 +284,7 @@ export default {
 
     function loginWithFacebook() {
       const provider = new firebase.auth.FacebookAuthProvider()
+      provider.addScope('email')
       userState.isLoggingIn = true
 
       const dismiss = Notify.create({
