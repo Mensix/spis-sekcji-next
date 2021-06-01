@@ -107,7 +107,7 @@ export default {
           )
           twoWeeksPeriods =
             (twoWeeksPeriods - (twoWeeksPeriods % 2)) / 2 +
-            ([2, 3, 4, 5].includes(getDay(new Date())) ? 1 : 0)
+            ([3, 4, 5].includes(getDay(new Date())) ? 1 : 0)
 
           groupData.value = { ...snapshot.val(), dates: [] }
           const missingHistoryItems =
