@@ -1,9 +1,9 @@
 import { reactive } from '@nuxtjs/composition-api'
 
-const state = reactive({
+const userState = reactive({
   isLoggingIn: true,
   isLoggedIn: false,
   data: [],
 })
 
-export { state }
+export { userState }

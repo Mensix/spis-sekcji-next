@@ -17,7 +17,7 @@
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs v-if="!$device.isMobile" class="q-mr-sm" shrink stretch>
+        <q-tabs v-if="!$device.isMobile" class="q-mr-sm" stretch>
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
@@ -179,7 +179,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
-import { state as userState } from '~/store/user'
+import { userState } from '~/store/user'
 import { fetchFavouriteGroups } from '~/store/sections'
 export default {
   setup(props, { root }) {
