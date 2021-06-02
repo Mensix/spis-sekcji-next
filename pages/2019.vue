@@ -1,0 +1,210 @@
+<template>
+  <div v-frag>
+    <q-table
+      ref="sectionsRef"
+      binary-state-sort
+      color="secondary"
+      :columns="table.columns"
+      :data="computedGroups"
+      dense
+      :filter="table.search"
+      :filter-method="filterTable"
+      flat
+      :grid="$device.isMobile"
+      :loading="table.isLoading"
+      :pagination.sync="table.pagination"
+      :rows-per-page-options="[]"
+      :visible-columns="['name', 'members', 'link', 'category']"
+    >
+      <template #top-left>
+        <div
+          :class="{
+            'q-py-sm': $device.isMobile,
+            'q-py-lg': $device.isDesktopOrTablet,
+          }"
+        >
+          <q-input
+            v-model.trim="table.search"
+            class="q-mb-sm"
+            color="secondary"
+            :debounce="500"
+            dense
+            label="Wyszukiwarka grup"
+            :loading="!dataset.groups.length"
+            :readonly="!dataset.groups.length"
+          >
+            <template v-if="dataset.groups.length > 0" #append>
+              <q-icon name="search" />
+            </template>
+            <template #loading>
+              <q-spinner />
+            </template>
+          </q-input>
+          <q-select
+            v-model="table.selectedCategories"
+            class="q-mb-sm"
+            color="secondary"
+            dense
+            label="Pokaż kategorie"
+            :loading="!dataset.groups.length"
+            multiple
+            :options="dataset.categories"
+            options-dense
+            options-selected-class="text-secondary"
+            :readonly="!dataset.groups.length"
+          >
+            <template #loading>
+              <q-spinner />
+            </template>
+          </q-select>
+          <p class="q-ma-none">Autorzy: Grzegorz Perun & Daniel Nguyen</p>
+          <p
+            :class="{
+              'q-mb-sm': true,
+              'text-transparent': !dataset.lastUpdateDate.length,
+            }"
+          >
+            Ostatnia aktualizacja: {{ dataset.lastUpdateDate }}
+          </p>
+        </div>
+      </template>
+
+      <template #body-cell-name="props">
+        <q-td :props="props">
+          <small class="text-grey q-mr-xxs"> {{ props.row.index }}. </small>
+          <span class="q-mr-sm">{{ props.row.name }}</span>
+        </q-td>
+      </template>
+
+      <template #body-cell-members="props">
+        <q-td :props="props">
+          <span>{{ props.row.members }}</span>
+        </q-td>
+      </template>
+
+      <template #body-cell-link="props">
+        <q-td :props="props">
+          <a
+            :id="props.row.name.split(' ').join('@')"
+            class="text-secondary"
+            :href="`https://facebook.com/groups/${props.row.link}`"
+            rel="noopener noreferer"
+            target="_blank"
+          >
+            /{{ props.row.link }}
+          </a>
+        </q-td>
+      </template>
+
+      <template #body-cell-category="props">
+        <q-td :props="props">
+          <span>
+            {{ props.row.category && props.row.category.join(', ') }}
+          </span>
+        </q-td>
+      </template>
+
+      <template #item="props">
+        <div class="col-12">
+          <q-card class="q-mb-md" flat :props="props">
+            <q-list dense>
+              <q-item>
+                <q-item-section>
+                  <q-item-label caption>{{ props.cols[0].label }}</q-item-label>
+                  <q-item-label>
+                    <small class="text-grey q-mr-xxs">
+                      {{ props.row.index }}.
+                    </small>
+                    <small
+                      v-if="props.row.members >= 10000"
+                      class="text-secondary q-mr-xxs"
+                    >
+                      10K+
+                    </small>
+                    <span class="q-mr-sm">{{ props.row.name }}</span>
+                  </q-item-label>
+                  <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
+                  <q-item-label>
+                    <span class="q-mr-xxs">{{ props.cols[1].value }}</span>
+                  </q-item-label>
+                  <q-item-label caption>{{ props.cols[2].label }}</q-item-label>
+                  <q-item-label>
+                    <a
+                      :id="props.row.name.split(' ').join('@')"
+                      class="text-secondary"
+                      :href="`https://facebook.com/groups/${props.cols[2].value}`"
+                      rel="noopener noreferer"
+                      target="_blank"
+                    >
+                      /{{ props.cols[2].value }}
+                    </a>
+                  </q-item-label>
+                  <q-item-label v-if="props.cols[3].value" caption>
+                    {{ props.cols[3].label }}
+                  </q-item-label>
+                  <q-item-label v-if="props.cols[3].value">
+                    <span>
+                      {{ props.row.category && props.row.category.join(', ') }}
+                    </span>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card>
+        </div>
+      </template>
+
+      <template #pagination="scope">
+        <pagination :reference="sectionsRef" :scope="scope" />
+      </template>
+    </q-table>
+  </div>
+</template>
+
+<script>
+import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import frag from 'vue-frag'
+import {
+  datasetFrom2019 as dataset,
+  fetchGroupsFrom2019 as fetchGroups,
+} from '~/store/sections'
+import useTable from '~/shared/useTable'
+export default {
+  directives: {
+    frag,
+  },
+  layout: 'main',
+  setup() {
+    const sectionsRef = ref(null)
+
+    onMounted(() => {
+      if (!dataset.groups.length) {
+        fetchGroups().then(() => (table.isLoading = false))
+      } else if (dataset.groups.length > 0 && table.isLoading) {
+        table.isLoading = false
+      }
+    })
+
+    const { table, filterTable, getPaginationText } = useTable()
+
+    const computedGroups = computed(() =>
+      dataset.groups.filter((x) =>
+        table.selectedCategories.length
+          ? x.category &&
+            table.selectedCategories.some((y) => x.category.includes(y))
+          : x
+      )
+    )
+
+    return {
+      dataset,
+      fetchGroups,
+      sectionsRef,
+      getPaginationText,
+      table,
+      filterTable,
+      computedGroups,
+    }
+  },
+}
+</script>
