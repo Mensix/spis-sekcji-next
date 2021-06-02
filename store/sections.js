@@ -65,7 +65,7 @@ const fetchGroupsFrom2019 = () => {
       datasetFrom2019.groups = output.groups
         .map((_, idx) => ({
           ..._,
-          category: [].concat(_?.category),
+          category: _.category && [].concat(_.category),
           index: idx + 1,
         }))
         .sort((e, a) => a.members - e.members)
