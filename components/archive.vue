@@ -17,7 +17,6 @@
         id="archive-chart-container"
         class="flex justify-center q-pt-none"
       >
-        <!--  -->
       </q-card-section>
       <q-card-section class="text-center">
         <small>
@@ -33,13 +32,6 @@
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dark, LocalStorage, Notify } from 'quasar'
 import {
-  addWeeks,
-  format,
-  lastDayOfISOWeek,
-  differenceInCalendarISOWeeks,
-  getDay,
-} from 'date-fns'
-import {
   Chart,
   LineController,
   LineElement,
@@ -50,6 +42,8 @@ import {
 } from 'chart.js'
 import 'firebase/database'
 import firebase from 'firebase/app'
+import { format } from 'date-fns'
+import { eachTwoWeeksFrom2021 } from '~/utils/eachTwoWeeksFrom2021'
 export default {
   props: {
     id: {
@@ -65,9 +59,6 @@ export default {
   setup(props, { emit, root }) {
     const archiveDialogRef = ref()
     const groupData = ref([])
-    const chartData = ref([])
-    const isCardReady = ref(false)
-    const isChartReady = ref(false)
 
     onMounted(() => {
       Chart.register(
@@ -101,34 +92,25 @@ export default {
         .ref(`archive-s/${props.id}`)
         .once('value')
         .then((snapshot) => {
-          let twoWeeksPeriods = differenceInCalendarISOWeeks(
-            new Date(),
-            new Date(2021, 0, 1)
+          const twoWeeksPeriods = eachTwoWeeksFrom2021().map((x) =>
+            format(x, 'dd/MM/yyyy')
           )
-          twoWeeksPeriods =
-            (twoWeeksPeriods - (twoWeeksPeriods % 2)) / 2 +
-            ([3, 4, 5].includes(getDay(new Date())) ? 1 : 0)
-
           groupData.value = { ...snapshot.val(), dates: [] }
-          const missingHistoryItems =
-            twoWeeksPeriods - groupData.value.history.length
+
+          const missingHistoryItemsCount =
+            twoWeeksPeriods.length - groupData.value.history.length
+
+          groupData.value.dates =
+            missingHistoryItemsCount === 0
+              ? twoWeeksPeriods
+              : twoWeeksPeriods.slice(
+                  missingHistoryItemsCount,
+                  twoWeeksPeriods.length
+                )
 
           const container = document.getElementById('archive-chart-container')
           const c = document.createElement('canvas')
           container?.appendChild(c)
-
-          groupData.value.dates = groupData.value.history.map((_, idx) =>
-            format(
-              addWeeks(
-                lastDayOfISOWeek(new Date(2021, 0, 1)),
-                missingHistoryItems === 0
-                  ? idx * 2
-                  : missingHistoryItems * 2 + idx * 2
-              ),
-              'dd/MM/yyyy'
-            )
-          )
-          groupData.value.history = groupData.value.history.flat()
 
           // eslint-disable-next-line no-new
           new Chart(c, {
@@ -152,7 +134,7 @@ export default {
               datasets: [
                 {
                   label: 'Liczba członków',
-                  data: groupData.value.history.filter((x) => x !== 'N/A'),
+                  data: groupData.value.history,
                   backgroundColor: '#26A69A00',
                   borderColor: '#26A69A',
                   borderWidth: 3,
@@ -180,9 +162,6 @@ export default {
       Dark,
       archiveDialogRef,
       groupData,
-      chartData,
-      isCardReady,
-      isChartReady,
       show,
       hide,
       onDialogHide,
