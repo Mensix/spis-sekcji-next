@@ -59,13 +59,19 @@
     <q-page-container>
       <q-banner
         v-if="
-          infoMessage.length > 0 &&
-          $nuxt.$route.name !== 'submissions' &&
-          $nuxt.$route.name !== 'privacy'
+          ['submissions', 'privacy', '2019'].every(
+            (x) => !$nuxt.$route.name.includes(x)
+          )
         "
         class="q-mt-md"
       >
-        <span v-html="infoMessage" />
+        <span>
+          Zapraszamy do
+          <nuxt-link class="text-secondary" to="/2019">
+            <span>archiwalnych danych sekcji</span>
+          </nuxt-link>
+          z roku 2019!
+        </span>
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
