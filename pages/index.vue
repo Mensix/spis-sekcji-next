@@ -117,12 +117,6 @@
             color="secondary"
             name="lock_open"
           />
-          <q-icon
-            class="cursor-pointer q-mr-xxs"
-            color="secondary"
-            name="bar_chart"
-            @click="showArchiveDialog(props.row.index)"
-          />
           <small
             v-if="props.row.isSection === false"
             class="text-secondary q-mr-xxs"
@@ -248,7 +242,6 @@
                       v-if="userState.isLoggedIn"
                       color="secondary"
                       :name="!props.row.isFavourite ? 'star_border' : 'star'"
-                      @click="toggleFavouriteGroup(props, props.row.link)"
                     />
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
@@ -316,12 +309,11 @@
 
 <script>
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
-import { Dialog, Notify } from 'quasar'
+import { Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
 import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
 import { userState } from '~/store/user'
-import archive from '~/components/archive'
 import useTable from '~/shared/useTable'
 import 'firebase/database'
 import 'firebase/auth'
@@ -362,16 +354,6 @@ export default {
             : x
         )
     )
-
-    const isArchiveShown = ref(false)
-
-    function showArchiveDialog(index) {
-      Dialog.create({
-        component: archive,
-        id: index - 1,
-        endpoint: 'sections',
-      })
-    }
 
     function toggleFavouriteGroup(props) {
       const userRef = firebase
@@ -422,8 +404,6 @@ export default {
       table,
       filterTable,
       computedGroups,
-      isArchiveShown,
-      showArchiveDialog,
       toggleFavouriteGroup,
       shouldShowOnlyFavouriteGroups,
     }

@@ -61,17 +61,11 @@
         v-if="
           ['submissions', 'privacy', '2019'].every(
             (x) => !$nuxt.$route.name.includes(x)
-          )
+          ) && infoMessage
         "
         class="q-mt-md"
       >
-        <span>
-          Zapraszamy do
-          <nuxt-link class="text-secondary" to="/2019">
-            <span>archiwalnych danych sekcji</span>
-          </nuxt-link>
-          z roku 2019!
-        </span>
+        <span v-html="infoMessage" />
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
