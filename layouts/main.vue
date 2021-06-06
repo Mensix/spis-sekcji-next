@@ -27,7 +27,7 @@
           flat
           label="Zaloguj się"
           :loading="userState.isLoggingIn === true"
-          @click="loginWithFacebook()"
+          @click="signIn()"
         />
         <q-avatar v-else class="q-mr-sm" size="28px">
           <img id="userPhoto" :src="userState.data.photoURL" />
@@ -220,21 +220,21 @@ import {
   onMounted,
   ref,
 } from '@nuxtjs/composition-api'
-import { Dark, LocalStorage, Notify } from 'quasar'
+import { Dark } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
-import { userState } from '~/store/user'
-import { fetchFavouriteGroups } from '~/store/sections'
+import { userState, signIn, signOut, updateUserState } from '~/store/user'
+import useDarkMode from '~/shared/useDarkMode'
+import useNotify from '~/shared/useNotify'
 export default {
   setup(props, { root }) {
     const infoMessage = ref('')
     const faListIcon = computed(() => faList)
 
+    const { initDarkMode, toggleDarkMode } = useDarkMode()
+    const { displayNotify } = useNotify()
+
     onBeforeMount(() => {
-      if (window.matchMedia('(prefers-color-scheme: dark)')?.matches) {
-        Dark.set(true)
-      } else {
-        Dark.set(LocalStorage.getItem('darkMode') || false)
-      }
+      initDarkMode()
 
       !firebase.apps.length &&
         firebase.initializeApp({
@@ -247,129 +247,21 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
-      firebase.auth().onAuthStateChanged((result) => {
-        let accessToken
-        if (result) {
-          result
-            .getIdToken()
-            .then((token) => (accessToken = token))
-            .then(() => {
-              userState.isLoggedIn = true
-              userState.isLoggingIn = false
-              userState.data = result
-              userState.data.photoURL += `?access_token=${accessToken.toString()}`
-
-              firebase
-                .database()
-                .ref(`users/${userState.data.uid}/settings/darkModeEnabled`)
-                .once('value')
-                .then((snapshot) => Dark.set(snapshot.val()))
-            })
-        } else {
-          userState.isLoggingIn = false
-        }
-      })
+      updateUserState()
     })
 
     onMounted(() => {
-      firebase
-        .database()
-        .ref('settings')
-        .once('value')
-        .then((snapshot) => {
-          infoMessage.value = snapshot.val().info
-
-          if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
-            LocalStorage.getItem('cookieConsent') === null &&
-              Notify.create({
-                message:
-                  'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
-                icon: 'announcement',
-                position: 'bottom-right',
-                timeout: 0,
-                html: false,
-                actions: [
-                  {
-                    label: 'OK',
-                    color: 'white',
-                    handler: () => LocalStorage.set('cookieConsent', true),
-                  },
-                ],
-              })
-
-            LocalStorage.getItem('accountInfoRead') === null &&
-              Notify.create({
-                message: 'Zaloguj się, aby móc zapisywać swoje ulubione grupy.',
-                icon: 'announcement',
-                position: 'bottom-right',
-                timeout: 0,
-                html: true,
-                actions: [
-                  {
-                    label: 'OK',
-                    color: 'white',
-                    handler: () => LocalStorage.set('accountInfoRead', true),
-                  },
-                ],
-              })
-          }
-        })
-    })
-
-    function toggleDarkMode() {
-      Dark.toggle()
-      LocalStorage.set('darkMode', Dark.isActive)
-      firebase
-        .database()
-        .ref(`users/${userState.data.uid}/settings`)
-        .set({ darkModeEnabled: Dark.isActive })
-    }
-
-    function loginWithFacebook() {
-      const provider = new firebase.auth.FacebookAuthProvider()
-      provider.addScope('email')
-      userState.isLoggingIn = true
-
-      const dismiss = Notify.create({
-        message: 'Oczekiwanie na zalogowanie się...',
-        icon: 'announcement',
-        position: 'bottom-right',
-        timeout: 0,
-      })
-
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(() =>
-          firebase
-            .auth()
-            .signInWithRedirect(provider)
-            .then((result) => {
-              const accessToken = result.credential.accessToken
-
-              userState.isLoggedIn = true
-              userState.isLoggingIn = false
-              userState.data = result.user
-
-              userState.data.photoURL += `?access_token=${accessToken.toString()}`
-              dismiss()
-            })
+      if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
+        displayNotify(
+          'cookieConsent',
+          'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.'
         )
-        .then(() => fetchFavouriteGroups(userState.data.uid))
-        .catch(() => {
-          userState.isLoggingIn = false
-          dismiss()
-        })
-    }
-
-    const shouldShowAccountMenu = ref(false)
-    function signOut() {
-      shouldShowAccountMenu.value = false
-      firebase
-        .auth()
-        .signOut()
-        .then(() => (userState.isLoggedIn = false))
-    }
+        displayNotify(
+          'accountInfoRead',
+          'Zaloguj się, aby móc zapisywać swoje ulubione grupy.'
+        )
+      }
+    })
 
     const shouldShowNews = ref(false)
 
@@ -379,8 +271,7 @@ export default {
       faListIcon,
       toggleDarkMode,
       userState,
-      loginWithFacebook,
-      shouldShowAccountMenu,
+      signIn,
       signOut,
       shouldShowNews,
     }
