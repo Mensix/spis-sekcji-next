@@ -61,11 +61,21 @@
         v-if="
           ['submissions', 'privacy', '2019'].every(
             (x) => !$nuxt.$route.name.includes(x)
-          ) && infoMessage
+          )
         "
         class="q-mt-md"
       >
-        <span v-html="infoMessage" />
+        <span>
+          Od 6 czerwca 2021 roku dalsze, automatyczne aktualizacje spisu sekcji
+          prawdopodobnie nie będą możliwe.
+          <a
+            class="text-secondary"
+            href="#"
+            @click="shouldShowNews = !shouldShowNews"
+          >
+            Czytaj więcej.
+          </a>
+        </span>
         <template #avatar>
           <q-icon color="secondary" name="question_answer" />
         </template>
@@ -164,6 +174,39 @@
         />
       </q-tabs>
     </q-footer>
+    <q-dialog v-model="shouldShowNews">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Co dalej?</div>
+        </q-card-section>
+        <q-card-section class="q-py-none">
+          <p>
+            Potwierdziły się niedawne doniesienia - Facebook podjął dosyć
+            drastyczne kroki w celu zwalczania tzw. scraperów (botów, które mają
+            za zadanie pobieranie pożądanych danych ze stron internetowych).
+            Dotyczy to również skryptu używanego do aktualizacji spisu sekcji -
+            po kilkuset grupach na konto nakładane jest blokada na ich
+            przeglądanie uniemożliwiająca dalsze zbieranie danych.
+          </p>
+          <p>
+            W związku z tym,
+            <b>
+              od 6 czerwca 2021 roku aktualizacje nazw grup oraz ich liczb
+              członków (przynajmniej tymczasowo), zostają zawieszone.
+            </b>
+            Dane (z wyjątkiem archiwum) będą nadal dostępne, mogą one być jednak
+            dosyć nieaktualne. W najbliższym czasie będę pracował nad
+            możliwością manualnego aktualizowania danych grup przez zalogowanych
+            użytkowników, w dalszej przyszłości być może dodana zostanie
+            możliwość oceniania grup.
+          </p>
+          <p>~ Grzegorz</p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup color="secondary" flat label="OK" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -328,6 +371,8 @@ export default {
         .then(() => (userState.isLoggedIn = false))
     }
 
+    const shouldShowNews = ref(false)
+
     return {
       Dark,
       infoMessage,
@@ -337,6 +382,7 @@ export default {
       loginWithFacebook,
       shouldShowAccountMenu,
       signOut,
+      shouldShowNews,
     }
   },
 }
