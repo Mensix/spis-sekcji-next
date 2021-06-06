@@ -10,12 +10,6 @@ const dataset = reactive({
   categories: [],
 })
 
-const datasetFrom2019 = reactive({
-  lastUpdateDate: '',
-  groups: [],
-  categories: [],
-})
-
 const fetchFavouriteGroups = (uid) => {
   return firebase
     .database()
@@ -57,33 +51,4 @@ const fetchGroups = () => {
     })
 }
 
-const fetchGroupsFrom2019 = () => {
-  return fetch('2019.json')
-    .then((response) => response.json())
-    .then((output) => {
-      datasetFrom2019.lastUpdateDate = output.lastUpdateDate
-      datasetFrom2019.groups = output.groups
-        .map((_, idx) => ({
-          ..._,
-          category: _.category && [].concat(_.category),
-          index: idx + 1,
-        }))
-        .sort((e, a) => a.members - e.members)
-      datasetFrom2019.categories = [
-        ...new Set(
-          datasetFrom2019.groups
-            .filter((x) => x.category)
-            .flatMap((x) => x.category)
-            .sort()
-        ),
-      ]
-    })
-}
-
-export {
-  dataset,
-  datasetFrom2019,
-  fetchGroups,
-  fetchGroupsFrom2019,
-  fetchFavouriteGroups,
-}
+export { dataset, fetchGroups, fetchFavouriteGroups }
