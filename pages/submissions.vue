@@ -34,7 +34,14 @@
           required
           square
           stack-label
-          @paste.prevent="pasteLink"
+          @paste.prevent="
+            form.link =
+              pasteGroupLink($event) ||
+              displayNotify(
+                'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.',
+                5000
+              )
+          "
         >
           <template #append>
             <q-icon name="link" />
@@ -120,7 +127,7 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
 import { format } from 'date-fns'
-import { Notify } from 'quasar'
+import useForm from '~/shared/useForm'
 import {
   dataset as sections,
   fetchGroups as fetchSections,
@@ -129,6 +136,7 @@ import {
   dataset as taggroups,
   fetchGroups as fetchTaggroups,
 } from '~/store/taggroups'
+import useNotify from '~/shared/useNotify'
 export default {
   layout: 'main',
   setup() {
@@ -136,6 +144,9 @@ export default {
       if (!sections.groups.length) fetchSections()
       if (!taggroups.groups.length) fetchTaggroups()
     })
+
+    const { pasteGroupLink } = useForm()
+    const { displayNotify } = useNotify()
 
     const form = reactive({
       type: 'Sekcja',
@@ -152,15 +163,6 @@ export default {
     })
 
     watch(
-      () => form.link,
-      () => {
-        if (form.link.invalid) {
-          form.link.invalid = false
-        }
-      }
-    )
-
-    watch(
       () => form.keywords.value,
       () => {
         if (form.keywords.invalid) {
@@ -168,24 +170,6 @@ export default {
         }
       }
     )
-
-    function pasteLink(e) {
-      const clipboardData = e.clipboardData.getData('text')
-
-      if (clipboardData.includes('facebook.com/groups')) {
-        form.link = clipboardData
-          .substring(clipboardData.indexOf('/groups/') + '/groups/'.length)
-          .replace(/[^a-zA-Z0-9].*/gu, '')
-      } else {
-        Notify.create({
-          message:
-            'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.',
-          icon: 'announcement',
-          position: 'bottom',
-          timeout: 5000,
-        })
-      }
-    }
 
     function submitSubmission() {
       if (
@@ -247,8 +231,9 @@ export default {
     return {
       sections,
       taggroups,
+      pasteGroupLink,
+      displayNotify,
       form,
-      pasteLink,
       submitSubmission,
     }
   },

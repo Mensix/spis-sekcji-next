@@ -141,6 +141,14 @@
               }}
             </q-tooltip>
           </q-icon>
+          <q-icon
+            class="cursor-pointer"
+            color="secondary"
+            name="mode_edit_outline"
+            @click="showEditGroupDialog(props.row)"
+          >
+            <q-tooltip>Edytuj dane grupy</q-tooltip>
+          </q-icon>
         </q-td>
       </template>
 
@@ -225,12 +233,6 @@
                       color="secondary"
                       name="lock_open"
                     />
-                    <q-icon
-                      class="cursor-pointer q-mr-xxs"
-                      color="secondary"
-                      name="bar_chart"
-                      @click="showArchiveDialog(props.row.index)"
-                    />
                     <small
                       v-if="props.row.isSection === false"
                       class="text-secondary q-mr-xxs"
@@ -242,6 +244,13 @@
                       v-if="userState.isLoggedIn"
                       color="secondary"
                       :name="!props.row.isFavourite ? 'star_border' : 'star'"
+                      @click="toggleFavouriteGroup(props, props.row.link)"
+                    />
+                    <q-icon
+                      class="cursor-pointer"
+                      color="secondary"
+                      name="mode_edit_outline"
+                      @click="showEditGroupDialog(props.row)"
                     />
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
@@ -309,12 +318,13 @@
 
 <script>
 import { computed, onMounted, ref } from '@nuxtjs/composition-api'
-import { Notify } from 'quasar'
+import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
 import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
 import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
+import EditGroupDialog from '~/components/edit-group-dialog'
 import 'firebase/database'
 import 'firebase/auth'
 export default {
@@ -322,7 +332,7 @@ export default {
     frag,
   },
   layout: 'main',
-  setup(props, { root }) {
+  setup() {
     const sectionsRef = ref(null)
 
     onMounted(() => {
@@ -354,6 +364,7 @@ export default {
             : x
         )
     )
+    const shouldShowOnlyFavouriteGroups = ref(false)
 
     function toggleFavouriteGroup(props) {
       const userRef = firebase
@@ -393,7 +404,12 @@ export default {
       }
     }
 
-    const shouldShowOnlyFavouriteGroups = ref(false)
+    function showEditGroupDialog(group) {
+      Dialog.create({
+        component: EditGroupDialog,
+        group,
+      })
+    }
 
     return {
       dataset,
@@ -406,6 +422,7 @@ export default {
       computedGroups,
       toggleFavouriteGroup,
       shouldShowOnlyFavouriteGroups,
+      showEditGroupDialog,
     }
   },
 }

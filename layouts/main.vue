@@ -263,6 +263,7 @@ export default {
       }
     })
 
+    const shouldShowAccountMenu = ref(false)
     const shouldShowNews = ref(false)
 
     return {
@@ -273,6 +274,7 @@ export default {
       userState,
       signIn,
       signOut,
+      shouldShowAccountMenu,
       shouldShowNews,
     }
   },

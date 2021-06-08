@@ -1,18 +1,18 @@
 import { LocalStorage, Notify } from 'quasar'
 
 export default function () {
-  function displayNotify(localStorageItem, message) {
+  function displayNotify(message, timeout, handler, localStorageItem) {
     LocalStorage.getItem(localStorageItem) === null &&
       Notify.create({
         message,
         icon: 'announcement',
         position: 'bottom-right',
-        timeout: 0,
+        timeout: timeout || 0,
         actions: [
           {
             label: 'OK',
             color: 'white',
-            handler: () => LocalStorage.set(localStorageItem, true),
+            handler: () => handler && LocalStorage.set(localStorageItem, true),
           },
         ],
       })
