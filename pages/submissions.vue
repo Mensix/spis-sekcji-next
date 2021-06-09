@@ -112,7 +112,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none">
           Prośba o dodanie grupy do spisu sekcji została pomyślnie wysłana.
-          Twoja grupa zostanie dodana wraz z aktualizacją całego spisu.
+          Zostanie ona dodana w najbliższym możliwym czasie.
         </q-card-section>
         <q-card-actions align="right">
           <q-btn v-close-popup color="secondary" flat label="OK" />
