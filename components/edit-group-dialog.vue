@@ -117,6 +117,7 @@
 import { reactive, ref, watch } from '@vue/composition-api'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
+import isEqual from 'lodash/isEqual'
 import useForm from '~/shared/useForm'
 import { dataset } from '~/store/sections'
 import 'firebase/database'
@@ -154,7 +155,10 @@ export default {
         if (
           form.name === initialForm.name &&
           form.link === initialForm.link &&
-          form.category === initialForm.category &&
+          isEqual(
+            [...form.category].sort(),
+            [...initialForm.category].sort()
+          ) &&
           form.keywords === initialForm.keywords &&
           form.over10k === initialForm.over10k
         ) {

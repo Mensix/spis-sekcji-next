@@ -126,7 +126,6 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
-import { format } from 'date-fns'
 import useForm from '~/shared/useForm'
 import {
   dataset as sections,
@@ -210,7 +209,6 @@ export default {
           .child(isSectionSent ? 'sections' : 'taggroups')
           .push({
             category: isSectionSent ? form.category : null,
-            date: format(new Date(), 'dd/MM/yyyy kk:mm'),
             keywords: isSectionSent
               ? form.keywords.value
                   .split(',')
