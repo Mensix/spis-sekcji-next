@@ -37,8 +37,7 @@
                 form.link =
                   pasteGroupLink($event) ||
                   displayNotify(
-                    'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.',
-                    5000
+                    'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.'
                   )
               "
             >

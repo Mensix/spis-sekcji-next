@@ -253,12 +253,12 @@ export default {
     onMounted(() => {
       if (['/', '/taggroups', 'sections'].includes(root.$route.path)) {
         displayNotify(
-          'cookieConsent',
-          'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.'
+          'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
+          'cookieConsent'
         )
         displayNotify(
-          'accountInfoRead',
-          'Zaloguj się, aby móc zapisywać swoje ulubione grupy.'
+          'Zaloguj się, aby móc zapisywać swoje ulubione grupy.',
+          'accountInfoRead'
         )
       }
     })
