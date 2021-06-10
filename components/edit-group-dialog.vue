@@ -74,13 +74,6 @@
                 <q-icon name="list" />
               </template>
             </q-input>
-            <q-checkbox
-              v-model="form.over10k"
-              color="secondary"
-              dense
-              :disable="form.isBeingSent"
-              label="Grupa przekroczyła próg 10000 członków"
-            />
           </q-card-section>
           <q-separator />
           <q-card-section class="flex justify-end">
@@ -141,7 +134,6 @@ export default {
       link: props.group.link,
       category: props.group.category || [],
       keywords: props.group.keywords?.join(',') || '',
-      over10k: false,
       canBeSent: false,
       isBeingSent: false,
       wasSend: false,
