@@ -142,7 +142,6 @@ export default {
       link: props.group.link,
       category: props.group.category || [],
       keywords: props.group.keywords?.join(',') || '',
-      over10k: false,
       canBeSent: false,
       isBeingSent: false,
       wasSend: false,

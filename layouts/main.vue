@@ -195,9 +195,9 @@
               członków (przynajmniej tymczasowo), zostają zawieszone.
             </b>
             Dane (z wyjątkiem archiwum) będą nadal dostępne, mogą one być jednak
-            dosyć nieaktualne. W najbliższym czasie będę pracował nad
-            możliwością manualnego aktualizowania danych grup przez zalogowanych
-            użytkowników, w dalszej przyszłości być może dodana zostanie
+            dosyć nieaktualne. Obecnie można aktualizować manualnie dane grup
+            poprzez wypełnienie formularza klikając w ikonkę długopisu obok
+            nazwy grupy, w dalszej przyszłości być może dodana zostanie
             możliwość oceniania grup.
           </p>
           <p>~ Grzegorz</p>
