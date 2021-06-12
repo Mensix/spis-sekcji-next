@@ -194,11 +194,11 @@
               od 6 czerwca 2021 roku aktualizacje nazw grup oraz ich liczb
               członków (przynajmniej tymczasowo), zostają zawieszone.
             </b>
-            Dane (z wyjątkiem archiwum) będą nadal dostępne, mogą one być jednak
-            dosyć nieaktualne. Obecnie można aktualizować manualnie dane grup
-            poprzez wypełnienie formularza klikając w ikonkę długopisu obok
-            nazwy grupy, w dalszej przyszłości być może dodana zostanie
-            możliwość oceniania grup.
+            Dane (z wyjątkiem archiwum) będą nadal dostępne, zamiast liczby
+            członków, obok nazwy grupy wyświetla się jej przybliżona wartość.
+            Obecnie można aktualizować manualnie dane grup poprzez wypełnienie
+            formularza klikając w ikonkę długopisu obok nazwy grupy, w dalszej
+            przyszłości być może dodana zostanie możliwość oceniania grup.
           </p>
           <p>~ Grzegorz</p>
         </q-card-section>
