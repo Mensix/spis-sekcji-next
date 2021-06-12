@@ -24,6 +24,7 @@
             </q-input>
             <q-input
               v-model.trim="form.link"
+              :class="{ 'q-mb-md': mode === 'taggroup' }"
               color="secondary"
               :disable="form.isBeingSent"
               hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
