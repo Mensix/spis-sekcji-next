@@ -78,7 +78,13 @@
         >
           10K+
         </small>
-        <span>{{ props.row.name }}</span>
+        <span class="q-mr-sm">{{ props.row.name }}</span>
+        <q-icon
+          class="cursor-pointer"
+          color="secondary"
+          name="mode_edit_outline"
+          @click="showEditGroupDialog(props.row)"
+        />
       </q-td>
     </template>
 
@@ -146,7 +152,12 @@
                   >
                     10K+
                   </small>
-                  <span>{{ props.row.name }}</span>
+                  <span class="q-mr-sm">{{ props.row.name }}</span>
+                  <q-icon
+                    color="secondary"
+                    name="mode_edit_outline"
+                    @click="showEditGroupDialog(props.row)"
+                  />
                 </q-item-label>
                 <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
@@ -203,11 +214,13 @@
 
 <script>
 import { onMounted, ref } from '@nuxtjs/composition-api'
+import { Dialog } from 'quasar'
 import { dataset, fetchGroups } from '~/store/taggroups'
 import useTable from '~/shared/useTable'
+import EditGroupDialog from '~/components/edit-group-dialog.vue'
 export default {
   layout: 'main',
-  setup(props, { root }) {
+  setup() {
     const taggroupsRef = ref(null)
 
     onMounted(() => {
@@ -220,12 +233,21 @@ export default {
 
     const { table, filterTable, getPaginationText } = useTable()
 
+    function showEditGroupDialog(group) {
+      Dialog.create({
+        component: EditGroupDialog,
+        group,
+        mode: 'taggroup',
+      })
+    }
+
     return {
       dataset,
       getPaginationText,
       taggroupsRef,
       table,
       filterTable,
+      showEditGroupDialog,
     }
   },
 }
