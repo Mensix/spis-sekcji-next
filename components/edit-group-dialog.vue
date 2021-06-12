@@ -46,6 +46,7 @@
               </template>
             </q-input>
             <q-select
+              v-if="mode === 'section'"
               v-model="form.category"
               class="q-mt-lg"
               color="secondary"
@@ -60,6 +61,7 @@
               stack-label
             />
             <q-input
+              v-if="mode === 'section'"
               v-model.trim="form.keywords"
               class="q-mb-md"
               color="secondary"
@@ -76,6 +78,7 @@
             </q-input>
             <q-checkbox
               v-model="form.over10k"
+              :class="{ 'q-mt-lg': mode === 'taggroup' }"
               color="secondary"
               dense
               :disable="form.isBeingSent"
@@ -128,6 +131,11 @@ export default {
     group: {
       type: Object,
       default: () => {},
+    },
+    mode: {
+      type: String,
+      default: 'section',
+      validator: (value) => ['section', 'taggroup'].includes(value),
     },
   },
   setup(props, { emit }) {
