@@ -76,14 +76,6 @@
                 <q-icon name="list" />
               </template>
             </q-input>
-            <q-checkbox
-              v-model="form.over10k"
-              :class="{ 'q-mt-lg': mode === 'taggroup' }"
-              color="secondary"
-              dense
-              :disable="form.isBeingSent"
-              label="Grupa przekroczyła próg 10000 członków"
-            />
           </q-card-section>
           <q-separator />
           <q-card-section class="flex justify-end">
