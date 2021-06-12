@@ -24,6 +24,7 @@
             </q-input>
             <q-input
               v-model.trim="form.link"
+              :class="{ 'q-mb-md': mode === 'taggroup' }"
               color="secondary"
               :disable="form.isBeingSent"
               hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
@@ -76,14 +77,6 @@
                 <q-icon name="list" />
               </template>
             </q-input>
-            <q-checkbox
-              v-model="form.over10k"
-              :class="{ 'q-mt-lg': mode === 'taggroup' }"
-              color="secondary"
-              dense
-              :disable="form.isBeingSent"
-              label="Grupa przekroczyła próg 10000 członków"
-            />
           </q-card-section>
           <q-separator />
           <q-card-section class="flex justify-end">
