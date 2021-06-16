@@ -19,9 +19,18 @@ const fetchFavouriteGroups = (uid) => {
       dataset.favouriteGroups = snapshot.val()
       dataset.groups = dataset.groups.map((x) => ({
         ...x,
-        isFavourite: Object.values(dataset.favouriteGroups).includes(x.link),
+        isFavourite:
+          dataset.favouriteGroups &&
+          Object.values(dataset.favouriteGroups).includes(x.link),
       }))
     })
+}
+
+const updateFavouriteGroups = (uid) => {
+  firebase
+    .database()
+    .ref(`users/${uid}/favourite-groups`)
+    .on('value', () => fetchFavouriteGroups(uid))
 }
 
 const fetchGroups = () => {
@@ -51,4 +60,4 @@ const fetchGroups = () => {
     })
 }
 
-export { dataset, fetchGroups, fetchFavouriteGroups }
+export { dataset, fetchGroups, fetchFavouriteGroups, updateFavouriteGroups }

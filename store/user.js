@@ -56,22 +56,26 @@ const signOut = () => {
 }
 
 const updateUserState = () => {
-  firebase.auth().onAuthStateChanged((result) => {
-    let accessToken
-    if (result) {
-      result
-        .getIdToken()
-        .then((token) => (accessToken = token))
-        .then(() => {
-          userState.isLoggedIn = true
-          userState.isLoggingIn = false
-          userState.data = result
-          userState.data.photoURL += `?access_token=${accessToken.toString()}`
-        })
-    } else {
-      userState.isLoggingIn = false
-    }
-  })
+  return new Promise((resolve, reject) =>
+    firebase.auth().onAuthStateChanged((result) => {
+      let accessToken
+      if (result) {
+        result
+          .getIdToken()
+          .then((token) => (accessToken = token))
+          .then(() => {
+            userState.isLoggedIn = true
+            userState.isLoggingIn = false
+            userState.data = result
+            userState.data.photoURL += `?access_token=${accessToken.toString()}`
+
+            resolve()
+          })
+      } else {
+        userState.isLoggingIn = false
+      }
+    })
+  )
 }
 
 export { userState, signIn, signOut, updateUserState }

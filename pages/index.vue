@@ -286,33 +286,30 @@ export default {
         .child('favourite-groups')
 
       if (!props.row.isFavourite) {
-        userRef.push(props.row.link).then(() => {
-          props.row.isFavourite = true
+        userRef.push(props.row.link).then(() =>
           Notify.create({
             message: 'Pomyślnie dodano grupę do ulubionych.',
             icon: 'announcement',
             position: 'bottom-right',
             timeout: 2500,
           })
-        })
+        )
       } else {
-        userRef
-          .child(
-            Object.entries(dataset.favouriteGroups).filter(
-              (x) => x[1] === props.row.link
-            )[0][0]
-          )
+        const matchingGroup = Object.entries(dataset.favouriteGroups).filter(
+          (x) => x[1] === props.row.link
+        )[0][0]
 
+        userRef
+          .child(matchingGroup)
           .remove()
-          .then(() => {
-            props.row.isFavourite = false
+          .then(() =>
             Notify.create({
               message: 'Pomyślnie usunięto grupę z ulubionych.',
               icon: 'announcement',
               position: 'bottom-right',
               timeout: 2500,
             })
-          })
+          )
       }
     }
 
