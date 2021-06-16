@@ -101,15 +101,15 @@
                     @click="showEditGroupDialog(props.row)"
                   />
                 </q-item-label>
-                <q-item-label caption>{{ props.cols[2].label }}</q-item-label>
+                <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
                   <a
                     class="text-secondary"
-                    :href="`https://facebook.com/groups/${props.cols[2].value}`"
+                    :href="`https://facebook.com/groups/${props.cols[1].value}`"
                     rel="noopener noreferer"
                     target="_blank"
                   >
-                    /{{ props.cols[2].value }}
+                    /{{ props.cols[1].value }}
                   </a>
                 </q-item-label>
               </q-item-section>
