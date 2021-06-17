@@ -28,7 +28,8 @@
           <li>Firebase - baza danych</li>
           <li>
             Google Analytics - zbieranie informacji dotyczących statystyk
-            wyświetleń strony
+            wyświetleń strony oraz używania poszczególnych jej elementów (dane
+            dot. klikania w linki do grup)
           </li>
           <li>Facebook Login - konto użytkownika</li>
         </ul>

@@ -131,6 +131,7 @@
             :href="`https://facebook.com/groups/${props.row.link}`"
             rel="noopener noreferer"
             target="_blank"
+            @click="pushEvent({ groupLinkClicked: props.row.name })"
           >
             /{{ props.row.link }}
           </a>
@@ -195,6 +196,7 @@
                       :href="`https://facebook.com/groups/${props.cols[1].value}`"
                       rel="noopener noreferer"
                       target="_blank"
+                      @click="pushEvent({ groupLinkClicked: props.row.name })"
                     >
                       /{{ props.cols[1].value }}
                     </a>
@@ -239,7 +241,9 @@ export default {
     frag,
   },
   layout: 'main',
-  setup() {
+  setup(props, { root }) {
+    const { push: pushEvent } = root.$gtm
+
     const sectionsRef = ref(null)
 
     onMounted(() => {
@@ -328,6 +332,7 @@ export default {
       toggleFavouriteGroup,
       shouldShowOnlyFavouriteGroups,
       showEditGroupDialog,
+      pushEvent,
     }
   },
 }
