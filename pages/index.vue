@@ -228,7 +228,7 @@ import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
-import { dataset, fetchFavouriteGroups, fetchGroups } from '~/store/sections'
+import { dataset, fetchGroups } from '~/store/sections'
 import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog'
@@ -244,12 +244,7 @@ export default {
 
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups()
-          .then(() => (table.isLoading = false))
-          .then(
-            () =>
-              userState.isLoggedIn && fetchFavouriteGroups(userState.data.uid)
-          )
+        fetchGroups().then(() => (table.isLoading = false))
       } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }

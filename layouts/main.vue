@@ -225,7 +225,7 @@ import { faList } from '@fortawesome/free-solid-svg-icons'
 import { userState, signIn, signOut, updateUserState } from '~/store/user'
 import useDarkMode from '~/shared/useDarkMode'
 import useNotify from '~/shared/useNotify'
-import { updateFavouriteGroups } from '~/store/sections'
+import { fetchFavouriteGroups } from '~/store/sections'
 export default {
   setup(props, { root }) {
     const infoMessage = ref('')
@@ -248,7 +248,9 @@ export default {
           appId: '1:752464608547:web:7786ca37c8ae1dd0',
         })
 
-      updateUserState().then(() => updateFavouriteGroups(userState.data.uid))
+      updateUserState().then(
+        () => userState.isLoggedIn && fetchFavouriteGroups(userState.data.uid)
+      )
     })
 
     onMounted(() => {

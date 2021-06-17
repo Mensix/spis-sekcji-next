@@ -11,11 +11,10 @@ const dataset = reactive({
 })
 
 const fetchFavouriteGroups = (uid) => {
-  return firebase
+  firebase
     .database()
     .ref(`users/${uid}/favourite-groups`)
-    .once('value')
-    .then((snapshot) => {
+    .on('value', (snapshot) => {
       dataset.favouriteGroups = snapshot.val()
       dataset.groups = dataset.groups.map((x) => ({
         ...x,
@@ -24,13 +23,6 @@ const fetchFavouriteGroups = (uid) => {
           Object.values(dataset.favouriteGroups).includes(x.link),
       }))
     })
-}
-
-const updateFavouriteGroups = (uid) => {
-  firebase
-    .database()
-    .ref(`users/${uid}/favourite-groups`)
-    .on('value', () => fetchFavouriteGroups(uid))
 }
 
 const fetchGroups = () => {
@@ -60,4 +52,4 @@ const fetchGroups = () => {
     })
 }
 
-export { dataset, fetchGroups, fetchFavouriteGroups, updateFavouriteGroups }
+export { dataset, fetchGroups, fetchFavouriteGroups }
