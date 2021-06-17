@@ -131,6 +131,7 @@
             :href="`https://facebook.com/groups/${props.row.link}`"
             rel="noopener noreferer"
             target="_blank"
+            @click="pushEvent({ groupName: props.row.name })"
           >
             /{{ props.row.link }}
           </a>
@@ -239,7 +240,9 @@ export default {
     frag,
   },
   layout: 'main',
-  setup() {
+  setup(props, { root }) {
+    const { push: pushEvent } = root.$gtm
+
     const sectionsRef = ref(null)
 
     onMounted(() => {
@@ -328,6 +331,7 @@ export default {
       toggleFavouriteGroup,
       shouldShowOnlyFavouriteGroups,
       showEditGroupDialog,
+      pushEvent,
     }
   },
 }
