@@ -79,8 +79,8 @@
       <template #body-cell-name="props">
         <q-td :props="props">
           <small class="text-grey q-mr-xxs">{{ props.row.index }}. </small>
-          <small class="text-secondary q-mr-xxs">
-            {{ getApproximateMembersCount(props.row.members) }}
+          <small v-if="props.row.members" class="text-secondary q-mr-xxs">
+            {{ props.row.members }}
           </small>
           <q-icon
             v-if="props.row.isOpen"
@@ -159,7 +159,10 @@
                     <small class="text-grey q-mr-xxs">
                       {{ props.row.index }}.
                     </small>
-                    <small class="text-secondary q-mr-xxs">
+                    <small
+                      v-if="props.row.members"
+                      class="text-secondary q-mr-xxs"
+                    >
                       {{ getApproximateMembersCount(props.row.members) }}
                     </small>
                     <q-icon
