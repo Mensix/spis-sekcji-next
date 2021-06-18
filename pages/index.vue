@@ -101,8 +101,6 @@
             color="secondary"
             :name="!props.row.isFavourite ? 'star_border' : 'star'"
             @click="toggleFavouriteGroup(props, props.row.link)"
-            @mouseleave="props.row.isStarIconHovered = false"
-            @mouseover="props.row.isStarIconHovered = true"
           >
             <q-tooltip>
               {{
