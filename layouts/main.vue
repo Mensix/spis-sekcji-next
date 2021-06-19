@@ -234,13 +234,13 @@ export default {
     const { initDarkMode, toggleDarkMode } = useDarkMode()
     const { displayNotify } = useNotify()
 
+    initDarkMode()
+
     LoadingBar.setDefaults({
       color: 'secondary',
     })
 
     onBeforeMount(() => {
-      initDarkMode()
-
       !firebase.apps.length &&
         firebase.initializeApp({
           apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
