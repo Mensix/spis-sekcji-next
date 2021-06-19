@@ -220,7 +220,7 @@ import {
   onMounted,
   ref,
 } from '@nuxtjs/composition-api'
-import { Dark } from 'quasar'
+import { Dark, LoadingBar } from 'quasar'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 import { userState, signIn, signOut, updateUserState } from '~/store/user'
 import useDarkMode from '~/shared/useDarkMode'
@@ -233,6 +233,10 @@ export default {
 
     const { initDarkMode, toggleDarkMode } = useDarkMode()
     const { displayNotify } = useNotify()
+
+    LoadingBar.setDefaults({
+      color: 'secondary',
+    })
 
     onBeforeMount(() => {
       initDarkMode()
