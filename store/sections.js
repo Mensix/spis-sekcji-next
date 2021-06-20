@@ -37,7 +37,6 @@ const fetchGroups = () => {
         .groups.map((_, idx) => ({
           ..._,
           category: _.category?.sort(),
-          membersGrowth: _.membersGrowth || 0,
           index: idx + 1,
         }))
         .sort((e, a) => a.members - e.members)

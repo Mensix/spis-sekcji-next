@@ -17,7 +17,6 @@ const fetchGroups = () => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
       dataset.groups = snapshot.val().groups.map((_, idx) => ({
         ..._,
-        membersGrowth: _.membersGrowth || 0,
         index: idx + 1,
       }))
     })
