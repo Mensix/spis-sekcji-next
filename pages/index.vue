@@ -118,6 +118,15 @@
           >
             <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
+          <q-icon
+            v-if="userState.isLoggedIn && userState.isAdmin"
+            class="cursor-pointer"
+            color="secondary"
+            name="delete_forever"
+            @click="deleteGroup(props)"
+          >
+            <q-tooltip>Usuń grupę</q-tooltip>
+          </q-icon>
         </q-td>
       </template>
 
@@ -188,6 +197,13 @@
                       name="mode_edit_outline"
                       @click="showEditGroupDialog(props.row)"
                     />
+                    <q-icon
+                      v-if="userState.isLoggedIn && userState.isAdmin"
+                      class="cursor-pointer"
+                      color="secondary"
+                      name="delete_forever"
+                      @click="deleteGroup(props)"
+                    />
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                   <q-item-label>
@@ -227,11 +243,11 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
-import { dataset, fetchGroups } from '~/store/sections'
+import { dataset, fetchGroups, deleteGroup } from '~/store/sections'
 import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog'
@@ -249,11 +265,20 @@ export default {
 
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups().then(() => (table.isLoading = false))
+        fetchGroups()
       } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
     })
+
+    watch(
+      () => dataset.groups,
+      () => {
+        if (dataset.groups.length > 0) {
+          table.isLoading = false
+        }
+      }
+    )
 
     const {
       table,
@@ -323,6 +348,7 @@ export default {
     return {
       dataset,
       fetchGroups,
+      deleteGroup,
       getPaginationText,
       getApproximateMembersCount,
       userState,

@@ -92,7 +92,7 @@
         </q-form>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="form.wasSend">
+    <q-dialog v-if="!userState.isAdmin" v-model="form.wasSend">
       <q-card>
         <q-card-section>
           <h6 class="q-ma-none q-mb-md">Informacja</h6>
@@ -114,10 +114,12 @@ import { reactive, ref, watch } from '@vue/composition-api'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
 import isEqual from 'lodash/isEqual'
+import { format } from 'date-fns'
 import useForm from '~/shared/useForm'
-import { dataset } from '~/store/sections'
 import 'firebase/database'
 import useNotify from '~/shared/useNotify'
+import { userState } from '~/store/user'
+import { dataset } from '~/store/sections'
 export default {
   directives: { frag },
   props: {
@@ -151,7 +153,7 @@ export default {
 
     watch(
       () => ({ ...form }),
-      (__form, _previousForm) => {
+      () => {
         if (
           form.name === initialForm.name &&
           form.link === initialForm.link &&
@@ -171,15 +173,38 @@ export default {
 
     function submitSubmission() {
       form.isBeingSent = true
-      firebase
-        .database()
-        .ref('submissions')
-        .push(form)
-        .then(() => {
-          form.isBeingSent = false
-          form.wasSend = true
-          hide()
-        })
+      const strippedForm = Object.fromEntries(
+        Object.entries(form).filter((k) =>
+          ['canBeSent', 'isBeingSent', 'wasSend'].every((x) => x !== k)
+        )
+      )
+
+      if (userState.isAdmin) {
+        const todayDate = format(new Date(), 'dd/MM/R')
+        const modifiedGroup = { ...strippedForm, index: props.group.index }
+
+        firebase
+          .database()
+          .ref(`${props.mode}s/groups/${props.group.index - 1}`)
+          .update(modifiedGroup)
+          .then(() => {
+            firebase
+              .database()
+              .ref(`${props.mode}s`)
+              .update({ lastUpdateDate: todayDate })
+          })
+          .then(() => hide())
+      } else {
+        firebase
+          .database()
+          .ref('submissions')
+          .push(strippedForm)
+          .then(() => {
+            form.isBeingSent = false
+            form.wasSend = true
+            hide()
+          })
+      }
     }
 
     function show() {
@@ -204,6 +229,7 @@ export default {
       show,
       hide,
       onDialogHide,
+      userState,
     }
   },
 }

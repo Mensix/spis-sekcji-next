@@ -26,11 +26,10 @@ const fetchFavouriteGroups = (uid) => {
 }
 
 const fetchGroups = () => {
-  return firebase
+  firebase
     .database()
     .ref('sections')
-    .once('value')
-    .then((snapshot) => {
+    .on('value', (snapshot) => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
       dataset.groups = snapshot
         .val()
@@ -51,4 +50,11 @@ const fetchGroups = () => {
     })
 }
 
-export { dataset, fetchGroups, fetchFavouriteGroups }
+const deleteGroup = (props) => {
+  firebase
+    .database()
+    .ref(`sections/groups/${props.row.index - 1}`)
+    .remove()
+}
+
+export { dataset, fetchGroups, fetchFavouriteGroups, deleteGroup }
