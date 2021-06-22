@@ -227,7 +227,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
@@ -249,11 +249,20 @@ export default {
 
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups().then(() => (table.isLoading = false))
+        fetchGroups()
       } else if (dataset.groups.length > 0 && table.isLoading) {
         table.isLoading = false
       }
     })
+
+    watch(
+      () => dataset.groups,
+      () => {
+        if (dataset.groups.length > 0) {
+          table.isLoading = false
+        }
+      }
+    )
 
     const {
       table,

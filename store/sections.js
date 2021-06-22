@@ -26,11 +26,10 @@ const fetchFavouriteGroups = (uid) => {
 }
 
 const fetchGroups = () => {
-  return firebase
+  firebase
     .database()
     .ref('sections')
-    .once('value')
-    .then((snapshot) => {
+    .on('value', (snapshot) => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
       dataset.groups = snapshot
         .val()

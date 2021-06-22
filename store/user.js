@@ -2,13 +2,16 @@ import 'firebase/auth'
 
 import { Notify } from 'quasar'
 import firebase from 'firebase/app'
-import { reactive } from '@nuxtjs/composition-api'
-import { fetchFavouriteGroups } from './sections'
+import { computed, reactive } from '@nuxtjs/composition-api'
+import { fetchFavouriteGroups } from '~/store/sections'
 
 const userState = reactive({
   isLoggingIn: true,
   isLoggedIn: false,
   data: [],
+  isAdmin: computed(
+    () => userState.data?.uid === 'XFZfPo3B5AbZIsq312GPG7wCZrr1'
+  ),
 })
 
 const signIn = () => {
