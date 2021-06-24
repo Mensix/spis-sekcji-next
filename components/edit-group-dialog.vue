@@ -113,13 +113,13 @@
 import { reactive, ref, watch } from '@vue/composition-api'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
-import isEqual from 'lodash/isEqual'
 import { format } from 'date-fns'
 import useForm from '~/shared/useForm'
 import 'firebase/database'
 import useNotify from '~/shared/useNotify'
 import { userState } from '~/store/user'
 import { dataset } from '~/store/sections'
+import { areArraysEqual } from '~/utils/areArraysEqual'
 export default {
   directives: { frag },
   props: {
@@ -157,10 +157,7 @@ export default {
         if (
           form.name === initialForm.name &&
           form.link === initialForm.link &&
-          isEqual(
-            [...form.category].sort(),
-            [...initialForm.category].sort()
-          ) &&
+          areArraysEqual([...form.category], [...initialForm.category]) &&
           form.keywords === initialForm.keywords &&
           form.over10k === initialForm.over10k
         ) {
