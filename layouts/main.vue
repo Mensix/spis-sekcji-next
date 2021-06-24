@@ -57,29 +57,6 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <q-banner
-        v-if="
-          ['submissions', 'privacy', '2019'].every(
-            (x) => !$nuxt.$route.name.includes(x)
-          )
-        "
-        class="q-mt-md"
-      >
-        <span>
-          Od 6 czerwca 2021 roku dalsze, automatyczne aktualizacje spisu sekcji
-          prawdopodobnie nie będą możliwe.
-          <a
-            class="text-secondary"
-            href="#"
-            @click="shouldShowNews = !shouldShowNews"
-          >
-            Czytaj więcej.
-          </a>
-        </span>
-        <template #avatar>
-          <q-icon color="secondary" name="question_answer" />
-        </template>
-      </q-banner>
       <nuxt />
     </q-page-container>
     <q-footer
@@ -174,39 +151,6 @@
         />
       </q-tabs>
     </q-footer>
-    <q-dialog v-model="shouldShowNews">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Co dalej?</div>
-        </q-card-section>
-        <q-card-section class="q-py-none">
-          <p>
-            Potwierdziły się niedawne doniesienia - Facebook podjął dosyć
-            drastyczne kroki w celu zwalczania tzw. scraperów (botów, które mają
-            za zadanie pobieranie pożądanych danych ze stron internetowych).
-            Dotyczy to również skryptu używanego do aktualizacji spisu sekcji -
-            po kilkuset grupach na konto nakładane jest blokada na ich
-            przeglądanie uniemożliwiająca dalsze zbieranie danych.
-          </p>
-          <p>
-            W związku z tym,
-            <b>
-              od 6 czerwca 2021 roku aktualizacje nazw grup oraz ich liczb
-              członków (przynajmniej tymczasowo), zostają zawieszone.
-            </b>
-            Dane (z wyjątkiem archiwum) będą nadal dostępne, zamiast liczby
-            członków, obok nazwy grupy wyświetla się jej przybliżona wartość.
-            Obecnie można aktualizować manualnie dane grup poprzez wypełnienie
-            formularza klikając w ikonkę długopisu obok nazwy grupy, w dalszej
-            przyszłości być może dodana zostanie możliwość oceniania grup.
-          </p>
-          <p>~ Grzegorz</p>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn v-close-popup color="secondary" flat label="OK" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-layout>
 </template>
 
@@ -228,7 +172,6 @@ import useNotify from '~/shared/useNotify'
 import { fetchFavouriteGroups } from '~/store/sections'
 export default {
   setup(props, { root }) {
-    const infoMessage = ref('')
     const faListIcon = computed(() => faList)
 
     const { initDarkMode, toggleDarkMode } = useDarkMode()
@@ -271,18 +214,15 @@ export default {
     })
 
     const shouldShowAccountMenu = ref(false)
-    const shouldShowNews = ref(false)
 
     return {
       Dark,
-      infoMessage,
       faListIcon,
       toggleDarkMode,
       userState,
       signIn,
       signOut,
       shouldShowAccountMenu,
-      shouldShowNews,
     }
   },
 }
