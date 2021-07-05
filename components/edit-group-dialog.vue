@@ -77,6 +77,19 @@
                 <q-icon name="list" />
               </template>
             </q-input>
+            <q-select
+              v-model="form.approximateMembers"
+              class="q-mt-lg"
+              color="secondary"
+              :disable="form.isBeingSent"
+              label="Orientacyjna liczba członków"
+              :options="memberRanges"
+              options-dense
+              options-selected-class="text-secondary"
+              outlined
+              square
+              stack-label
+            />
           </q-card-section>
           <q-separator />
           <q-card-section class="flex justify-end">
@@ -120,6 +133,7 @@ import useNotify from '~/shared/useNotify'
 import { userState } from '~/store/user'
 import { dataset } from '~/store/sections'
 import { areArraysEqual } from '~/utils/areArraysEqual'
+import useGroup from '~/shared/useGroup'
 export default {
   directives: { frag },
   props: {
@@ -134,6 +148,7 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const { memberRanges, getApproximateMembersCount } = useGroup()
     const { pasteGroupLink } = useForm()
     const { displayNotify } = useNotify()
 
@@ -144,6 +159,7 @@ export default {
       link: props.group.link,
       category: props.group.category || [],
       keywords: props.group.keywords?.join(',') || '',
+      approximateMembers: getApproximateMembersCount(props.group.members),
       canBeSent: false,
       isBeingSent: false,
       wasSend: false,
@@ -159,7 +175,7 @@ export default {
           form.link === initialForm.link &&
           areArraysEqual([...form.category], [...initialForm.category]) &&
           form.keywords === initialForm.keywords &&
-          form.over10k === initialForm.over10k
+          form.approximateMembers === initialForm.approximateMembers
         ) {
           form.canBeSent = false
         } else {
@@ -218,6 +234,8 @@ export default {
 
     return {
       dataset,
+      getApproximateMembersCount,
+      memberRanges,
       pasteGroupLink,
       displayNotify,
       editGroupDialog,

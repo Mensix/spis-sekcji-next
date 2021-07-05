@@ -131,6 +131,7 @@ import { Dialog } from 'quasar'
 import { dataset, fetchGroups } from '~/store/taggroups'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog.vue'
+import useGroup from '~/shared/useGroup'
 export default {
   layout: 'main',
   setup() {
@@ -144,12 +145,8 @@ export default {
       }
     })
 
-    const {
-      table,
-      filterTable,
-      getPaginationText,
-      getApproximateMembersCount,
-    } = useTable()
+    const { table, filterTable, getPaginationText } = useTable()
+    const { getApproximateMembersCount } = useGroup()
 
     function showEditGroupDialog(group) {
       Dialog.create({

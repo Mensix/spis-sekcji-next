@@ -253,6 +253,7 @@ import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog'
 import 'firebase/database'
 import 'firebase/auth'
+import useGroup from '~/shared/useGroup'
 export default {
   directives: {
     frag,
@@ -280,12 +281,8 @@ export default {
       }
     )
 
-    const {
-      table,
-      filterTable,
-      getPaginationText,
-      getApproximateMembersCount,
-    } = useTable()
+    const { table, filterTable, getPaginationText } = useTable()
+    const { getApproximateMembersCount } = useGroup()
 
     const computedGroups = computed(() =>
       dataset.groups
