@@ -186,11 +186,14 @@ export default {
 
     function submitSubmission() {
       form.isBeingSent = true
-      const strippedForm = Object.fromEntries(
-        Object.entries(form).filter((k) =>
-          ['canBeSent', 'isBeingSent', 'wasSend'].every((x) => x !== k)
-        )
-      )
+      const { name, link, category, keywords, approximateMembers } = form
+      const strippedForm = {
+        name,
+        link,
+        category,
+        keywords,
+        approximateMembers,
+      }
 
       if (userState.isAdmin) {
         const todayDate = format(new Date(), 'dd/MM/R')
