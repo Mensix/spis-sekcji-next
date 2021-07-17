@@ -7,7 +7,7 @@
         </q-card-section>
         <q-separator />
         <q-form @submit="submitSubmission()">
-          <q-card-section class="q-py-md q-gutter-y-md">
+          <q-card-section class="q-py-md q-gutter-y-lg">
             <q-input
               v-model.trim="form.name"
               color="secondary"
@@ -24,7 +24,6 @@
             </q-input>
             <q-input
               v-model.trim="form.link"
-              :class="{ 'q-mb-md': mode === 'taggroup' }"
               color="secondary"
               :disable="form.isBeingSent"
               hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
@@ -49,7 +48,6 @@
             <q-select
               v-if="mode === 'section'"
               v-model="form.category"
-              class="q-mt-lg"
               color="secondary"
               :disable="form.isBeingSent"
               label="Kategorie"
@@ -64,7 +62,6 @@
             <q-input
               v-if="mode === 'section'"
               v-model.trim="form.keywords"
-              class="q-mb-md"
               color="secondary"
               :disable="form.isBeingSent"
               hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać."
@@ -77,15 +74,21 @@
                 <q-icon name="list" />
               </template>
             </q-input>
-            <q-select
-              v-model="form.approximateMembers"
-              class="q-mt-lg"
+            <q-input
+              v-model.number="form.members"
               color="secondary"
               :disable="form.isBeingSent"
+              label="Liczba członków"
+              outlined
+              square
+              stack-label
+              :value="getApproximateMembersCount(form.members)"
+            />
+            <q-input
+              v-model="form.approximateMembers"
+              color="secondary"
+              disable
               label="Orientacyjna liczba członków"
-              :options="memberRanges"
-              options-dense
-              options-selected-class="text-secondary"
               outlined
               square
               stack-label
@@ -148,7 +151,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const { memberRanges, getApproximateMembersCount } = useGroup()
+    const { getApproximateMembersCount } = useGroup()
     const { pasteGroupLink } = useForm()
     const { displayNotify } = useNotify()
 
@@ -159,6 +162,7 @@ export default {
       link: props.group.link,
       category: props.group.category || [],
       keywords: props.group.keywords?.join(',') || '',
+      members: props.group.members || 0,
       approximateMembers: getApproximateMembersCount(props.group.members),
       canBeSent: false,
       isBeingSent: false,
@@ -175,7 +179,7 @@ export default {
           form.link === initialForm.link &&
           areArraysEqual([...form.category], [...initialForm.category]) &&
           form.keywords === initialForm.keywords &&
-          form.approximateMembers === initialForm.approximateMembers
+          form.members === initialForm.members
         ) {
           form.canBeSent = false
         } else {
@@ -184,15 +188,20 @@ export default {
       }
     )
 
+    watch(
+      () => form.members,
+      () => (form.approximateMembers = getApproximateMembersCount(form.members))
+    )
+
     function submitSubmission() {
       form.isBeingSent = true
-      const { name, link, category, keywords, approximateMembers } = form
+      const { name, link, category, keywords, members } = form
       const strippedForm = {
         name,
         link,
         category,
         keywords,
-        approximateMembers,
+        members,
       }
 
       if (userState.isAdmin) {
@@ -238,7 +247,6 @@ export default {
     return {
       dataset,
       getApproximateMembersCount,
-      memberRanges,
       pasteGroupLink,
       displayNotify,
       editGroupDialog,
