@@ -1,4 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
+import firebase from 'firebase/app'
+import 'firebase/database'
+import { Notify } from 'quasar'
 
 export default function () {
   const memberRanges = ref([
@@ -29,8 +32,34 @@ export default function () {
     else return '100K+'
   }
 
+  function deleteGroup(props, name) {
+    const dismiss = Notify.create({
+      message: 'Czy chcesz usunąć tą grupę?',
+      icon: 'delete',
+      position: 'bottom-right',
+      timeout: 0,
+      actions: [
+        {
+          label: 'Tak',
+          color: 'white',
+          handler: () =>
+            firebase
+              .database()
+              .ref(`${name}/groups/${props.row.index - 1}`)
+              .remove(),
+        },
+        {
+          label: 'Nie',
+          color: 'white',
+          handler: () => dismiss(),
+        },
+      ],
+    })
+  }
+
   return {
     memberRanges,
     getApproximateMembersCount,
+    deleteGroup,
   }
 }

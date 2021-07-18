@@ -123,7 +123,7 @@
             class="cursor-pointer"
             color="secondary"
             name="delete_forever"
-            @click="deleteGroup(props)"
+            @click="deleteGroup(props, 'sections')"
           >
             <q-tooltip>Usuń grupę</q-tooltip>
           </q-icon>
@@ -202,7 +202,7 @@
                       class="cursor-pointer"
                       color="secondary"
                       name="delete_forever"
-                      @click="deleteGroup(props)"
+                      @click="deleteGroup(props, 'sections')"
                     />
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
@@ -247,7 +247,7 @@ import { computed, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
-import { dataset, fetchGroups, deleteGroup } from '~/store/sections'
+import { dataset, fetchGroups } from '~/store/sections'
 import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog'
@@ -282,7 +282,7 @@ export default {
     )
 
     const { table, filterTable, getPaginationText } = useTable()
-    const { getApproximateMembersCount } = useGroup()
+    const { getApproximateMembersCount, deleteGroup } = useGroup()
 
     const computedGroups = computed(() =>
       dataset.groups

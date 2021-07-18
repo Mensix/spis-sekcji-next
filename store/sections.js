@@ -50,11 +50,4 @@ const fetchGroups = () => {
     })
 }
 
-const deleteGroup = (props) => {
-  firebase
-    .database()
-    .ref(`sections/groups/${props.row.index - 1}`)
-    .remove()
-}
-
-export { dataset, fetchGroups, fetchFavouriteGroups, deleteGroup }
+export { dataset, fetchGroups, fetchFavouriteGroups }
