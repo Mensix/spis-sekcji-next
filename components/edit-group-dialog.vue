@@ -161,7 +161,7 @@ export default {
       name: props.group.name,
       link: props.group.link,
       category: props.group.category || [],
-      keywords: props.group.keywords?.join(',') || '',
+      keywords: props.group.keywords ?? props.group.keywords.join(','),
       members: props.group.members || 0,
       approximateMembers: getApproximateMembersCount(props.group.members),
       canBeSent: false,
