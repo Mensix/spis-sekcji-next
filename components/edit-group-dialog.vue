@@ -200,18 +200,17 @@ export default {
         name,
         link,
         category,
-        keywords,
+        keywords: keywords.length > 0 ? keywords.split(',') : null,
         members,
       }
 
       if (userState.isAdmin) {
         const todayDate = format(new Date(), 'dd/MM/R')
-        const modifiedGroup = { ...strippedForm, index: props.group.index }
 
         firebase
           .database()
           .ref(`${props.mode}s/groups/${props.group.index - 1}`)
-          .update(modifiedGroup)
+          .update(strippedForm)
           .then(() => {
             firebase
               .database()
