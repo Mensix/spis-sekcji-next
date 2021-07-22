@@ -83,7 +83,7 @@
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           :error="form.keywords.invalid"
           error-message="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
-          hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać."
+          hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać. Muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy."
           label="Słowa kluczowe"
           outlined
           square
@@ -171,17 +171,6 @@ export default {
     )
 
     function submitSubmission() {
-      if (
-        sections.groups.filter(
-          (x) => x.link.toLowerCase() === form.link.toLowerCase()
-        ).length > 0 ||
-        taggroups.groups.filter(
-          (x) => x.link.toLowerCase() === form.link.toLowerCase()
-        ).length > 0
-      ) {
-        form.groupExists = true
-      }
-
       if (
         form.keywords.value.length > 0 &&
         form.keywords.value
