@@ -9,10 +9,8 @@ Praktycznie gotowe do wydania wraz z Vue 3.
 Zrobione:
 * Sekcje
 * Tag-grupki
-* Hades
 * Formularz do wysyłania próśb o dodanie grupy
 * Polityka prywatności
-* Kontakt
 * Tryb ciemny
 
 ## Stack
