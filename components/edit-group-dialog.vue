@@ -203,7 +203,7 @@ export default {
         name,
         link,
         category,
-        keywords: keywords.length > 0 ? keywords.split(',') : null,
+        keywords: keywords ? keywords.split(',') : null,
         members,
       }
 
