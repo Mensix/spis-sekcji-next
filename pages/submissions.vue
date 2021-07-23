@@ -88,6 +88,9 @@
           outlined
           square
           stack-label
+          @input="
+            form.keywords.invalid ? (form.keywords.invalid = false) : null
+          "
         >
           <template #append>
             <q-icon name="list" />

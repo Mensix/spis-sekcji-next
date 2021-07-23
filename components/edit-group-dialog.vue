@@ -82,7 +82,11 @@
               outlined
               square
               stack-label
-              :value="getApproximateMembersCount(form.members)"
+              @input="
+                form.approximateMembers = getApproximateMembersCount(
+                  form.members
+                )
+              "
             />
             <q-input
               v-model="form.approximateMembers"
@@ -189,11 +193,6 @@ export default {
           form.canBeSent = true
         }
       }
-    )
-
-    watch(
-      () => form.members,
-      () => (form.approximateMembers = getApproximateMembersCount(form.members))
     )
 
     function submitSubmission() {

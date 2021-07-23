@@ -11,7 +11,7 @@
       :filter-method="filterTable"
       flat
       :grid="$device.isMobile"
-      :loading="table.isLoading"
+      :loading="dataset.groups.length === 0"
       :pagination.sync="table.pagination"
       :rows-per-page-options="[]"
       :visible-columns="['name', 'link', 'category']"
@@ -243,7 +243,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog, Notify } from 'quasar'
 import firebase from 'firebase/app'
 import frag from 'vue-frag'
@@ -271,15 +271,6 @@ export default {
         table.isLoading = false
       }
     })
-
-    watch(
-      () => dataset.groups,
-      () => {
-        if (dataset.groups.length > 0) {
-          table.isLoading = false
-        }
-      }
-    )
 
     const { table, filterTable, getPaginationText } = useTable()
     const { getApproximateMembersCount, deleteGroup } = useGroup()

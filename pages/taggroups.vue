@@ -10,7 +10,7 @@
     :filter-method="filterTable"
     flat
     :grid="$device.isMobile"
-    :loading="table.isLoading"
+    :loading="dataset.groups.length === 0"
     :pagination.sync="table.pagination"
     :rows-per-page-options="[]"
     :visible-columns="['name', 'link']"
@@ -139,9 +139,7 @@ export default {
 
     onMounted(() => {
       if (!dataset.groups.length) {
-        fetchGroups().then(() => (table.isLoading = false))
-      } else if (dataset.groups.length > 0 && table.isLoading) {
-        table.isLoading = false
+        fetchGroups()
       }
     })
 
