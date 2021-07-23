@@ -19,7 +19,7 @@
     "@nuxtjs/composition-api": "0.25.0",
     "@nuxtjs/device": "2.1.0",
     "@nuxtjs/gtm": "2.4.0",
-    "date-fns": "2.22.1",
+    "date-fns": "2.23.0",
     "firebase": "8.7.1",
     "nuxt": "2.15.7",
     "quasar": "1.15.23",
