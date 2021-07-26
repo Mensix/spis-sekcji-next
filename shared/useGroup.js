@@ -28,8 +28,10 @@ export default function () {
     else if (isNumberInRange(members, 5001, 10000)) return '5K+'
     else if (isNumberInRange(members, 10001, 25000)) return '10K+'
     else if (isNumberInRange(members, 25001, 50000)) return '25K+'
-    else if (isNumberInRange(members, 50001, 100000)) return '50K+'
-    else return '100K+'
+    else if (isNumberInRange(members, 50001, 75000)) return '50K+'
+    else if (isNumberInRange(members, 75001, 100000)) return '75K+'
+    else if (isNumberInRange(members, 100001, 150000)) return '100K+'
+    else return '150K+'
   }
 
   function deleteGroup(props, name) {
