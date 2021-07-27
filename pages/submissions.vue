@@ -27,21 +27,11 @@
           v-model.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
-          hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
           label="Link do grupy"
           outlined
-          prefix="https://facebook.com/groups/"
           required
           square
           stack-label
-          @paste.prevent="
-            form.link =
-              pasteGroupLink($event) ||
-              displayNotify(
-                'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.',
-                5000
-              )
-          "
         >
           <template #append>
             <q-icon name="link" />
@@ -147,7 +137,7 @@ export default {
       if (!taggroups.groups.length) fetchTaggroups()
     })
 
-    const { pasteGroupLink } = useForm()
+    const { setGroupLink } = useForm()
     const { displayNotify } = useNotify()
 
     const form = reactive({
@@ -207,7 +197,7 @@ export default {
                   .map((x) => x.trim().toLowerCase())
               : null,
             jbwaLink: isSectionSent ? form.jbwaLink : null,
-            link: form.link,
+            link: setGroupLink(form.link),
           })
           .then(() => {
             form.link = form.jbwaLink = form.keywords.value = ''
@@ -221,7 +211,7 @@ export default {
     return {
       sections,
       taggroups,
-      pasteGroupLink,
+      setGroupLink,
       displayNotify,
       form,
       submitSubmission,

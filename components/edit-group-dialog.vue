@@ -1,7 +1,7 @@
 <template>
   <div v-frag>
     <q-dialog ref="editGroupDialog">
-      <q-card>
+      <q-card class="full-width">
         <q-card-section>
           <h6 class="text-center q-ma-none">Zaaktualizuj dane grupy</h6>
         </q-card-section>
@@ -26,20 +26,11 @@
               v-model.trim="form.link"
               color="secondary"
               :disable="form.isBeingSent"
-              hint="Jeśli wklejasz link do grupy, musi być on pełny, wówczas w polu tekstowym zostaje wtedy tylko alias lub id grupy."
               label="Link do grupy"
               outlined
-              prefix="https://facebook.com/groups/"
               required
               square
               stack-label
-              @paste.prevent="
-                form.link =
-                  pasteGroupLink($event) ||
-                  displayNotify(
-                    'Zawartość twojego schowka nie zawiera linku do grupy, spróbuj jeszcze raz.'
-                  )
-              "
             >
               <template #append>
                 <q-icon name="link" />
@@ -156,14 +147,14 @@ export default {
   },
   setup(props, { emit }) {
     const { getApproximateMembersCount } = useGroup()
-    const { pasteGroupLink } = useForm()
+    const { setGroupLink } = useForm()
     const { displayNotify } = useNotify()
 
     const editGroupDialog = ref()
 
     const form = reactive({
       name: props.group.name,
-      link: props.group.link,
+      link: `https://facebook.com/groups/${props.group.link}`,
       category: props.group.category || [],
       keywords:
         props.group.keywords !== undefined
@@ -200,7 +191,7 @@ export default {
       const { name, link, category, keywords, members } = form
       const strippedForm = {
         name,
-        link,
+        link: setGroupLink(link),
         category,
         keywords: keywords ? keywords.split(',') : null,
         members,
@@ -248,7 +239,6 @@ export default {
     return {
       dataset,
       getApproximateMembersCount,
-      pasteGroupLink,
       displayNotify,
       editGroupDialog,
       form,
