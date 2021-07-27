@@ -16,7 +16,7 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@nuxtjs/composition-api": "0.25.1",
+    "@nuxtjs/composition-api": "0.25.2",
     "@nuxtjs/device": "2.1.0",
     "@nuxtjs/gtm": "2.4.0",
     "date-fns": "2.23.0",
