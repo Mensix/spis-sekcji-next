@@ -267,8 +267,6 @@ export default {
     onMounted(() => {
       if (!dataset.groups.length) {
         fetchGroups()
-      } else if (dataset.groups.length > 0 && table.isLoading) {
-        table.isLoading = false
       }
     })
 

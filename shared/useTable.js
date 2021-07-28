@@ -3,7 +3,6 @@ import { reactive } from '@nuxtjs/composition-api'
 export default function () {
   const table = reactive({
     search: '',
-    isLoading: true,
     selectedCategories: [],
     columns: [
       {
