@@ -19,7 +19,6 @@
   "dependencies": {
     "@nuxtjs/composition-api": "0.26.0",
     "@nuxtjs/device": "2.1.0",
-    "@nuxtjs/gtm": "2.4.0",
     "date-fns": "2.23.0",
     "firebase": "8.8.0",
     "nuxt": "2.15.7",

@@ -46,10 +46,7 @@ export default {
   css: ['quasar/dist/quasar.min.css', '~/assets/extend.css'],
   plugins: ['~/plugins/useQuasar', '~/plugins/useGtag'],
   components: true,
-  modules: ['@nuxtjs/device', '@nuxtjs/gtm'],
-  gtm: {
-    id: 'GTM-K2QFVPC',
-  },
+  modules: ['@nuxtjs/device'],
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
