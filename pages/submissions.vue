@@ -24,6 +24,36 @@
           stack-label
         />
         <q-input
+          v-if="userState.isAdmin"
+          v-model.trim="form.name"
+          color="secondary"
+          :disable="form.isBeingSent"
+          label="Nazwa grupy"
+          outlined
+          required
+          square
+          stack-label
+        >
+          <template #append>
+            <q-icon name="create" />
+          </template>
+        </q-input>
+        <q-input
+          v-if="userState.isAdmin"
+          v-model="form.members"
+          color="secondary"
+          :disable="form.isBeingSent"
+          label="Liczba członków"
+          outlined
+          required
+          square
+          stack-label
+        >
+          <template #append>
+            <q-icon name="plus_one" />
+          </template>
+        </q-input>
+        <q-input
           v-model.trim="form.link"
           color="secondary"
           :disable="form.isBeingSent"
@@ -39,10 +69,8 @@
         </q-input>
         <q-input
           v-model.trim="form.jbwaLink"
-          class="q-mt-lg"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
-          hint="Jeśli chcesz, aby twoja sekcja była dostępna również pod adresem jbwa.pl/<alias>, możesz wpisać pożądany alias w polu powyżej. Wówczas po wejściu w taki link, odwiedzający zostanie przekierowany bezpośrednio do twojej grupy."
           label="Skrócony link do grupy"
           outlined
           prefix="jbwa.pl/"
@@ -55,7 +83,6 @@
         </q-input>
         <q-select
           v-model="form.category"
-          class="q-mt-xl"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           label="Kategorie"
@@ -68,7 +95,7 @@
         />
         <q-input
           v-model.trim="form.keywords.value"
-          class="q-mb-md"
+          class="q-mb-lg"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           :error="form.keywords.invalid"
@@ -119,6 +146,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 import { onMounted, reactive, watch } from '@nuxtjs/composition-api'
+import { format } from 'date-fns'
 import useForm from '~/shared/useForm'
 import {
   dataset as sections,
@@ -129,6 +157,7 @@ import {
   fetchGroups as fetchTaggroups,
 } from '~/store/taggroups'
 import useNotify from '~/shared/useNotify'
+import { userState } from '~/store/user'
 export default {
   layout: 'main',
   setup() {
@@ -143,6 +172,7 @@ export default {
     const form = reactive({
       type: 'Sekcja',
       link: '',
+      name: '',
       jbwaLink: '',
       category: [],
       keywords: {
@@ -163,54 +193,76 @@ export default {
       }
     )
 
+    function resetForm() {
+      form.link = form.jbwaLink = form.keywords.value = ''
+      form.category = []
+      form.isBeingSent = false
+      form.wasSend = true
+    }
+
     function submitSubmission() {
-      if (
-        form.keywords.value.length > 0 &&
-        form.keywords.value
-          .toLowerCase()
-          .split(',')
-          .map((x) => x.trim())
-          .some(
-            (x) =>
-              form.link.toLowerCase().includes(x) ||
-              form.category.some((z) =>
-                z.toLowerCase().includes(x.toLowerCase())
-              )
-          )
-      ) {
-        form.keywords.invalid = true
-      }
+      const isSectionSent = form.type === 'Sekcja'
 
-      if (!form.keywords.invalid) {
-        const isSectionSent = form.type === 'Sekcja'
-        form.isBeingSent = true
+      if (!userState.isAdmin) {
+        if (
+          form.keywords.value.length > 0 &&
+          form.keywords.value
+            .toLowerCase()
+            .split(',')
+            .map((x) => x.trim())
+            .some(
+              (x) =>
+                form.link.toLowerCase().includes(x) ||
+                form.category.some((z) =>
+                  z.toLowerCase().includes(x.toLowerCase())
+                )
+            )
+        ) {
+          form.keywords.invalid = true
+        }
 
+        if (!form.keywords.invalid) {
+          form.isBeingSent = true
+          firebase
+            .database()
+            .ref('submissions')
+            .child(isSectionSent ? 'sections' : 'taggroups')
+            .push({
+              category: isSectionSent ? form.category : null,
+              keywords: isSectionSent
+                ? form.keywords.value
+                    .split(',')
+                    .map((x) => x.trim().toLowerCase())
+                : null,
+              jbwaLink: isSectionSent ? form.jbwaLink : null,
+              link: setGroupLink(form.link),
+            })
+            .then(() => resetForm())
+        }
+      } else {
+        const todayDate = format(new Date(), 'dd/MM/R')
+        const groups = isSectionSent ? sections : taggroups
+        const strippedForm = {
+          link: setGroupLink(form.link),
+          category: form.category,
+          keywords: isSectionSent ? form.keywords.value.split(',') : null,
+          name: form.name,
+        }
+
+        groups.lastUpdateDate = todayDate
+        groups.groups.push(strippedForm)
         firebase
           .database()
-          .ref('submissions')
-          .child(isSectionSent ? 'sections' : 'taggroups')
-          .push({
-            category: isSectionSent ? form.category : null,
-            keywords: isSectionSent
-              ? form.keywords.value
-                  .split(',')
-                  .map((x) => x.trim().toLowerCase())
-              : null,
-            jbwaLink: isSectionSent ? form.jbwaLink : null,
-            link: setGroupLink(form.link),
-          })
-          .then(() => {
-            form.link = form.jbwaLink = form.keywords.value = ''
-            form.category = []
-            form.isBeingSent = false
-            form.wasSend = true
-          })
+          .ref(isSectionSent ? 'sections' : 'taggroups')
+          .set(groups)
+          .then(() => resetForm())
       }
     }
 
     return {
       sections,
       taggroups,
+      userState,
       setGroupLink,
       displayNotify,
       form,
