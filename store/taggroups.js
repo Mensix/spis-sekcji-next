@@ -12,8 +12,7 @@ const fetchGroups = () => {
   return firebase
     .database()
     .ref('taggroups')
-    .once('value')
-    .then((snapshot) => {
+    .on('value', (snapshot) => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
       dataset.groups = snapshot.val().groups.map((_, idx) => ({
         ..._,
