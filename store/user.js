@@ -10,7 +10,9 @@ const userState = reactive({
   isLoggedIn: false,
   data: [],
   isAdmin: computed(
-    () => userState.data?.uid === 'XFZfPo3B5AbZIsq312GPG7wCZrr1' // The database is secured anyway :)
+    () =>
+      userState.isLoggedIn &&
+      userState.data?.uid === 'XFZfPo3B5AbZIsq312GPG7wCZrr1' // The database is secured anyway :)
   ),
 })
 
