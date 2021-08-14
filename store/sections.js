@@ -36,7 +36,7 @@ const fetchGroups = () => {
         .groups.sort((e, a) => a.members - e.members)
         .map((_, idx) => ({
           ..._,
-          category: _.category?.sort(),
+          category: _.category?.sort() || null,
           index: idx + 1,
         }))
       dataset.categories = [
