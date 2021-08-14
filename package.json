@@ -21,7 +21,7 @@
     "@nuxtjs/device": "2.1.0",
     "date-fns": "2.23.0",
     "firebase": "8.9.1",
-    "nuxt": "2.15.7",
+    "nuxt": "2.15.8",
     "quasar": "1.15.23",
     "vue-frag": "1.1.5",
     "vue-gtag": "1.16.1"
