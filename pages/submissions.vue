@@ -173,6 +173,7 @@ export default {
       type: 'Sekcja',
       link: '',
       name: '',
+      members: 0,
       jbwaLink: '',
       category: [],
       keywords: {
@@ -247,6 +248,7 @@ export default {
           category: form.category,
           keywords: isSectionSent ? form.keywords.value.split(',') : null,
           name: form.name,
+          members: form.members,
         }
 
         groups.lastUpdateDate = todayDate
