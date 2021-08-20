@@ -20,7 +20,7 @@
     "@nuxtjs/composition-api": "0.26.0",
     "@nuxtjs/device": "2.1.0",
     "date-fns": "2.23.0",
-    "firebase": "8.9.1",
+    "firebase": "8.10.0",
     "nuxt": "2.15.8",
     "quasar": "1.15.23",
     "vue-frag": "1.1.5",
