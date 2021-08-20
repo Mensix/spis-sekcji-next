@@ -242,7 +242,9 @@ export default {
         }
       } else {
         const todayDate = format(new Date(), 'dd/MM/R')
-        const groups = isSectionSent ? sections : taggroups
+        const groups = isSectionSent
+          ? { lastUpdateDate: todayDate, groups: sections.groups }
+          : taggroups
         const strippedForm = {
           link: setGroupLink(form.link),
           category: form.category,
