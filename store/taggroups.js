@@ -14,10 +14,13 @@ const fetchGroups = () => {
     .ref('taggroups')
     .on('value', (snapshot) => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
-      dataset.groups = snapshot.val().groups.map((_, idx) => ({
-        ..._,
-        index: idx + 1,
-      }))
+      dataset.groups = snapshot
+        .val()
+        .groups.sort((e, a) => a.members - e.members)
+        .map((_, idx) => ({
+          ..._,
+          index: idx + 1,
+        }))
     })
 }
 

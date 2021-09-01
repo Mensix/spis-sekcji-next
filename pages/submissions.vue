@@ -245,8 +245,12 @@ export default {
         const groups = {
           lastUpdateDate: todayDate,
           groups: isSectionSent
-            ? sections.groups.map(({ index, ...x }) => x)
-            : taggroups.groups.map(({ index, ...x }) => x),
+            ? sections.groups
+                .map(({ index, ...x }) => x)
+                .sort((e, a) => a.members - e.members)
+            : taggroups.groups
+                .map(({ index, ...x }) => x)
+                .sort((e, a) => a.members - e.members),
         }
 
         const strippedForm = {
