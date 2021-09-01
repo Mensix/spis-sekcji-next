@@ -40,7 +40,7 @@
         </q-input>
         <q-input
           v-if="userState.isAdmin"
-          v-model="form.members"
+          v-model.number="form.members"
           color="secondary"
           :disable="form.isBeingSent"
           label="Liczba członków"
