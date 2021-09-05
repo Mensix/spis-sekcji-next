@@ -81,7 +81,7 @@
           <a
             class="text-secondary"
             href="https://facebook.com/grzegorz.perun"
-            rel="noopener noreferer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             <span>skontaktuj się z nim.</span>

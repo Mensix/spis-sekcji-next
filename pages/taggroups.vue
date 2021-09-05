@@ -72,7 +72,7 @@
         <a
           class="text-secondary"
           :href="`https://facebook.com/groups/${props.row.link}`"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           /{{ props.row.link }}
@@ -106,7 +106,7 @@
                   <a
                     class="text-secondary"
                     :href="`https://facebook.com/groups/${props.cols[1].value}`"
-                    rel="noopener noreferer"
+                    rel="noopener noreferrer"
                     target="_blank"
                   >
                     /{{ props.cols[1].value }}

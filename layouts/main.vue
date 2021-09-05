@@ -73,7 +73,7 @@
         <a
           class="text-secondary"
           href="https://docs.google.com/spreadsheets/d/1b0oBrpdNXqfWx35kT4xhG0OiPY2OnYJmklGHshlv7_E/edit?fbclid=IwAR3f5V_DlCrZbtxYhKdDMV7hTiCpRaNtx5OvpZYTNpTBhkokxKafz7xzOfo/"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           <span>poprzedni spis sekcji</span>
@@ -82,7 +82,7 @@
         <a
           class="text-secondary"
           href="http://akapedia.pl/Jak_b%C4%99dzie_w_akapie%3F"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           spis sekcji na Akapedii
@@ -95,7 +95,7 @@
         <a
           class="text-secondary"
           href="https://facebook.com/groups/spis.sekcji/"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           <span>Facebook</span>
@@ -104,7 +104,7 @@
         <a
           class="text-secondary"
           href="https://github.com/Mensix/spis-sekcji-next/"
-          rel="noopener noreferer"
+          rel="noopener noreferrer"
           target="_blank"
         >
           <span>GitHub</span>
