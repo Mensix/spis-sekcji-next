@@ -23,7 +23,7 @@
     "firebase": "8.10.0",
     "nuxt": "2.15.8",
     "quasar": "1.15.23",
-    "vue-frag": "1.2.0",
+    "vue-frag": "1.2.1",
     "vue-gtag": "1.16.1"
   },
   "devDependencies": {
