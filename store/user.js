@@ -73,9 +73,8 @@ const updateUserState = () => {
             userState.isLoggingIn = false
             userState.data = result
             userState.data.photoURL += `?access_token=${accessToken.toString()}`
-
-            resolve()
           })
+          .then(() => resolve())
       } else {
         userState.isLoggingIn = false
       }
