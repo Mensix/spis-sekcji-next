@@ -67,20 +67,6 @@
             <q-icon name="link" />
           </template>
         </q-input>
-        <q-input
-          v-model.trim="form.jbwaLink"
-          color="secondary"
-          :disable="form.isBeingSent || form.type === 'Tag-grupka'"
-          label="Skrócony link do grupy"
-          outlined
-          prefix="jbwa.pl/"
-          square
-          stack-label
-        >
-          <template #append>
-            <q-icon name="link" />
-          </template>
-        </q-input>
         <q-select
           v-model="form.category"
           color="secondary"
@@ -94,20 +80,16 @@
           stack-label
         />
         <q-input
-          v-model.trim="form.keywords.value"
+          v-model.trim="form.keywords"
           class="q-mb-lg"
           color="secondary"
           :disable="form.isBeingSent || form.type === 'Tag-grupka'"
           :error="form.keywords.invalid"
-          error-message="Słowa kluczowe muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy"
-          hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać. Muszą być oddzielone przecinkiem oraz nie mogą zawierać nazwy, linku i/lub kategorii grupy."
+          hint="Jeśli nazwa twojej grupy lub link do niej nie jest oczywisty, dodaj słowa kluczowe, aby można było po nich ją wyszukać. Muszą być one oddzielone przecinkiem."
           label="Słowa kluczowe"
           outlined
           square
           stack-label
-          @input="
-            form.keywords.invalid ? (form.keywords.invalid = false) : null
-          "
         >
           <template #append>
             <q-icon name="list" />
@@ -174,12 +156,8 @@ export default {
       link: '',
       name: '',
       members: 0,
-      jbwaLink: '',
       category: [],
-      keywords: {
-        invalid: false,
-        value: '',
-      },
+      keywords: '',
       isBeingSent: false,
       wasSend: false,
       groupExists: false,
@@ -195,7 +173,7 @@ export default {
     )
 
     function resetForm() {
-      form.link = form.jbwaLink = form.keywords.value = ''
+      form.link = form.jbwaLink = form.keywords = ''
       form.category = []
       form.isBeingSent = false
       form.wasSend = true
@@ -205,48 +183,26 @@ export default {
       const isSectionSent = form.type === 'Sekcja'
 
       if (!userState.isAdmin) {
-        if (
-          form.keywords.value.length > 0 &&
-          form.keywords.value
-            .toLowerCase()
-            .split(',')
-            .map((x) => x.trim())
-            .some(
-              (x) =>
-                form.link.toLowerCase().includes(x) ||
-                form.category.some((z) =>
-                  z.toLowerCase().includes(x.toLowerCase())
-                )
-            )
-        ) {
-          form.keywords.invalid = true
-        }
-
-        if (!form.keywords.invalid) {
-          form.isBeingSent = true
-          firebase
-            .database()
-            .ref('submissions')
-            .child(isSectionSent ? 'sections' : 'taggroups')
-            .push({
-              category: isSectionSent ? form.category : null,
-              keywords: isSectionSent
-                ? form.keywords.value
-                    .split(',')
-                    .map((x) => x.trim().toLowerCase())
-                : null,
-              jbwaLink: isSectionSent ? form.jbwaLink : null,
-              link: setGroupLink(form.link),
-            })
-            .then(() => resetForm())
-        }
+        form.isBeingSent = true
+        firebase
+          .database()
+          .ref('submissions')
+          .child(isSectionSent ? 'sections' : 'taggroups')
+          .push({
+            category: isSectionSent ? form.category : null,
+            keywords: isSectionSent
+              ? form.keywords.split(',').map((x) => x.trim().toLowerCase())
+              : null,
+            link: setGroupLink(form.link),
+          })
+          .then(() => resetForm())
       } else {
         const todayDate = format(new Date(), 'dd/MM/R')
         const groups = {
           lastUpdateDate: todayDate,
           groups: isSectionSent
             ? sections.groups
-                .map(({ index, ...x }) => x)
+                .map(({ index, isFavourite, ...x }) => x)
                 .sort((e, a) => a.members - e.members)
             : taggroups.groups
                 .map(({ index, ...x }) => x)
@@ -256,7 +212,7 @@ export default {
         const strippedForm = {
           link: setGroupLink(form.link),
           category: form.category,
-          keywords: isSectionSent ? form.keywords.value.split(',') : null,
+          keywords: isSectionSent ? form.keywords.split(',') : null,
           name: form.name,
           members: form.members,
         }
