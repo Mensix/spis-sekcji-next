@@ -33,8 +33,7 @@ const fetchGroups = () => {
       dataset.lastUpdateDate = snapshot.val().lastUpdateDate
       dataset.groups = snapshot
         .val()
-        .groups.map((x) => ({ ...x, members: x.members || 0 }))
-        .sort((e, a) => a.members - e.members)
+        .groups.sort((e, a) => a.members - e.members)
         .map((_, idx) => ({
           ..._,
           category: _.category?.sort() || null,

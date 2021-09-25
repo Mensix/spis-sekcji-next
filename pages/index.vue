@@ -79,7 +79,7 @@
       <template #body-cell-name="props">
         <q-td :props="props">
           <small class="text-grey q-mr-xxs">{{ props.row.index }}. </small>
-          <small v-if="props.row.members" class="text-secondary q-mr-xxs">
+          <small class="text-secondary q-mr-xxs">
             {{ getApproximateMembersCount(props.row.members) }}
           </small>
           <small

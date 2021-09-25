@@ -20,7 +20,8 @@ export default function () {
   function getApproximateMembersCount(members) {
     const isNumberInRange = (number, min, max) => number >= min && number <= max
 
-    if (isNumberInRange(members, 0, 100) || members == null) return '0+'
+    if (members === undefined) return null
+    if (isNumberInRange(members, 0, 100)) return '0+'
     else if (isNumberInRange(members, 101, 500)) return '100+'
     else if (isNumberInRange(members, 501, 1000)) return '500+'
     else if (isNumberInRange(members, 1001, 2500)) return '1K+'
