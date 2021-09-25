@@ -64,6 +64,15 @@
           name="mode_edit_outline"
           @click="showEditGroupDialog(props.row)"
         />
+        <q-icon
+          v-if="userState.isLoggedIn && userState.isAdmin"
+          class="cursor-pointer"
+          color="secondary"
+          name="delete_forever"
+          @click="deleteGroup(props, 'taggroups')"
+        >
+          <q-tooltip>Usuń grupę</q-tooltip>
+        </q-icon>
       </q-td>
     </template>
 
@@ -100,6 +109,15 @@
                     name="mode_edit_outline"
                     @click="showEditGroupDialog(props.row)"
                   />
+                  <q-icon
+                    v-if="userState.isLoggedIn && userState.isAdmin"
+                    class="cursor-pointer"
+                    color="secondary"
+                    name="delete_forever"
+                    @click="deleteGroup(props, 'taggroups')"
+                  >
+                    <q-tooltip>Usuń grupę</q-tooltip>
+                  </q-icon>
                 </q-item-label>
                 <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
@@ -129,6 +147,7 @@
 import { onMounted, ref } from '@nuxtjs/composition-api'
 import { Dialog } from 'quasar'
 import { dataset, fetchGroups } from '~/store/taggroups'
+import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog.vue'
 import useGroup from '~/shared/useGroup'
@@ -144,7 +163,7 @@ export default {
     })
 
     const { table, filterTable, getPaginationText } = useTable()
-    const { getApproximateMembersCount } = useGroup()
+    const { getApproximateMembersCount, deleteGroup } = useGroup()
 
     function showEditGroupDialog(group) {
       Dialog.create({
@@ -156,11 +175,13 @@ export default {
 
     return {
       dataset,
+      userState,
       getPaginationText,
       taggroupsRef,
       table,
       filterTable,
       getApproximateMembersCount,
+      deleteGroup,
       showEditGroupDialog,
     }
   },
