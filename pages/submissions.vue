@@ -140,6 +140,7 @@ import {
 } from '~/store/taggroups'
 import useNotify from '~/shared/useNotify'
 import { userState } from '~/store/user'
+import { sectionsApiRef, taggroupsApiRef } from '~/store/globals'
 export default {
   layout: 'main',
   setup() {
@@ -173,7 +174,8 @@ export default {
     )
 
     function resetForm() {
-      form.link = form.jbwaLink = form.keywords = ''
+      form.link = form.name = form.keywords = ''
+      form.members = 0
       form.category = []
       form.isBeingSent = false
       form.wasSend = true
@@ -181,13 +183,13 @@ export default {
 
     function submitSubmission() {
       const isSectionSent = form.type === 'Sekcja'
+      form.isBeingSent = true
 
       if (!userState.isAdmin) {
-        form.isBeingSent = true
         firebase
           .database()
           .ref('submissions')
-          .child(isSectionSent ? 'sections' : 'taggroups')
+          .child(isSectionSent ? sectionsApiRef : taggroupsApiRef)
           .push({
             category: isSectionSent ? form.category : null,
             keywords: isSectionSent
@@ -201,12 +203,8 @@ export default {
         const groups = {
           lastUpdateDate: todayDate,
           groups: isSectionSent
-            ? sections.groups
-                .map(({ index, isFavourite, ...x }) => x)
-                .sort((e, a) => a.members - e.members)
-            : taggroups.groups
-                .map(({ index, ...x }) => x)
-                .sort((e, a) => a.members - e.members),
+            ? sections.groups.map(({ index, isFavourite, ...x }) => x)
+            : taggroups.groups.map(({ index, ...x }) => x),
         }
 
         const strippedForm = {
@@ -221,7 +219,7 @@ export default {
         groups.groups.push(strippedForm)
         firebase
           .database()
-          .ref(isSectionSent ? 'sections' : 'taggroups')
+          .ref(isSectionSent ? sectionsApiRef : taggroupsApiRef)
           .set(groups)
           .then(() => resetForm())
       }

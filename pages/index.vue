@@ -117,7 +117,7 @@
             class="cursor-pointer"
             color="secondary"
             name="delete_forever"
-            @click="deleteGroup(props, 'sections')"
+            @click="deleteGroup(dataset, props.row.index)"
           >
             <q-tooltip>Usuń grupę</q-tooltip>
           </q-icon>
@@ -194,7 +194,7 @@
                       class="cursor-pointer"
                       color="secondary"
                       name="delete_forever"
-                      @click="deleteGroup(props, 'sections')"
+                      @click="deleteGroup(dataset, props.row.index)"
                     />
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
@@ -250,12 +250,13 @@ import EditGroupDialog from '~/components/edit-group-dialog'
 import 'firebase/database'
 import 'firebase/auth'
 import useGroup from '~/shared/useGroup'
+import { sectionsApiRef } from '~/store/globals'
 export default {
   directives: {
     frag,
   },
   layout: 'main',
-  setup(props, { root }) {
+  setup() {
     const sectionsRef = ref(null)
 
     onMounted(() => {
@@ -321,6 +322,7 @@ export default {
     function showEditGroupDialog(group) {
       Dialog.create({
         component: EditGroupDialog,
+        name: sectionsApiRef,
         group,
       })
     }

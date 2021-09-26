@@ -69,7 +69,7 @@
           class="cursor-pointer"
           color="secondary"
           name="delete_forever"
-          @click="deleteGroup(props, 'taggroups')"
+          @click="deleteGroup(dataset, props.row.index)"
         >
           <q-tooltip>Usuń grupę</q-tooltip>
         </q-icon>
@@ -114,7 +114,7 @@
                     class="cursor-pointer"
                     color="secondary"
                     name="delete_forever"
-                    @click="deleteGroup(props, 'taggroups')"
+                    @click="deleteGroup(dataset, props.row.index)"
                   >
                     <q-tooltip>Usuń grupę</q-tooltip>
                   </q-icon>
@@ -151,6 +151,7 @@ import { userState } from '~/store/user'
 import useTable from '~/shared/useTable'
 import EditGroupDialog from '~/components/edit-group-dialog.vue'
 import useGroup from '~/shared/useGroup'
+import { taggroupsApiRef } from '~/store/globals'
 export default {
   layout: 'main',
   setup() {
@@ -168,8 +169,8 @@ export default {
     function showEditGroupDialog(group) {
       Dialog.create({
         component: EditGroupDialog,
+        name: taggroupsApiRef,
         group,
-        mode: 'taggroup',
       })
     }
 

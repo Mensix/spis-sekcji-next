@@ -37,7 +37,7 @@
               </template>
             </q-input>
             <q-select
-              v-if="mode === 'section'"
+              v-if="name.startsWith('sections')"
               v-model="form.category"
               color="secondary"
               :disable="form.isBeingSent"
@@ -51,7 +51,7 @@
               stack-label
             />
             <q-input
-              v-if="mode === 'section'"
+              v-if="name.startsWith('sections')"
               v-model.trim="form.keywords"
               color="secondary"
               :disable="form.isBeingSent"
@@ -139,10 +139,9 @@ export default {
       type: Object,
       default: () => {},
     },
-    mode: {
+    name: {
       type: String,
-      default: 'section',
-      validator: (value) => ['section', 'taggroup'].includes(value),
+      default: '',
     },
   },
   setup(props, { emit }) {
@@ -202,12 +201,12 @@ export default {
 
         firebase
           .database()
-          .ref(`${props.mode}s/groups/${props.group.index - 1}`)
+          .ref(`${props.name}/groups/${props.group.index - 1}`)
           .update(strippedForm)
           .then(() => {
             firebase
               .database()
-              .ref(`${props.mode}s`)
+              .ref(props.name)
               .update({ lastUpdateDate: todayDate })
           })
           .then(() => hide())

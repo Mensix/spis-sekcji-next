@@ -2,6 +2,7 @@ import 'firebase/database'
 
 import firebase from 'firebase/app'
 import { reactive } from '@nuxtjs/composition-api'
+import { sectionsApiRef } from '~/store/globals'
 
 const dataset = reactive({
   lastUpdateDate: '',
@@ -28,17 +29,19 @@ const fetchFavouriteGroups = (uid) => {
 const fetchGroups = () => {
   firebase
     .database()
-    .ref('sections')
+    .ref(sectionsApiRef)
     .on('value', (snapshot) => {
-      dataset.lastUpdateDate = snapshot.val().lastUpdateDate
-      dataset.groups = snapshot
-        .val()
-        .groups.sort((e, a) => a.members - e.members)
+      const { lastUpdateDate, groups, name } = snapshot.val()
+      dataset.lastUpdateDate = lastUpdateDate
+      dataset.groups = groups
+        .map((x) => ({ ...x, members: x.members || 0 }))
+        .sort((e, a) => a.members - e.members)
         .map((_, idx) => ({
           ..._,
           category: _.category?.sort() || null,
           index: idx + 1,
         }))
+      dataset.name = name
       dataset.categories = [
         ...new Set(
           dataset.groups

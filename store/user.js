@@ -3,6 +3,7 @@ import 'firebase/auth'
 import { Notify } from 'quasar'
 import firebase from 'firebase/app'
 import { computed, reactive } from '@nuxtjs/composition-api'
+import { adminUid } from '~/store/globals'
 import { fetchFavouriteGroups } from '~/store/sections'
 
 const userState = reactive({
@@ -10,9 +11,7 @@ const userState = reactive({
   isLoggedIn: false,
   data: [],
   isAdmin: computed(
-    () =>
-      userState.isLoggedIn &&
-      userState.data?.uid === 'XFZfPo3B5AbZIsq312GPG7wCZrr1' // The database is secured anyway :)
+    () => userState.isLoggedIn && userState.data?.uid === adminUid
   ),
 })
 

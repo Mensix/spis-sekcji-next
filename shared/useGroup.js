@@ -1,6 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import firebase from 'firebase/app'
 import 'firebase/database'
+import { format } from 'date-fns'
 import { Notify } from 'quasar'
 
 export default function () {
@@ -20,7 +21,7 @@ export default function () {
   function getApproximateMembersCount(members) {
     const isNumberInRange = (number, min, max) => number >= min && number <= max
 
-    if (members === undefined) return null
+    if (members === 0) return null
     if (isNumberInRange(members, 0, 100)) return '0+'
     else if (isNumberInRange(members, 101, 500)) return '100+'
     else if (isNumberInRange(members, 501, 1000)) return '500+'
@@ -35,7 +36,18 @@ export default function () {
     else return '150K+'
   }
 
-  function deleteGroup(props, name) {
+  function deleteGroup(dataset, index) {
+    // https://stackoverflow.com/questions/54138520/firebase-returning-null-references-when-get-after-delete
+    const todayDate = format(new Date(), 'dd/MM/R')
+    const groups = {
+      lastUpdateDate: todayDate,
+      groups: dataset.groups
+        .filter((x) => x.index !== index)
+        .map(({ index, isFavourite, ...x }) => x)
+        .sort((e, a) => a.members - e.members),
+      name: dataset.name,
+    }
+
     const dismiss = Notify.create({
       message: 'Czy chcesz usunąć tą grupę?',
       icon: 'delete',
@@ -45,11 +57,7 @@ export default function () {
         {
           label: 'Tak',
           color: 'white',
-          handler: () =>
-            firebase
-              .database()
-              .ref(`${name}/groups/${props.row.index - 1}`)
-              .remove(),
+          handler: () => firebase.database().ref(dataset.name).set(groups),
         },
         {
           label: 'Nie',
