@@ -210,7 +210,8 @@ export default {
         const strippedForm = {
           link: setGroupLink(form.link),
           category: form.category,
-          keywords: isSectionSent ? form.keywords.split(',') : null,
+          keywords:
+            isSectionSent && form.keywords ? form.keywords.split(',') : null,
           name: form.name,
           members: form.members,
         }
