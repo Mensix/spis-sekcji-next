@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { pemLocation } from './store/globals'
 
-export default {
+const config = {
   ssr: false,
   target: 'static',
   head: {
@@ -69,10 +69,15 @@ export default {
       }
     },
   },
-  server: {
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  config.server = {
     https: {
       key: fs.readFileSync(path.resolve(pemLocation, 'localhost-key.pem')),
       cert: fs.readFileSync(path.resolve(pemLocation, 'localhost.pem')),
     },
-  },
+  }
 }
+
+export default config
