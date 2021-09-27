@@ -100,7 +100,7 @@
               {{
                 props.row.isFavourite
                   ? 'Usuń grupę z ulubionych'
-                  : 'Dodaj grupę  do ulubionych'
+                  : 'Dodaj grupę do ulubionych'
               }}
             </q-tooltip>
           </q-icon>
