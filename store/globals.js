@@ -18,7 +18,7 @@ const taggroupsApiRef =
 // UID of admin, obtained from /users path
 const adminUid = 'XFZfPo3B5AbZIsq312GPG7wCZrr1'
 
-// SSL certificates location
+// SSL certificates location, leave it empty to have HTTP server
 // To obtain them, use https://github.com/FiloSottile/mkcert tool, then use mkcert localhost command
 const pemLocation = '/etc/ssl/certs'
 

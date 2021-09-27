@@ -71,7 +71,7 @@ const config = {
   },
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && pemLocation) {
   config.server = {
     https: {
       key: fs.readFileSync(path.resolve(pemLocation, 'localhost-key.pem')),
