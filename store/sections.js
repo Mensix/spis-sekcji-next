@@ -7,6 +7,7 @@ import { sectionsApiRef } from '~/store/globals'
 const dataset = reactive({
   lastUpdateDate: '',
   groups: [],
+  name: '',
   favouriteGroups: [],
   categories: [],
 })

@@ -7,6 +7,7 @@ import { taggroupsApiRef } from '~/store/globals'
 const dataset = reactive({
   lastUpdateDate: '',
   groups: [],
+  name: '',
 })
 
 const fetchGroups = () => {
