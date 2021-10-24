@@ -5,15 +5,12 @@
       :class="{
         'text-secondary': true,
         'bg-dark': Dark.isActive,
-        'q-toolbar--blurry': !Dark.isActive,
+        'bg-white': !Dark.isActive,
       }"
     >
       <q-toolbar>
         <q-toolbar-title shrink>
-          <font-awesome-icon
-            class="q-icon__toolbar-title q-mr-sm"
-            :icon="faListIcon"
-          />
+          <font-awesome-icon class="q-mr-sm" :icon="faListIcon" />
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
@@ -219,18 +216,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.q-icon__toolbar-title {
-  font-size: 19px;
-}
-
-.q-toolbar--blurry {
-  backdrop-filter: blur(6px);
-  background-color: rgba(238, 238, 238, 0.2);
-}
-
-.no-underline {
-  text-decoration: none;
-}
-</style>
