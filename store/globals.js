@@ -16,7 +16,7 @@ const taggroupsApiRef =
   process.env.NODE_ENV !== 'production' ? 'taggroups-test' : 'taggroups'
 
 // UID of admin, obtained from /users path
-const adminUid = 'XFZfPo3B5AbZIsq312GPG7wCZrr1'
+const adminUid = '33WHe3ys0LhFhJACOQF3ZRamADE3'
 
 // SSL certificates location, leave it empty to have HTTP server
 // To obtain them, use https://github.com/FiloSottile/mkcert tool, then use mkcert localhost command
