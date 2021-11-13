@@ -22,7 +22,7 @@ export default function () {
       { name: 'link', label: 'Link', field: 'link', align: 'left' },
       {
         name: 'category',
-        label: 'Kategoria',
+        label: 'Kategorie',
         field: 'category',
         align: 'left',
       },
