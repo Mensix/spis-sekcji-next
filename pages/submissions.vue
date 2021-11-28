@@ -205,6 +205,7 @@ export default {
           groups: isSectionSent
             ? sections.groups.map(({ index, isFavourite, ...x }) => x)
             : taggroups.groups.map(({ index, ...x }) => x),
+          name: isSectionSent ? 'sections' : 'taggroups',
         }
 
         const strippedForm = {
