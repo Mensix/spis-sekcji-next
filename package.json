@@ -17,7 +17,7 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@nuxtjs/composition-api": "0.30.0",
+    "@nuxtjs/composition-api": "0.31.0",
     "@nuxtjs/device": "2.1.0",
     "date-fns": "2.27.0",
     "firebase": "8.10.0",
