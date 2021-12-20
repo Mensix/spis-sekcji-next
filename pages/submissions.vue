@@ -161,7 +161,6 @@ export default {
       keywords: '',
       isBeingSent: false,
       wasSend: false,
-      groupExists: false,
     })
 
     watch(
