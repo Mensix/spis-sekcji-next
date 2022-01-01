@@ -33,7 +33,9 @@ export default function () {
     else if (isNumberInRange(members, 50001, 75000)) return '50K+'
     else if (isNumberInRange(members, 75001, 100000)) return '75K+'
     else if (isNumberInRange(members, 100001, 150000)) return '100K+'
-    else return '150K+'
+    else if (isNumberInRange(members, 150001, 200000)) return '150K+'
+    else if (isNumberInRange(members, 2000001, 250000)) return '200K+'
+    else return '250K+'
   }
 
   function deleteGroup(dataset, index) {
