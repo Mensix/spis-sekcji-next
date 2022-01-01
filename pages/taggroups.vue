@@ -13,7 +13,7 @@
     :loading="dataset.groups.length === 0"
     :pagination.sync="table.pagination"
     :rows-per-page-options="[]"
-    :visible-columns="['name', 'link']"
+    :visible-columns="['name', 'members', 'link']"
   >
     <template #top-left>
       <div
@@ -76,6 +76,12 @@
       </q-td>
     </template>
 
+    <template #body-cell-members="props">
+      <q-td :props="props">
+        <span>{{ props.row.members !== 0 ? props.row.members : 'N/A' }}</span>
+      </q-td>
+    </template>
+
     <template #body-cell-link="props">
       <q-td :props="props">
         <a
@@ -121,13 +127,17 @@
                 </q-item-label>
                 <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                 <q-item-label>
+                  <span>{{ props.row.members }}</span>
+                </q-item-label>
+                <q-item-label caption>{{ props.cols[2].label }}</q-item-label>
+                <q-item-label>
                   <a
                     class="text-secondary"
-                    :href="`https://facebook.com/groups/${props.cols[1].value}`"
+                    :href="`https://facebook.com/groups/${props.cols[2].value}`"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    /{{ props.cols[1].value }}
+                    /{{ props.cols[2].value }}
                   </a>
                 </q-item-label>
               </q-item-section>

@@ -14,7 +14,7 @@
       :loading="dataset.groups.length === 0"
       :pagination.sync="table.pagination"
       :rows-per-page-options="[]"
-      :visible-columns="['name', 'link', 'category']"
+      :visible-columns="['name', 'members', 'link', 'category']"
     >
       <template #top-left>
         <div
@@ -124,6 +124,12 @@
         </q-td>
       </template>
 
+      <template #body-cell-members="props">
+        <q-td :props="props">
+          <span>{{ props.row.members !== 0 ? props.row.members : 'N/A' }}</span>
+        </q-td>
+      </template>
+
       <template #body-cell-link="props">
         <q-td :props="props">
           <a
@@ -199,6 +205,12 @@
                   </q-item-label>
                   <q-item-label caption>{{ props.cols[1].label }}</q-item-label>
                   <q-item-label>
+                    <span>
+                      {{ props.row.members !== 0 ? props.row.members : 'N/A' }}
+                    </span>
+                  </q-item-label>
+                  <q-item-label caption>{{ props.cols[2].label }}</q-item-label>
+                  <q-item-label>
                     <a
                       :id="props.row.name.split(' ').join('@')"
                       class="text-secondary"
@@ -211,16 +223,16 @@
                         })
                       "
                     >
-                      /{{ props.cols[1].value }}
+                      /{{ props.cols[2].value }}
                     </a>
                   </q-item-label>
-                  <q-item-label v-if="props.cols[2].value" caption>
-                    {{ props.cols[2].label }}
+                  <q-item-label v-if="props.cols[3].value" caption>
+                    {{ props.cols[3].label }}
                   </q-item-label>
-                  <q-item-label v-if="props.cols[2].value">
+                  <q-item-label v-if="props.cols[3].value">
                     <span>
                       {{
-                        props.cols[2].value && props.cols[2].value.join(', ')
+                        props.cols[3].value && props.cols[3].value.join(', ')
                       }}
                     </span>
                   </q-item-label>
