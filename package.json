@@ -22,7 +22,7 @@
     "date-fns": "2.28.0",
     "firebase": "8.10.1",
     "nuxt": "2.15.8",
-    "quasar": "1.18.1",
+    "quasar": "1.18.2",
     "vue-frag": "1.4.0",
     "vue-gtag": "1.16.1"
   },
