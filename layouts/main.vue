@@ -87,8 +87,6 @@
       </p>
       <q-separator class="q-my-md" />
       <p class="q-ma-none">
-        <span>v2.0.0-rc.10</span>
-        <span> • </span>
         <a
           class="text-secondary"
           href="https://facebook.com/groups/spis.sekcji/"
