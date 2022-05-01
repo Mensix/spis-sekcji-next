@@ -1,51 +1,25 @@
 {
-  "name": "spis-sekcji-next",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
-    "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
-  },
-  "lint-staged": {
-    "*.{js,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
-  },
-  "dependencies": {
-    "@nuxtjs/composition-api": "0.32.0",
-    "@nuxtjs/device": "2.1.0",
-    "date-fns": "2.28.0",
-    "firebase": "8.10.1",
-    "nuxt": "2.15.8",
-    "quasar": "1.18.9",
-    "vue-frag": "1.4.0",
-    "vue-gtag": "1.16.1"
+    "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.17.7",
-    "@fortawesome/free-brands-svg-icons": "^6.1.0",
-    "@fortawesome/free-solid-svg-icons": "^6.1.0",
-    "@nuxtjs/eslint-config": "6.0.1",
-    "@nuxtjs/eslint-module": "3.0.2",
-    "@nuxtjs/fontawesome": "1.1.2",
-    "@nuxtjs/stylelint-module": "4.1.0",
-    "babel-eslint": "10.1.0",
-    "eslint": "7.32.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-loader": "4.0.2",
-    "eslint-plugin-nuxt": "2.0.0",
-    "eslint-plugin-prettier": "4.0.0",
-    "jest": "^27.5.1",
-    "lint-staged": "^12.3.7",
-    "postcss-html": "^1.3.0",
-    "prettier": "^2.6.0",
-    "stylelint": "^14.6.1",
-    "stylelint-config-prettier": "9.0.3",
-    "stylelint-config-recommended-vue": "^1.4.0",
-    "stylelint-config-standard": "^25.0.0"
+    "@antfu/eslint-config": "^0.22.0",
+    "@nuxtjs/tailwindcss": "^5.0.3",
+    "eslint": "^8.14.0",
+    "nuxt": "3.0.0-rc.1",
+    "prettier": "^2.6.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@pinia/nuxt": "^0.1.8",
+    "@quasar/extras": "^1.13.6",
+    "pinia": "^2.0.13",
+    "quasar": "^2.6.6"
   }
 }
