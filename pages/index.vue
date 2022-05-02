@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSectionsStore } from '~~/store/useSections';
+import { useSectionsStore } from '~~/store/useSections'
 
 definePageMeta({
   layout: 'main',

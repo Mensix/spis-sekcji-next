@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { initializeApp } from '@firebase/app';
-import { useQuasar } from 'quasar';
-
-definePageMeta({
-  layout: 'main',
-})
+import { initializeApp } from '@firebase/app'
+import { useQuasar } from 'quasar'
 
 initializeApp({
   apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
@@ -56,7 +52,7 @@ function toggleDarkMode() {
           spis sekcji na Akapedii
         </a>
       </p>
-      <q-separator class="q-my-md" />
+      <q-separator class="q-my-md" inset />
       <p class="q-ma-none">
         <a class="text-secondary" href="https://facebook.com/groups/spis.sekcji/" rel="noopener noreferrer" target="_blank">
           Facebook
