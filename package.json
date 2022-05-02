@@ -19,6 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@pinia/nuxt": "^0.1.8",
     "@quasar/extras": "^1.13.6",
+    "firebase": "^9.7.0",
     "pinia": "^2.0.13",
     "quasar": "^2.6.6"
   }

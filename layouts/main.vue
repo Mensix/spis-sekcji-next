@@ -1,5 +1,20 @@
 <script setup lang="ts">
+import { initializeApp } from '@firebase/app'
 import { useQuasar } from 'quasar'
+
+definePageMeta({
+  layout: 'main',
+})
+
+initializeApp({
+  apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
+  authDomain: 'spissekcji.firebaseapp.com',
+  databaseURL: 'https://spissekcji.firebaseio.com',
+  projectId: 'spissekcji',
+  storageBucket: 'spissekcji.appspot.com',
+  messagingSenderId: '752464608547',
+  appId: '1:752464608547:web:7786ca37c8ae1dd0',
+})
 
 const $q = useQuasar()
 </script>
@@ -9,28 +24,23 @@ const $q = useQuasar()
     <q-header bordered :class="{ 'text-secondary': true, 'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive }">
       <q-toolbar>
         <q-toolbar-title shrink class="flex items-center">
-          <q-icon name="fa-solid fa-bars">
-            Spis Sekcji
-          </q-icon>
+          <q-icon name="subject" class="q-mr-sm" />
+          Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs v-if="!$q.platform.is.mobile" class="q-mr-sm" stretch>
+        <q-tabs shrink stretch>
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <q-btn flat label="Zaloguj się" />
-        <q-btn flat round @click="$q.dark.toggle()">
-          <span class="material-symbols-outlined">
-            {{ $q.dark.isActive ? 'light_mode' : 'dark_mode' }}
-          </span>
-        </q-btn>
+        <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="$q.dark.toggle()" />
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <nuxt />
+      <slot />
     </q-page-container>
-    <q-footer v-if="!$q.platform.is.mobile" bordered :class="{ 'bg-grey-1 text-black': !$q.dark.isActive, 'bg-dark text-white': $q.dark.isActive, 'text-center q-pa-lg': true, }">
+    <q-footer v-if="!$q.platform.is.mobile" bordered :class="{ 'bg-white text-black': !$q.dark.isActive, 'bg-dark text-white': $q.dark.isActive, 'text-center q-pa-lg': true, }">
       <p class="q-ma-none">
         Autorzy spisu dziękują Aleksandrze Marczuk i Adamowi Firynowiczowi za
         <a class="text-secondary" href="https://docs.google.com/spreadsheets/d/1b0oBrpdNXqfWx35kT4xhG0OiPY2OnYJmklGHshlv7_E/edit?fbclid=IwAR3f5V_DlCrZbtxYhKdDMV7hTiCpRaNtx5OvpZYTNpTBhkokxKafz7xzOfo/" rel="noopener noreferrer" target="_blank">

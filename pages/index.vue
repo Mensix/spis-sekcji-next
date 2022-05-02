@@ -1,9 +1,74 @@
 <script setup lang="ts">
+import { useSectionsStore } from '~~/store/useSections'
+
 definePageMeta({
   layout: 'main',
 })
+
+const sections = useSectionsStore()
+sections.fetch()
+
+const { table, filterTable } = useTable()
+const { getApproximateMembersCount } = useGroup()
 </script>
 
 <template>
-  <div />
+  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :rows="sections.groups" dense :filter="table.search" :filter-method="filterTable" flat :loading="sections.groups.length === 0" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
+    <template #top-left>
+      <q-input v-model.trim="table.search" class="q-mb-sm" color="secondary" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
+        <template v-if="sections.groups.length > 0" #append>
+          <q-icon name="search" />
+        </template>
+        <template #loading>
+          <q-spinner />
+        </template>
+      </q-input>
+      <q-select v-model="table.selectedCategories" class="q-mb-sm" color="secondary" dense label="Pokaż kategorie" :loading="!sections.groups" multiple :options="sections.categories" options-dense options-selected-class="text-secondary" :readonly="!sections.groups.length">
+        <template #loading>
+          <q-spinner />
+        </template>
+      </q-select>
+      <p class="q-ma-none">
+        Autorzy: Grzegorz Perun & Daniel Nguyen
+      </p>
+      <p class="q-mb-sm" :class="{ 'text-transparent': !sections.lastUpdateDate.length}">
+        Ostatnia aktualizacja: {{ sections.lastUpdateDate }}
+      </p>
+    </template>
+
+    <template #body-cell-name="props">
+      <q-td :props="props">
+        <small class="text-grey q-mr-xs">{{ props.row.index }}. </small>
+        <small class="text-secondary q-mr-xs">
+          {{ getApproximateMembersCount(props.row.members) }}
+        </small>
+        <small v-if="props.row.isSection === false" class="text-secondary">
+          <del>JBWA</del>
+        </small>
+        <span class="q-mr-xs">{{ props.row.name }}</span>
+      </q-td>
+    </template>
+
+    <template #body-cell-members="props">
+      <q-td :props="props">
+        <span>{{ props.row.members !== 0 ? props.row.members : 'N/A' }}</span>
+      </q-td>
+    </template>
+
+    <template #body-cell-link="props">
+      <q-td :props="props">
+        <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.row.link}`" rel="noopener noreferrer" target="_blank">
+          /{{ props.row.link }}
+        </a>
+      </q-td>
+    </template>
+
+    <template #body-cell-category="props">
+      <q-td :props="props">
+        <span>{{ props.row.category?.join(', ') }}</span>
+      </q-td>
+    </template>
+
+    <template #body-cell-keywords />
+  </q-table>
 </template>
