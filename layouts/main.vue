@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { initializeApp } from '@firebase/app'
-import { LocalStorage, useQuasar } from 'quasar'
+import { initializeApp } from '@firebase/app';
+import { LocalStorage, useQuasar } from 'quasar';
+import { useUserStore } from '~~/store/useUser';
+
+const user = useUserStore()
+const $q = useQuasar()
 
 initializeApp({
   apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
@@ -12,7 +16,7 @@ initializeApp({
   appId: '1:752464608547:web:7786ca37c8ae1dd0',
 })
 
-const $q = useQuasar()
+user.update()
 
 function toggleDarkMode() {
   $q.dark.toggle()
@@ -29,12 +33,16 @@ function toggleDarkMode() {
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs shrink stretch>
+        <q-tabs shrink stretch class="q-mr-sm">
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
-        <q-btn flat label="Zaloguj się" />
+        <q-btn v-if="!user.isLoggedIn" :loading="user.isLoggingIn" flat label="Zaloguj się" @click="user.signIn()" />
+        <q-avatar v-else class="q-mr-sm" size="33px">
+          <img :src="user.data.photoURL">
+          <q-tooltip>Cześć, {{ user.data.displayName.split(' ')[0] }}!</q-tooltip>
+        </q-avatar>
         <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode()" />
       </q-toolbar>
     </q-header>

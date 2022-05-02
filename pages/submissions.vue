@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getApp } from '@firebase/app'
 import { getDatabase, push, ref } from '@firebase/database'
 import { useQuasar } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
@@ -37,7 +36,7 @@ function resetForm() {
 
 function submitSumbission() {
   form.isBeingSent = true
-  push(ref(getDatabase(getApp()), 'submissions'), { category: form.category, keywords: form.keywords, link: form.link })
+  push(ref(getDatabase(), 'submissions'), { category: form.category, keywords: form.keywords, link: form.link })
     .then(() => resetForm())
 }
 </script>
