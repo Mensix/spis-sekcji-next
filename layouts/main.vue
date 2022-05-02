@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { initializeApp } from '@firebase/app'
-import { useQuasar } from 'quasar'
+import { LocalStorage, useQuasar } from 'quasar'
 
 initializeApp({
   apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
@@ -16,7 +16,7 @@ const $q = useQuasar()
 
 function toggleDarkMode() {
   $q.dark.toggle()
-  $q.localStorage.set('darkMode', $q.dark.isActive)
+  LocalStorage.set('darkMode', $q.dark.isActive) // huh?
 }
 </script>
 
@@ -35,7 +35,7 @@ function toggleDarkMode() {
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
         </q-tabs>
         <q-btn flat label="Zaloguj się" />
-        <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode" />
+        <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode()" />
       </q-toolbar>
     </q-header>
     <q-page-container>

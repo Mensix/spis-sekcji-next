@@ -15,8 +15,9 @@ const sections = useSectionsStore()
 if (!sections.groups.length)
   sections.fetch()
 
+type FormGroupType = 'Sekcja' | 'Tag-grupka'
 const form = reactive({
-  type: 'Sekcja',
+  type: 'Sekcja' as FormGroupType,
   link: '',
   name: '',
   members: 0,
@@ -51,12 +52,12 @@ function submitSumbission() {
             <q-icon name="link" />
           </template>
         </q-input>
-        <q-select v-model="form.category" color="secondary" :disable="form.isBeingSent || form.type === 'Tag-grupka'" :loading="!sections.categories.length" :readonly="!sections.categories.length" label="Kategorie" multiple :options="sections.categories" options-dense outlined square stack-label>
+        <q-select v-if="form.type === 'Sekcja'" v-model="form.category" color="secondary" :disable="form.isBeingSent" :loading="!sections.categories.length" :readonly="!sections.categories.length" label="Kategorie" multiple :options="sections.categories" options-dense outlined square stack-label>
           <template #loading>
             <q-spinner />
           </template>
         </q-select>
-        <q-input v-model.trim="form.keywords" color="secondary" :disable="form.isBeingSent || form.type === 'Tag-grupka'" label="Słowa kluczowe" outlined square stack-label>
+        <q-input v-if="form.type === 'Sekcja'" v-model.trim="form.keywords" color="secondary" :disable="form.isBeingSent" label="Słowa kluczowe" outlined square stack-label>
           <template #append>
             <q-icon name="list" />
           </template>
