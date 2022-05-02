@@ -1,3 +1,5 @@
+import type { QTableColumn } from 'quasar'
+
 export function useTable() {
   const table = reactive({
     search: '',
@@ -28,7 +30,7 @@ export function useTable() {
         name: 'keywords',
         field: 'keywords',
       },
-    ],
+    ] as QTableColumn[],
     pagination: {
       descending: true,
       page: 0,

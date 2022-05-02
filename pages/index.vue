@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useSectionsStore } from '~~/store/useSections'
+import { useSectionsStore } from '~~/store/useSections';
 
 definePageMeta({
   layout: 'main',
+  title: 'Sekcje | Spis sekcji JBwA i tag-grupek',
 })
 
 const sections = useSectionsStore()
@@ -10,10 +11,18 @@ sections.fetch()
 
 const { table, filterTable } = useTable()
 const { getApproximateMembersCount } = useGroup()
+
+const filteredSections = computed(() =>
+  sections.groups
+    .filter(x => table.selectedCategories.length
+      ? x.category && table.selectedCategories.some(y => x.category.includes(y))
+      : x,
+    ),
+)
 </script>
 
 <template>
-  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :rows="sections.groups" dense :filter="table.search" :filter-method="filterTable" flat :loading="sections.groups.length === 0" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
+  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
     <template #top-left>
       <q-input v-model.trim="table.search" class="q-mb-sm" color="secondary" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
         <template v-if="sections.groups.length > 0" #append>
@@ -23,7 +32,7 @@ const { getApproximateMembersCount } = useGroup()
           <q-spinner />
         </template>
       </q-input>
-      <q-select v-model="table.selectedCategories" class="q-mb-sm" color="secondary" dense label="Pokaż kategorie" :loading="!sections.groups" multiple :options="sections.categories" options-dense options-selected-class="text-secondary" :readonly="!sections.groups.length">
+      <q-select v-model="table.selectedCategories" class="q-mb-sm" color="secondary" dense label="Pokaż kategorie" :loading="!sections.groups.length" multiple :options="sections.categories" options-dense options-selected-class="text-secondary" :readonly="!sections.groups.length">
         <template #loading>
           <q-spinner />
         </template>
@@ -39,7 +48,7 @@ const { getApproximateMembersCount } = useGroup()
     <template #body-cell-name="props">
       <q-td :props="props">
         <small class="text-grey q-mr-xs">{{ props.row.index }}. </small>
-        <small class="text-secondary q-mr-xs">
+        <small v-if="props.row.members" class="text-secondary q-mr-xs">
           {{ getApproximateMembersCount(props.row.members) }}
         </small>
         <small v-if="props.row.isSection === false" class="text-secondary">

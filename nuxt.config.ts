@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   target: 'static',
   modules: ['@pinia/nuxt'],
   meta: {
-    title: 'Spis Sekcji JBwA i tag-grupek',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
