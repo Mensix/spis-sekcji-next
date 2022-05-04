@@ -17,6 +17,7 @@ const user = useUserStore()
 const sections = useSectionsStore()
 if (!sections.groups.length)
   sections.fetch()
+
 const taggroups = useTaggroupsStore()
 
 type FormGroupType = 'Sekcja' | 'Tag-grupka'
