@@ -1,5 +1,6 @@
 import { getDatabase, onValue, push, ref, remove } from 'firebase/database'
 import { defineStore } from 'pinia'
+import { Notify, Platform } from 'quasar'
 import { useUserStore } from './useUser'
 import type { Group, Groups } from '~~/types/Groups'
 
@@ -48,10 +49,26 @@ export const useSectionsStore = defineStore('sections', {
       const user = useUserStore()
       if (!isFavourite) {
         push(ref(getDatabase(), `users/${user.data.uid}/favourite-groups`), id)
+        if (Platform.is.mobile) {
+          Notify.create({
+            message: 'Pomyślnie dodano grupę do ulubionych.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 2500,
+          })
+        }
       }
       else {
-        const matchingGroup = Object.entries(this.favouriteGroups)?.find(x => x[1] === id)[0]
+        const matchingGroup = Object.entries(this.favouriteGroups)?.find(x => x[1] === id)![0]
         remove(ref(getDatabase(), `users/${user.data.uid}/favourite-groups/${matchingGroup}`))
+        if (Platform.is.mobile) {
+          Notify.create({
+            message: 'Pomyślnie usunięto grupę z ulubionych.',
+            icon: 'announcement',
+            position: 'bottom-right',
+            timeout: 2500,
+          })
+        }
       }
     },
   },

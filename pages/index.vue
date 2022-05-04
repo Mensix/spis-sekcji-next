@@ -18,7 +18,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
 </script>
 
 <template>
-  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
+  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :grid="$q.platform.is.mobile" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
     <template #top-left>
       <q-input v-model.trim="table.search" class="q-mb-sm" color="secondary" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
         <template v-if="sections.groups.length > 0" #append>
@@ -47,7 +47,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
         <small v-if="props.row.members" class="text-secondary q-mr-xs">
           {{ getApproximateMembersCount(props.row.members) }}
         </small>
-        <small v-if="props.row.isSection === false" class="text-secondary">
+        <small v-if="!props.row.isSection" class="text-secondary">
           <del>JBWA</del>
         </small>
         <span class="q-mr-xs">
@@ -80,5 +80,52 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
     </template>
 
     <template #body-cell-keywords />
+
+    <template #item="props">
+      <div class="col-12">
+        <q-card class="q-mb-md" flat :props="props">
+          <q-list dense>
+            <q-item>
+              <q-item-section>
+                <q-item-label caption>
+                  {{ props.cols[0].label }}
+                </q-item-label>
+                <q-item-label>
+                  <small class="text-grey q-mr-xs">{{ props.row.index }}.</small>
+                  <small v-if="props.row.members" class="text-secondary q-mr-xs">{{ getApproximateMembersCount(props.row.members) }}</small>
+                  <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
+                    <del>JBWA</del>
+                  </small>
+                  <span class="q-mr-xs">
+                    {{ props.row.name }}
+                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="14px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
+                      <q-tooltip v-if="!$q.platform.is.mobile">{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+                    </q-icon>
+                  </span>
+                </q-item-label>
+                <q-item-label caption>
+                  {{ props.cols[1].label }}
+                </q-item-label>
+                <q-item-label>
+                  {{ props.row.members !== 0 ? props.row.members : 'N/A' }}
+                </q-item-label>
+                <q-item-label caption>
+                  {{ props.cols[2].label }}
+                </q-item-label>
+                <q-item-label>
+                  <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[2].value }}</a>
+                </q-item-label>
+                <q-item-label v-if="props.cols[3].value" caption>
+                  {{ props.cols[3].label }}
+                </q-item-label>
+                <q-item-label v-if="props.cols[3].value">
+                  {{ props.cols[3].value?.join(', ') }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </div>
+    </template>
   </q-table>
 </template>
