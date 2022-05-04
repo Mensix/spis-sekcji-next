@@ -41,7 +41,7 @@ export const useSectionsStore = defineStore('sections', {
       onValue(ref(getDatabase(), `users/${user.data.uid}/favourite-groups`), (snapshot) => {
         const output = snapshot.val() as Record<string, string>
         this.favouriteGroups = output
-        this.groups = this.groups.map(x => ({ ...x, isFavourite: Object.values(output).includes(x.link) }))
+        this.groups = this.groups.map(x => ({ ...x, isFavourite: this.favouriteGroups && Object.values(output).includes(x.link) }))
       })
     },
     toggleFavourite(id: string, isFavourite: boolean) {
@@ -50,7 +50,7 @@ export const useSectionsStore = defineStore('sections', {
         push(ref(getDatabase(), `users/${user.data.uid}/favourite-groups`), id)
       }
       else {
-        const matchingGroup = Object.entries(this.favouriteGroups).find(x => x[1] === id)[0]
+        const matchingGroup = Object.entries(this.favouriteGroups)?.find(x => x[1] === id)[0]
         remove(ref(getDatabase(), `users/${user.data.uid}/favourite-groups/${matchingGroup}`))
       }
     },

@@ -56,22 +56,12 @@ const filteredSections = computed(() =>
         <small v-if="props.row.isSection === false" class="text-secondary">
           <del>JBWA</del>
         </small>
-        <span class="q-mr-xs">{{ props.row.name }}</span>
-        <q-icon
-          v-if="user.isLoggedIn"
-          class="cursor-pointer text-caption"
-          color="secondary"
-          :name="!props.row.isFavourite ? 'star_border' : 'star'"
-          @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)"
-        >
-          <q-tooltip>
-            {{
-              props.row.isFavourite
-                ? 'Usuń grupę z ulubionych'
-                : 'Dodaj grupę do ulubionych'
-            }}
-          </q-tooltip>
-        </q-icon>
+        <span class="q-mr-xs">
+          {{ props.row.name }}
+          <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="14px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
+            <q-tooltip>{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+          </q-icon>
+        </span>
       </q-td>
     </template>
 
