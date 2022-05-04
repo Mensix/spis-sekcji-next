@@ -11,5 +11,6 @@ export interface Group {
   link: string
   members: number
   name: string
+  isFavourite?: boolean
   isSection?: boolean
 }
