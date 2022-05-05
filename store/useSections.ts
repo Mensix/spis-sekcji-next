@@ -59,7 +59,7 @@ export const useSectionsStore = defineStore('sections', {
         }
       }
       else {
-        const matchingGroup = Object.entries(this.favouriteGroups)?.find(x => x[1] === id)![0]
+        const matchingGroup = Object.entries(this.favouriteGroups!).find(x => x[1] === id)![0]
         remove(ref(getDatabase(), `users/${user.data.uid}/favourite-groups/${matchingGroup}`))
         if (Platform.is.mobile) {
           Notify.create({
