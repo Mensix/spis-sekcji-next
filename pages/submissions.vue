@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
 import { useTaggroupsStore } from '~~/store/useTaggroups'
 import { useUserStore } from '~~/store/useUser'
-import type { Group } from '~~/types/Groups'
+import type { Group, Groups } from '~~/types/Groups'
 
 definePageMeta({
   layout: 'main',
@@ -59,7 +59,13 @@ function submitSumbission() {
       newGroups = [...taggroups.groups, { link, name, members }]
     }
 
-    set(ref(getDatabase(), form.type === 'Sekcja' ? 'sections/groups' : 'taggroups/grops'), newGroups)
+    const groups: Groups = {
+      name: form.type === 'Sekcja' ? 'sections' : 'taggroups',
+      lastUpdateDate: new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()),
+      groups: newGroups,
+    }
+    set(ref(getDatabase(), form.type === 'Sekcja' ? 'sections' : 'taggroups'), groups)
+      .then(() => resetForm())
   }
 }
 </script>

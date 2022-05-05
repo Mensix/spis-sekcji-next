@@ -1,6 +1,6 @@
 export interface Groups {
   groups: Group[]
-  favouriteGroups: Record<string, string>
+  favouriteGroups?: Record<string, string>
   lastUpdateDate: string
   name: string
 }

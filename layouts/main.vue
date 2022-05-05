@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { initializeApp } from '@firebase/app';
-import { LocalStorage, useQuasar } from 'quasar';
-import { useUserStore } from '~~/store/useUser';
+import { initializeApp } from '@firebase/app'
+import { LocalStorage, useQuasar } from 'quasar'
+import { useUserStore } from '~~/store/useUser'
 
 const user = useUserStore()
 const $q = useQuasar()
@@ -40,7 +40,7 @@ function toggleDarkMode() {
         </q-tabs>
         <q-btn v-if="!user.isLoggedIn" :loading="user.isLoggingIn" flat label="Zaloguj się" @click="user.signIn()" />
         <q-avatar v-else class="q-mr-sm" size="33px">
-          <img :src="user.data.photoURL">
+          <img :src="user.data.photoURL!">
           <q-tooltip>Cześć, {{ user.data.displayName.split(' ')[0] }}!</q-tooltip>
         </q-avatar>
         <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode()" />

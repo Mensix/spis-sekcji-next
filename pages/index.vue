@@ -14,7 +14,7 @@ sections.fetch()
 const { table, filterTable } = useTable()
 const { getApproximateMembersCount } = useGroup()
 
-const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category.includes(y)) : x))
+const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x))
 </script>
 
 <template>
