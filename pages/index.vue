@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useSectionsStore } from '~~/store/useSections';
-import { useUserStore } from '~~/store/useUser';
+import { useSectionsStore } from '~~/store/useSections'
+import { useUserStore } from '~~/store/useUser'
 
 definePageMeta({
   layout: 'main',
@@ -12,7 +12,7 @@ const sections = useSectionsStore()
 sections.fetch()
 
 const { table, filterTable } = useTable()
-const { getApproximateMembersCount } = useGroup()
+const { getApproximateMembersCount, deleteGroup } = useGroup()
 
 const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x))
 </script>
@@ -52,8 +52,11 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
         </small>
         <span class="q-mr-xs">
           {{ props.row.name }}
-          <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="14px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
-            <q-tooltip>{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+          <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
+            <q-tooltip v-if="!$q.platform.is.mobile">{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+          </q-icon>
+          <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
+            <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
           </q-icon>
         </span>
       </q-td>
@@ -98,8 +101,11 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
                   </small>
                   <span class="q-mr-xs">
                     {{ props.row.name }}
-                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="14px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
+                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
                       <q-tooltip v-if="!$q.platform.is.mobile">{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+                    </q-icon>
+                    <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
+                      <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
                     </q-icon>
                   </span>
                 </q-item-label>

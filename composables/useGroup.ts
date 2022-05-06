@@ -1,3 +1,9 @@
+import { getApp } from '@firebase/app'
+import { getDatabase, ref, set } from '@firebase/database'
+import { useSectionsStore } from '~~/store/useSections'
+import { useTaggroupsStore } from '~~/store/useTaggroups'
+import type { Groups } from '~~/types/Groups'
+
 export function useGroup() {
   function getApproximateMembersCount(members: number | undefined) {
     const memberRanges: [number, number, string][] = [
@@ -22,7 +28,19 @@ export function useGroup() {
     return memberRanges.find(x => members >= x[0] && members <= x[1])![2]
   }
 
+  function deleteGroup(name: 'sections' | 'taggroups', link: string) {
+    const runtimeConfig = useRuntimeConfig()
+    const newGroups = (name === 'sections' ? useSectionsStore().groups : useTaggroupsStore().groups).filter(x => x.link !== link)
+    const groups: Groups = {
+      name,
+      lastUpdateDate: new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()),
+      groups: newGroups,
+    }
+    set(ref(getDatabase(getApp()), `${name === 'sections' ? runtimeConfig.public.sectionsPath : runtimeConfig.public.taggroupsPath}`), groups)
+  }
+
   return {
     getApproximateMembersCount,
+    deleteGroup,
   }
 }

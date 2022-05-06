@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useTaggroupsStore } from '~~/store/useTaggroups'
+import { useUserStore } from '~~/store/useUser'
 
 definePageMeta({
   layout: 'main',
   title: 'Tag-grupki | Spis sekcji JBwA i tag-grupek',
 })
 
+const user = useUserStore()
 const taggroups = useTaggroupsStore()
 taggroups.fetch()
 
 const { table, filterTable } = useTable()
-const { getApproximateMembersCount } = useGroup()
+const { getApproximateMembersCount, deleteGroup } = useGroup()
 </script>
 
 <template>
@@ -38,7 +40,11 @@ const { getApproximateMembersCount } = useGroup()
         <small v-if="props.row.members" class="text-secondary q-mr-xs">
           {{ getApproximateMembersCount(props.row.members) }}
         </small>
-        <span class="q-mr-xs">{{ props.row.name }}</span>
+        <span class="q-mr-xs">
+          {{ props.row.name }}
+          <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('taggroups', props.row.link)">
+            <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
+          </q-icon></span>
       </q-td>
     </template>
 

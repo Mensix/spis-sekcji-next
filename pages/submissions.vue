@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDatabase, push, ref as databaseRef, set } from '@firebase/database'
+import { ref as databaseRef, getDatabase, push, set } from '@firebase/database'
 import { useQuasar } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
 import { useTaggroupsStore } from '~~/store/useTaggroups'

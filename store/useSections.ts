@@ -31,7 +31,7 @@ export const useSectionsStore = defineStore('sections', {
           .sort((e, a) => a.members - e.members)
           .map((_, idx) => ({
             ..._,
-            category: _.category?.sort() || undefined,
+            category: _.category?.sort() || null,
             index: idx + 1,
           }))
         this.lastUpdateDate = lastUpdateDate

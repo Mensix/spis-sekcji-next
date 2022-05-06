@@ -6,7 +6,7 @@ export interface Groups {
 }
 
 export interface Group {
-  category?: string[]
+  category: string[] | null
   keywords?: string[]
   link: string
   members: number
