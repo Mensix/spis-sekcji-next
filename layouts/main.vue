@@ -1,21 +1,55 @@
 <script setup lang="ts">
 import { initializeApp } from '@firebase/app'
-import { LocalStorage, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 import { useUserStore } from '~~/store/useUser'
 
 const runtimeConfig = useRuntimeConfig()
 const user = useUserStore()
 const $q = useQuasar()
 
-initializeApp(runtimeConfig.firebaseConfig)
+if ($q.localStorage.getItem('cookieConsent') === null) {
+  $q.notify({
+    message: 'Ta strona wykorzystuje pliki cookies w celu gromadzenia statystyk wyświetleń strony. Więcej informacji w znajdziesz w polityce prywatności.',
+    icon: 'announcement',
+    position: 'bottom-right',
+    timeout: 0,
+    actions: [
+      {
+        label: 'OK',
+        color: 'white',
+        handler: () => $q.localStorage.set('cookieConsent', true),
+      },
+    ],
+  })
+}
 
+if ($q.localStorage.getItem('accountInfoRead') === null) {
+  $q.notify({
+    message: 'Zaloguj się, aby móc zapisywać swoje ulubione grupy.',
+    icon: 'announcement',
+    position: 'bottom-right',
+    timeout: 0,
+    actions: [
+      {
+        label: 'OK',
+        color: 'white',
+        handler: () => $q.localStorage.set('accountInfoRead', true),
+      },
+    ],
+  })
+}
+
+if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+  $q.dark.set(true)
+
+initializeApp(runtimeConfig.firebaseConfig)
 user.update()
 
 const isAccountMenuShown = ref(false)
 
 function toggleDarkMode() {
   $q.dark.toggle()
-  LocalStorage.set('darkMode', $q.dark.isActive) // huh?
+  $q.localStorage.set('darkMode', $q.dark.isActive)
 }
 </script>
 
