@@ -3,20 +3,15 @@ import { initializeApp } from '@firebase/app'
 import { LocalStorage, useQuasar } from 'quasar'
 import { useUserStore } from '~~/store/useUser'
 
+const runtimeConfig = useRuntimeConfig()
 const user = useUserStore()
 const $q = useQuasar()
 
-initializeApp({
-  apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
-  authDomain: 'spissekcji.firebaseapp.com',
-  databaseURL: 'https://spissekcji.firebaseio.com',
-  projectId: 'spissekcji',
-  storageBucket: 'spissekcji.appspot.com',
-  messagingSenderId: '752464608547',
-  appId: '1:752464608547:web:7786ca37c8ae1dd0',
-})
+initializeApp(runtimeConfig.firebaseConfig)
 
 user.update()
+
+const isAccountMenuShown = ref(false)
 
 function toggleDarkMode() {
   $q.dark.toggle()
@@ -33,7 +28,7 @@ function toggleDarkMode() {
           Spis Sekcji
         </q-toolbar-title>
         <q-space />
-        <q-tabs shrink stretch class="q-mr-sm">
+        <q-tabs v-if="!$q.platform.is.mobile" shrink stretch class="q-mr-sm">
           <q-route-tab label="Sekcje" to="/" />
           <q-route-tab label="Tag-grupki" to="/taggroups" />
           <q-route-tab label="Zgłoś brakującą grupę" to="/submissions" />
@@ -41,7 +36,16 @@ function toggleDarkMode() {
         <q-btn v-if="!user.isLoggedIn" :loading="user.isLoggingIn" flat label="Zaloguj się" @click="user.signIn()" />
         <q-avatar v-else class="q-mr-sm" size="33px">
           <img :src="user.data.photoURL!">
-          <q-tooltip>Cześć, {{ user.data.displayName.split(' ')[0] }}!</q-tooltip>
+          <q-badge class="cursor-pointer" color="secondary" floating rounded>
+            <q-icon :name="isAccountMenuShown ? 'expand_less' : 'expand_more'" size="12px" />
+          </q-badge>
+          <q-menu v-model="isAccountMenuShown" transition-hide="jump-up" transition-show="jump-down">
+            <q-list>
+              <q-item v-close-popup clickable @click="user.signOut()">
+                <q-item-section>Wyloguj się</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-avatar>
         <q-btn flat round :icon="$q.dark.isActive ? 'dark_mode' : 'light_mode'" @click="toggleDarkMode()" />
       </q-toolbar>
@@ -74,6 +78,14 @@ function toggleDarkMode() {
           Polityka prywatności
         </nuxt-link>
       </p>
+    </q-footer>
+    <q-footer v-else bordered class="text-secondary" :class="{ 'bg-white': !$q.dark.isActive, 'bg-dark': $q.dark.isActive }">
+      <q-tabs no-caps shrink stretch switch-indicator>
+        <q-route-tab class="text-secondary" icon="view_list" label="Sekcje" to="/" />
+        <q-route-tab class="text-secondary" icon="list" label="Tag-grupki" to="/taggroups" />
+        <q-route-tab class="text-secondary" icon="edit" label="Zgłoś brakującą grupę" to="/submissions" />
+        <q-route-tab class="text-secondary" icon="lock_open" label="Prywatność" to="/privacy" />
+      </q-tabs>
     </q-footer>
   </q-layout>
 </template>

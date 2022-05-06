@@ -21,4 +21,19 @@ export default defineNuxtConfig({
     ],
   },
   css: ['quasar/dist/quasar.prod.css'],
+  runtimeConfig: {
+    public: {
+      firebaseConfig: {
+        apiKey: 'AIzaSyAF0NQG_JKmIjnHRzsDYxuWMjhyuF0RBeY',
+        authDomain: 'spissekcji.firebaseapp.com',
+        databaseURL: 'https://spissekcji.firebaseio.com',
+        projectId: 'spissekcji',
+        storageBucket: 'spissekcji.appspot.com',
+        messagingSenderId: '752464608547',
+        appId: '1:752464608547:web:7786ca37c8ae1dd0',
+      },
+      adminUid: '33WHe3ys0LhFhJACOQF3ZRamADE3',
+      sectionCategories: ['Ciało', 'Edukacja', 'Filmy i seriale', 'Gry', 'Historia', 'Hobby', 'Humor', 'Jedzenie i napoje', 'Kraje świata i języki', 'Muzyka', 'Nauka', 'Negatywne', 'Polityka', 'Pozytywne', 'Prawo', 'Przyroda', 'Pytania i dyskusje', 'Roleplay', 'Shitpost', 'Spierdolenie', 'Sport', 'Sztuka', 'Technologia', 'Wygląd i moda'],
+    },
+  },
 })

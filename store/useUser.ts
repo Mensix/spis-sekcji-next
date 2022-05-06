@@ -1,9 +1,8 @@
 import type { UserInfo } from '@firebase/auth'
 import { FacebookAuthProvider, browserLocalPersistence, getAuth, onAuthStateChanged, setPersistence, signInWithPopup, signOut } from '@firebase/auth'
 import { defineStore } from 'pinia'
+import { Notify } from 'quasar'
 import { useSectionsStore } from './useSections'
-
-const adminUid = '33WHe3ys0LhFhJACOQF3ZRamADE3'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -14,28 +13,41 @@ export const useUserStore = defineStore('user', {
     }
   },
   getters: {
-    isAdmin: state => state.isLoggedIn && state.data.uid === adminUid,
+    isAdmin: (state) => {
+      const runtimeConfig = useRuntimeConfig()
+      return state.isLoggedIn && state.data.uid === runtimeConfig.adminUid
+    },
   },
   actions: {
     signIn() {
+      this.isLoggingIn = true
+      const dismiss = Notify.create({
+        message: 'Oczekiwanie na zalogowanie się...',
+        icon: 'announcement',
+        position: 'bottom-right',
+      })
       setPersistence(getAuth(), browserLocalPersistence).then(() =>
         signInWithPopup(getAuth(), new FacebookAuthProvider())
           .then((result) => {
-            this.isLoggingIn = false
             this.isLoggedIn = true
+            this.isLoggingIn = false
             this.data = result.user
           })
           .then(() => {
             const sections = useSectionsStore()
             sections.fetchFavourite()
           })
-          .catch(() => this.isLoggingIn = false),
+          .catch(() => {
+            this.isLoggingIn = false
+            dismiss()
+          }),
       )
     },
     signOut() {
       signOut(getAuth()).then(() => this.isLoggedIn = false)
     },
     update() {
+      this.isLoggingIn = true
       const sections = useSectionsStore()
       onAuthStateChanged(getAuth(), async (result) => {
         if (result) {

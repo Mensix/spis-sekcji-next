@@ -47,7 +47,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
         <small v-if="props.row.members" class="text-secondary q-mr-xs">
           {{ getApproximateMembersCount(props.row.members) }}
         </small>
-        <small v-if="!props.row.isSection" class="text-secondary">
+        <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
           <del>JBWA</del>
         </small>
         <span class="q-mr-xs">
