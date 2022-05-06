@@ -12,7 +12,8 @@ export const useTaggroupsStore = defineStore('taggroups', {
   },
   actions: {
     fetch() {
-      onValue(ref(getDatabase(), 'taggroups'), (snapshot) => {
+      const runtimeConfig = useRuntimeConfig()
+      onValue(ref(getDatabase(), runtimeConfig.public.taggroupsPath), (snapshot) => {
         const { groups, lastUpdateDate, name } = snapshot.val() as Groups
         this.groups = groups
           .map(x => ({ ...x, members: x.members || 0 }))

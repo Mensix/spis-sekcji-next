@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     isAdmin: (state) => {
       const runtimeConfig = useRuntimeConfig()
-      return state.isLoggedIn && state.data.uid === runtimeConfig.adminUid
+      return state.isLoggedIn && state.data.uid === runtimeConfig.public.adminUid
     },
   },
   actions: {

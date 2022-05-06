@@ -42,7 +42,7 @@ if ($q.localStorage.getItem('accountInfoRead') === null) {
 if (window.matchMedia('(prefers-color-scheme: dark)').matches)
   $q.dark.set(true)
 
-initializeApp(runtimeConfig.firebaseConfig)
+initializeApp(runtimeConfig.public.firebaseConfig)
 user.update()
 
 const isAccountMenuShown = ref(false)

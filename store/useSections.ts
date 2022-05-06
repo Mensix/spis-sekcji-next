@@ -23,7 +23,8 @@ export const useSectionsStore = defineStore('sections', {
   },
   actions: {
     fetch() {
-      onValue(ref(getDatabase(), 'sections'), (snapshot) => {
+      const runtimeConfig = useRuntimeConfig()
+      onValue(ref(getDatabase(), runtimeConfig.public.sectionsPath), (snapshot) => {
         const { groups, lastUpdateDate, name } = snapshot.val() as Groups
         this.groups = groups
           .map(x => ({ ...x, members: x.members || 0 }))

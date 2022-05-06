@@ -26,7 +26,7 @@ const form = reactive({
   isBeingSent: false,
   wasSend: false,
 })
-const categories = ref(runtimeConfig.sectionCategories)
+const categories = runtimeConfig.public.sectionCategories
 
 function resetForm() {
   form.link = form.name = form.keywords = ''

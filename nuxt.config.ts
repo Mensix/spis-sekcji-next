@@ -34,6 +34,8 @@ export default defineNuxtConfig({
       },
       adminUid: '33WHe3ys0LhFhJACOQF3ZRamADE3',
       sectionCategories: ['Ciało', 'Edukacja', 'Filmy i seriale', 'Gry', 'Historia', 'Hobby', 'Humor', 'Jedzenie i napoje', 'Kraje świata i języki', 'Muzyka', 'Nauka', 'Negatywne', 'Polityka', 'Pozytywne', 'Prawo', 'Przyroda', 'Pytania i dyskusje', 'Roleplay', 'Shitpost', 'Spierdolenie', 'Sport', 'Sztuka', 'Technologia', 'Wygląd i moda'],
+      sectionsPath: process.env.NODE_ENV === 'production' ? 'sections' : 'sections-test',
+      taggroupsPath: process.env.NODE_ENV === 'production' ? 'taggroups' : 'taggroups-test',
     },
   },
 })
