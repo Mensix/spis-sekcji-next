@@ -1,24 +1,39 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar'
+import EditGroupDialog from '~~/components/edit-group-dialog.vue'
 import { useSectionsStore } from '~~/store/useSections'
 import { useUserStore } from '~~/store/useUser'
+import type { Group } from '~~/types/Groups'
 
 definePageMeta({
   layout: 'main',
   title: 'Sekcje | Spis sekcji JBwA i tag-grupek',
 })
 
+const runtimeConfig = useRuntimeConfig()
 const user = useUserStore()
 const sections = useSectionsStore()
 sections.fetch()
 
-const { table, filterTable } = useTable()
+const $q = useQuasar()
+const { table, filterTable, scrollToTop } = useTable()
 const { getApproximateMembersCount, deleteGroup } = useGroup()
 
 const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x))
+
+function showEditGroupDialog(group: Group) {
+  $q.dialog({
+    component: EditGroupDialog,
+    componentProps: {
+      name: runtimeConfig.public.sectionsPath,
+      group,
+    },
+  })
+}
 </script>
 
 <template>
-  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :grid="$q.platform.is.mobile" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']">
+  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :grid="$q.platform.is.mobile" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']" @update:pagination="scrollToTop">
     <template #top-left>
       <q-input v-model.trim="table.search" class="q-mb-sm" color="secondary" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
         <template v-if="sections.groups.length > 0" #append>
@@ -53,10 +68,13 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
         <span class="q-mr-xs">
           {{ props.row.name }}
           <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
-            <q-tooltip v-if="!$q.platform.is.mobile">{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
+            <q-tooltip>{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
           </q-icon>
           <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
-            <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
+            <q-tooltip>Usuń grupę</q-tooltip>
+          </q-icon>
+          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row)">
+            <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
         </span>
       </q-td>
@@ -101,12 +119,9 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
                   </small>
                   <span class="q-mr-xs">
                     {{ props.row.name }}
-                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
-                      <q-tooltip v-if="!$q.platform.is.mobile">{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
-                    </q-icon>
-                    <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
-                      <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
-                    </q-icon>
+                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)" />
+                    <q-icon color="secondary" name="mode_edit_outline" @click="showEditGroupDialog(props.row)" />
+                    <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)" />
                   </span>
                 </q-item-label>
                 <q-item-label caption>

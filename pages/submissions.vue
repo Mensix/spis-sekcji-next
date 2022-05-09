@@ -33,13 +33,15 @@ function resetForm() {
   form.members = 0
   form.category = []
   form.isBeingSent = false
-  form.wasSend = true
+  if (!user.isAdmin)
+    form.wasSend = true
 }
 
 function submitSumbission() {
   form.isBeingSent = true
+  const { category, keywords, link } = form
   if (!user.isAdmin) {
-    push(databaseRef(getDatabase(), 'submissions'), { category: form.category, keywords: form.keywords, link: form.link })
+    push(databaseRef(getDatabase(), 'submissions'), { category, keywords, link })
       .then(() => resetForm())
   }
   else {
@@ -60,13 +62,13 @@ function submitSumbission() {
       newGroups = [...taggroups.groups, { link, name, members }]
     }
 
+    const databasePath = form.type === 'Sekcja' ? runtimeConfig.public.sectionsPath : runtimeConfig.public.taggroupsPath
     const groups: Groups = {
-      name: form.type === 'Sekcja' ? 'sections' : 'taggroups',
+      name: databasePath,
       lastUpdateDate: new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()),
       groups: newGroups,
     }
-    set(databaseRef(getDatabase(), form.type === 'Sekcja' ? 'sections' : 'taggroups'), groups)
-      .then(() => resetForm())
+    set(databaseRef(getDatabase(), databasePath), groups).then(() => resetForm())
   }
 }
 </script>

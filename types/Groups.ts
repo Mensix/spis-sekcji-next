@@ -6,10 +6,11 @@ export interface Groups {
 }
 
 export interface Group {
-  category: string[] | null
+  index?: number
+  category?: string[]
   keywords?: string[]
   link: string
-  members: number
+  members?: number
   name: string
   isFavourite?: boolean
   isSection?: boolean

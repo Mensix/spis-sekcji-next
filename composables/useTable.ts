@@ -34,7 +34,7 @@ export function useTable() {
     pagination: {
       descending: true,
       page: 0,
-      rowsPerPage: 20,
+      rowsPerPage: 40,
       rowsCount: 0,
     },
   })
@@ -50,8 +50,13 @@ export function useTable() {
     )
   }
 
+  function scrollToTop() {
+    window.scrollTo(0, 0)
+  }
+
   return {
     table,
     filterTable,
+    scrollToTop,
   }
 }

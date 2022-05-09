@@ -39,8 +39,13 @@ export function useGroup() {
     set(ref(getDatabase(getApp()), `${name === 'sections' ? runtimeConfig.public.sectionsPath : runtimeConfig.public.taggroupsPath}`), groups)
   }
 
+  function stripLink(link: string) {
+    return new URL(link).pathname.split('/')[2]
+  }
+
   return {
     getApproximateMembersCount,
     deleteGroup,
+    stripLink,
   }
 }
