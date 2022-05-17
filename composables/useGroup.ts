@@ -23,7 +23,7 @@ export function useGroup() {
     ]
 
     if (!members)
-      return null
+      return '0+'
 
     return memberRanges.find(x => members >= x[0] && members <= x[1])![2]
   }

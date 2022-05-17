@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref as dbRef, getDatabase, push, update } from '@firebase/database'
+import { getDatabase, push, ref as dbRef, update } from '@firebase/database'
 import type { QDialog } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
 import { useUserStore } from '~~/store/useUser'
@@ -26,7 +26,7 @@ const form = reactive({
   name: props.group.name,
   link: {
     value: `https://facebook.com/groups/${props.group.link}`,
-    valid: true,
+    isValid: true,
   },
   category: props.group.category || [],
   keywords: props.group.keywords ? props.group.keywords.join(',') : '',
@@ -36,11 +36,13 @@ const form = reactive({
   isBeingSent: false,
   wasSend: false,
 })
-const initialForm = { ...form }
+const initialForm = { ...form, link: { ...form.link } }
 
-watch(() => ({ ...form }), () => {
+watchEffect(() => {
+  form.link.isValid = /facebook.com\/groups\/[A-Za-z0-9+]/.test(form.link.value)
   const areArraysEqual = (array1: string[], array2: string[]): boolean => (array1.length === array2.length) && (array1.every(x => array2.includes(x)))
-  if (form.name === initialForm.name && form.link.value === initialForm.link.value && areArraysEqual(form.category, initialForm.category) && form.keywords === initialForm.keywords && form.members === initialForm.members)
+
+  if ((form.name === initialForm.name && form.link.value === initialForm.link.value && areArraysEqual(form.category, initialForm.category) && form.keywords === initialForm.keywords && form.members === initialForm.members) || !form.link.isValid)
     form.canBeSent = false
   else
     form.canBeSent = true
@@ -51,22 +53,26 @@ function submitSubmission() {
   form.isBeingSent = true
   const { name, link: { value: link }, category, keywords, members } = form
 
-  if ((/.*facebook.com\/groups\//).test(link))
-    form.link.valid = false
+  if (!(/.*facebook.com\/groups\//).test(link))
+    form.canBeSent = false
 
-  if (form.link.valid) {
+  if (form.canBeSent) {
     if (!user.isAdmin) {
       push(dbRef(getDatabase(), 'submissions'), { name, link, category, keywords, members })
-        .then(() => hide())
+        .then(() => {
+          form.wasSend = true
+          hide()
+        })
     }
     else {
       update(dbRef(getDatabase(), `${props.name}/groups/${props.group.index! - 1}`), { name, link: stripLink(link), category, keywords, members })
-        .then(() => update(dbRef(getDatabase(), props.name), new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })))
-        .then(() => hide())
+        .then(() => update(dbRef(getDatabase(), `${props.name}/lastUpdateDate`), new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })))
+        .then(() => {
+          form.wasSend = true
+          hide()
+        })
     }
   }
-
-  form.wasSend = true
 }
 
 function show() {
@@ -96,7 +102,7 @@ function onDialogHide() {
               <q-icon name="segment" />
             </template>
           </q-input>
-          <q-input v-model.trim="form.link.value" hide-bottom-space :error="!form.link.valid" error-message="Nieprawidłowy link do grupy." color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label>
+          <q-input v-model.trim="form.link.value" hide-bottom-space :error="!form.link.isValid" error-message="Nieprawidłowy link do grupy." color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label>
             <template #append>
               <q-icon name="link" />
             </template>
