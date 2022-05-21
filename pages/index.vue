@@ -61,7 +61,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
           <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
             <q-tooltip>Usuń grupę</q-tooltip>
           </q-icon>
-          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, $q, runtimeConfig.public.sectionsPath)">
+          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)">
             <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
         </span>
@@ -91,50 +91,48 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
     <template #body-cell-keywords />
 
     <template #item="props">
-      <div class="col-12">
-        <q-card class="q-mb-md" flat :props="props">
-          <q-list dense>
-            <q-item>
-              <q-item-section>
-                <q-item-label caption>
-                  {{ props.cols[0].label }}
-                </q-item-label>
-                <q-item-label>
-                  <small class="text-grey q-mr-xs">{{ props.row.index }}.</small>
-                  <small v-if="props.row.members" class="text-secondary q-mr-xs">{{ getApproximateMembersCount(props.row.members) }}</small>
-                  <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
-                    <del>JBWA</del>
-                  </small>
-                  <span class="q-mr-xs">
-                    {{ props.row.name }}
-                    <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)" />
-                    <q-icon color="secondary" name="mode_edit_outline" @click="showEditGroupDialog(props.row, $q, runtimeConfig.public.sectionsPath)" />
-                    <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)" />
-                  </span>
-                </q-item-label>
-                <q-item-label caption>
-                  {{ props.cols[1].label }}
-                </q-item-label>
-                <q-item-label>
-                  {{ props.row.members !== 0 ? props.row.members : 'N/A' }}
-                </q-item-label>
-                <q-item-label caption>
-                  {{ props.cols[2].label }}
-                </q-item-label>
-                <q-item-label>
-                  <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[2].value }}</a>
-                </q-item-label>
-                <q-item-label v-if="props.cols[3].value" caption>
-                  {{ props.cols[3].label }}
-                </q-item-label>
-                <q-item-label v-if="props.cols[3].value">
-                  {{ props.cols[3].value?.join(', ') }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </div>
+      <q-card class="col-12 q-mb-md" flat :props="props">
+        <q-list dense>
+          <q-item>
+            <q-item-section>
+              <q-item-label caption>
+                {{ props.cols[0].label }}
+              </q-item-label>
+              <q-item-label>
+                <small class="text-grey q-mr-xs">{{ props.row.index }}.</small>
+                <small v-if="props.row.members" class="text-secondary q-mr-xs">{{ getApproximateMembersCount(props.row.members) }}</small>
+                <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
+                  <del>JBWA</del>
+                </small>
+                <span class="q-mr-xs">
+                  {{ props.row.name }}
+                  <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)" />
+                  <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)" />
+                  <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)" />
+                </span>
+              </q-item-label>
+              <q-item-label caption>
+                {{ props.cols[1].label }}
+              </q-item-label>
+              <q-item-label>
+                {{ props.row.members !== 0 ? props.row.members : 'N/A' }}
+              </q-item-label>
+              <q-item-label caption>
+                {{ props.cols[2].label }}
+              </q-item-label>
+              <q-item-label>
+                <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[2].value }}</a>
+              </q-item-label>
+              <q-item-label v-if="props.cols[3].value" caption>
+                {{ props.cols[3].label }}
+              </q-item-label>
+              <q-item-label v-if="props.cols[3].value">
+                {{ props.cols[3].value?.join(', ') }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card>
     </template>
   </q-table>
 </template>

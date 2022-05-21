@@ -1,6 +1,6 @@
 import { getApp } from '@firebase/app'
 import { getDatabase, ref, set } from '@firebase/database'
-import type { QVueGlobals } from 'quasar'
+import { Dialog } from 'quasar'
 import { EditGroupDialog } from '~~/.nuxt/components'
 import { useSectionsStore } from '~~/store/useSections'
 import { useTaggroupsStore } from '~~/store/useTaggroups'
@@ -45,8 +45,8 @@ export function useGroup() {
     return new URL(link).pathname.split('/')[2]
   }
 
-  function showEditGroupDialog(group: Group, $q: QVueGlobals, name: string) {
-    $q.dialog({
+  function showEditGroupDialog(group: Group, name: string) {
+    Dialog.create({
       component: EditGroupDialog,
       componentProps: {
         name,

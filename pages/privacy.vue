@@ -46,7 +46,7 @@ const $q = useQuasar()
         </p>
       </div>
       <div>
-        <h6 :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive, 'q-ma-none q-mb-md': true }">
+        <h6 class="q-ma-none q-mb-md" :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }">
           Kontakt
         </h6>
         <p class="q-ma-none">

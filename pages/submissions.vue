@@ -76,7 +76,7 @@ function submitSumbission() {
 
 <template>
   <div class="row justify-center items-center q-px-md">
-    <div class="col-xs-12 col-sm-12 col-md-4" :class="{'q-pt-md': $q.platform.is.mobile, 'q-pa-lg': $q.platform.is.desktop}">
+    <div class="col-xs-12 col-sm-12 col-md-4" :class="{ 'q-pt-md': $q.platform.is.mobile, 'q-pa-lg': $q.platform.is.desktop }">
       <q-form class="q-gutter-y-md" @submit="submitSumbission">
         <q-select v-model="form.type" color="secondary" :disable="form.isBeingSent" label="Typ grupy" :options="['Sekcja', 'Tag-grupka']" options-dense options-selected-class="text-secondary" outlined square stack-label />
         <q-input v-if="user.isAdmin" v-model.trim="form.name" color="secondary" :disable="form.isBeingSent" label="Nazwa grupy" outlined required square stack-label>

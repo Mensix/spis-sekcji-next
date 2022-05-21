@@ -55,7 +55,7 @@ function toggleDarkMode() {
 
 <template>
   <q-layout :view="$q.platform.is.desktop ? 'hHh lpR fff' : 'hHh lpR fFf'">
-    <q-header bordered :class="{ 'text-secondary': true, 'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive }">
+    <q-header bordered class="text-secondary" :class="{ 'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive }">
       <q-toolbar>
         <q-toolbar-title shrink class="flex items-center">
           <q-icon name="subject" class="q-mr-sm" />
@@ -87,7 +87,7 @@ function toggleDarkMode() {
     <q-page-container>
       <slot />
     </q-page-container>
-    <q-footer v-if="!$q.platform.is.mobile" bordered :class="{ 'bg-white text-black': !$q.dark.isActive, 'bg-dark text-white': $q.dark.isActive, 'text-center q-pa-lg': true, }">
+    <q-footer v-if="!$q.platform.is.mobile" bordered class="text-center q-pa-lg" :class="{ 'bg-white text-black': !$q.dark.isActive, 'bg-dark text-white': $q.dark.isActive }">
       <p class="q-ma-none">
         Autorzy spisu dziękują Aleksandrze Marczuk i Adamowi Firynowiczowi za
         <a class="text-secondary" href="https://docs.google.com/spreadsheets/d/1b0oBrpdNXqfWx35kT4xhG0OiPY2OnYJmklGHshlv7_E/edit?fbclid=IwAR3f5V_DlCrZbtxYhKdDMV7hTiCpRaNtx5OvpZYTNpTBhkokxKafz7xzOfo/" rel="noopener noreferrer" target="_blank">
