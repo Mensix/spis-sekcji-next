@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
-import EditGroupDialog from '~~/components/edit-group-dialog.vue'
 import { useSectionsStore } from '~~/store/useSections'
 import { useUserStore } from '~~/store/useUser'
-import type { Group } from '~~/types/Groups'
 
 definePageMeta({
   layout: 'main',
@@ -17,19 +15,9 @@ sections.fetch()
 
 const $q = useQuasar()
 const { table, filterTable, scrollToTop } = useTable()
-const { getApproximateMembersCount, deleteGroup } = useGroup()
+const { getApproximateMembersCount, deleteGroup, showEditGroupDialog } = useGroup()
 
 const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x))
-
-function showEditGroupDialog(group: Group) {
-  $q.dialog({
-    component: EditGroupDialog,
-    componentProps: {
-      name: runtimeConfig.public.sectionsPath,
-      group,
-    },
-  })
-}
 </script>
 
 <template>
@@ -51,7 +39,7 @@ function showEditGroupDialog(group: Group) {
       <p class="q-ma-none">
         Autorzy: Grzegorz Perun & Daniel Nguyen
       </p>
-      <p class="q-mb-sm" :class="{ 'text-transparent': !sections.lastUpdateDate.length}">
+      <p class="q-mb-sm" :class="{ 'text-transparent': !sections.lastUpdateDate.length }">
         Ostatnia aktualizacja: {{ sections.lastUpdateDate }}
       </p>
     </template>
@@ -73,7 +61,7 @@ function showEditGroupDialog(group: Group) {
           <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
             <q-tooltip>Usuń grupę</q-tooltip>
           </q-icon>
-          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row)">
+          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, $q, runtimeConfig.public.sectionsPath)">
             <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
         </span>
@@ -120,7 +108,7 @@ function showEditGroupDialog(group: Group) {
                   <span class="q-mr-xs">
                     {{ props.row.name }}
                     <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)" />
-                    <q-icon color="secondary" name="mode_edit_outline" @click="showEditGroupDialog(props.row)" />
+                    <q-icon color="secondary" name="mode_edit_outline" @click="showEditGroupDialog(props.row, $q, runtimeConfig.public.sectionsPath)" />
                     <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)" />
                   </span>
                 </q-item-label>

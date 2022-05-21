@@ -1,8 +1,10 @@
 import { getApp } from '@firebase/app'
 import { getDatabase, ref, set } from '@firebase/database'
+import type { QVueGlobals } from 'quasar'
+import { EditGroupDialog } from '~~/.nuxt/components'
 import { useSectionsStore } from '~~/store/useSections'
 import { useTaggroupsStore } from '~~/store/useTaggroups'
-import type { Groups } from '~~/types/Groups'
+import type { Group, Groups } from '~~/types/Groups'
 
 export function useGroup() {
   function getApproximateMembersCount(members: number | undefined) {
@@ -43,9 +45,20 @@ export function useGroup() {
     return new URL(link).pathname.split('/')[2]
   }
 
+  function showEditGroupDialog(group: Group, $q: QVueGlobals, name: string) {
+    $q.dialog({
+      component: EditGroupDialog,
+      componentProps: {
+        name,
+        group,
+      },
+    })
+  }
+
   return {
     getApproximateMembersCount,
     deleteGroup,
     stripLink,
+    showEditGroupDialog,
   }
 }

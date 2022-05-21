@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getDatabase, push, ref as dbRef, update } from '@firebase/database'
+import { ref as dbRef, getDatabase, push, update } from '@firebase/database'
 import type { QDialog } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
 import { useUserStore } from '~~/store/useUser'
