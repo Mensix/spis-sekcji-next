@@ -7,7 +7,7 @@ export interface Groups {
 
 export interface Group {
   index?: number
-  category?: string[]
+  category?: string[] | null
   keywords?: string[]
   link: string
   members?: number

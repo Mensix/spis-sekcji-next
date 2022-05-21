@@ -89,7 +89,7 @@ function submitSumbission() {
             <q-icon name="plus_one" />
           </template>
         </q-input>
-        <q-input v-model.trim="form.link" color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label>
+        <q-input v-model.trim="form.link" color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label error-message="Nieprawidłowy link do grupy." :error="!(/.*facebook.com\/groups\//).test(form.link)">
           <template #append>
             <q-icon name="link" />
           </template>
