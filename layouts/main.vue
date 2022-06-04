@@ -115,9 +115,9 @@ function toggleDarkMode() {
     </q-footer>
     <q-footer v-else bordered class="text-secondary" :class="{ 'bg-white': !$q.dark.isActive, 'bg-dark': $q.dark.isActive }">
       <q-tabs no-caps shrink stretch switch-indicator>
-        <q-route-tab class="text-secondary" icon="view_list" label="Sekcje" to="/" />
+        <q-route-tab class="text-secondary" icon="list" label="Sekcje" to="/" />
         <q-route-tab class="text-secondary" icon="list" label="Tag-grupki" to="/taggroups" />
-        <q-route-tab class="text-secondary" icon="edit" label="Zgłoś brakującą grupę" to="/submissions" />
+        <q-route-tab class="text-secondary" icon="plus_one" label="Zgłoś brakującą grupę" to="/submissions" />
         <q-route-tab class="text-secondary" icon="lock_open" label="Prywatność" to="/privacy" />
       </q-tabs>
     </q-footer>
