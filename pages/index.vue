@@ -17,7 +17,8 @@ const $q = useQuasar()
 const { table, filterTable, scrollToTop } = useTable()
 const { getApproximateMembersCount, deleteGroup, showEditGroupDialog } = useGroup()
 
-const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x))
+const shouldShowOnlyFavouriteGroups = ref(false)
+const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x).filter(x => shouldShowOnlyFavouriteGroups.value && user.isLoggedIn ? x.isFavourite : x))
 </script>
 
 <template>
@@ -42,6 +43,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
       <p class="q-mb-sm" :class="{ 'text-transparent': !sections.lastUpdateDate.length }">
         Ostatnia aktualizacja: {{ sections.lastUpdateDate }}
       </p>
+      <q-toggle v-if="user.isLoggedIn && sections.groups.length" v-model="shouldShowOnlyFavouriteGroups" color="secondary" label="Wyświetl tylko ulubione grupy" left-label />
     </template>
 
     <template #body-cell-name="props">
