@@ -5,15 +5,16 @@ export default defineNuxtConfig({
   target: 'static',
   modules: ['@pinia/nuxt'],
   meta: {
+    title: 'Spis Sekcji JBwA i tag-grupek',
     meta: [
       { charset: 'utf-8' },
       { name: 'google-site-verification', content: 'c1dAiTh8lSLdrIMc7DzSOqfwPYnwv6emDXwW1p6wtcQ' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej.' },
+      { name: 'description', content: 'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią strony internetowej.' },
       { property: 'og:type', content: 'website', hid: 'og:type' },
       { property: 'og:title', content: 'Spis Sekcji JBwA i tag-grupek', hid: 'og:title' },
       { property: 'og:url', content: 'https://sekcje.github.io/', hid: 'og:url' },
-      { property: 'og:description', content: 'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej', hid: 'og:description' },
+      { property: 'og:description', content: 'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią strony internetowej', hid: 'og:description' },
       { property: 'og:image', content: 'og:image.png', hid: 'og:image' },
     ],
     link: [
