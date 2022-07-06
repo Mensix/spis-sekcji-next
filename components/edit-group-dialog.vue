@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref as databaseRef, getDatabase, push, update } from '@firebase/database'
-import type { QDialog } from 'quasar'
+import { QDialog } from 'quasar'
 import { useSectionsStore } from '~~/store/useSections'
 import { useUserStore } from '~~/store/useUser'
 import type { Group } from '~~/types/Groups'
@@ -97,7 +97,7 @@ function onDialogHide() {
               <q-icon name="segment" />
             </template>
           </q-input>
-          <q-input v-model.trim="form.link" hide-bottom-space :error="/facebook.com\/groups\/[A-Za-z0-9+]/.test(form.link)" error-message="Nieprawidłowy link do grupy." color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label @error="form.canBeSent = false">
+          <q-input v-model.trim="form.link" hide-bottom-space :error="!/facebook.com\/groups\/[A-Za-z0-9+]/.test(form.link)" error-message="Nieprawidłowy link do grupy." color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label @error="form.canBeSent = false">
             <template #append>
               <q-icon name="link" />
             </template>

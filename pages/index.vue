@@ -61,7 +61,7 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
           <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
             <q-tooltip>Usuń grupę</q-tooltip>
           </q-icon>
-          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)">
+          <q-icon color="secondary" class="cursor-pointer" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)">
             <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
         </span>

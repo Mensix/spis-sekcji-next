@@ -48,7 +48,7 @@ const { getApproximateMembersCount, deleteGroup, showEditGroupDialog } = useGrou
           <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('taggroups', props.row.link)">
             <q-tooltip v-if="!$q.platform.is.mobile">Usuń grupę</q-tooltip>
           </q-icon>
-          <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.taggroupsPath)">
+          <q-icon color="secondary" name="mode_edit_outline" class="cursor-pointer" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.taggroupsPath)">
             <q-tooltip>Edytuj dane grupy</q-tooltip>
           </q-icon>
         </span>
