@@ -23,6 +23,7 @@ const form = reactive({
   members: 0,
   category: [] as string[],
   keywords: '',
+  canBeSent: true,
   isBeingSent: false,
   wasSend: false,
 })
@@ -89,7 +90,7 @@ function submitSumbission() {
             <q-icon name="plus_one" />
           </template>
         </q-input>
-        <q-input v-model.trim="form.link" color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label error-message="Nieprawidłowy link do grupy." :error="!!form.link && !(/.*facebook.com\/groups\//).test(form.link)" hide-bottom-space>
+        <q-input v-model.trim="form.link" color="secondary" :disable="form.isBeingSent" label="Link do grupy" outlined required square stack-label error-message="Nieprawidłowy link do grupy." :error="!!form.link && !(/.*facebook.com\/groups\//).test(form.link)" hide-bottom-space @error="form.canBeSent = false">
           <template #append>
             <q-icon name="link" />
           </template>
@@ -100,7 +101,7 @@ function submitSumbission() {
             <q-icon name="list" />
           </template>
         </q-input>
-        <q-btn color="secondary" :disable="form.isBeingSent" label="Wyślij" :loading="form.isBeingSent" no-caps outline type="submit" />
+        <q-btn color="secondary" :disable="!form.canBeSent || form.isBeingSent" label="Wyślij" :loading="form.isBeingSent" no-caps outline type="submit" />
       </q-form>
     </div>
     <q-dialog v-model="form.wasSend">
