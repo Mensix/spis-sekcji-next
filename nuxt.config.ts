@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   meta: {
     meta: [
       { charset: 'utf-8' },
+      { name: 'google-site-verification', content: 'c1dAiTh8lSLdrIMc7DzSOqfwPYnwv6emDXwW1p6wtcQ' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Na bieżąco aktualizowany największy spis sekcji JBwA i tag-grupek pod postacią eleganckiej strony internetowej.' },
       { property: 'og:type', content: 'website', hid: 'og:type' },
