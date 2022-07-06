@@ -1,6 +1,6 @@
-import { reactive } from '@nuxtjs/composition-api'
+import type { QTableColumn } from 'quasar'
 
-export default function () {
+export function useTable() {
   const table = reactive({
     search: '',
     selectedCategories: [],
@@ -30,46 +30,33 @@ export default function () {
         name: 'keywords',
         field: 'keywords',
       },
-    ],
+    ] as QTableColumn[],
     pagination: {
       descending: true,
       page: 0,
-      rowsPerPage: 20,
+      rowsPerPage: 40,
       rowsCount: 0,
     },
   })
 
-  function filterTable(rows, terms, cols, cellValue) {
+  function filterTable(rows, terms: string, cols, cellValue) {
     const lowerTerms = terms ? terms.toLowerCase() : ''
-    return rows.filter((row) =>
+    return rows.filter(row =>
       cols.some((col) => {
-        const val = cellValue(col, row) + ''
-        const haystack =
-          val === 'undefined' || val === 'null' ? '' : val.toLowerCase()
-        return (
-          (col.name === 'name' ||
-            col.name === 'link' ||
-            col.name === 'keywords') &&
-          haystack.includes(lowerTerms)
-        )
-      })
+        const val = `${cellValue(col, row)}`
+        const haystack = val?.toLowerCase()
+        return ((col.name === 'name' || col.name === 'link' || col.name === 'keywords') && haystack.includes(lowerTerms))
+      }),
     )
   }
 
-  function getPaginationText(scope, ref) {
-    return `${
-      (scope.pagination?.page - 1) * scope.pagination?.rowsPerPage + 1
-    }-${
-      scope?.isLastPage
-        ? ref?.computedRowsNumber
-        : (scope.pagination?.page - 1) * scope.pagination?.rowsPerPage + 20
-    }
-      z ${ref?.computedRowsNumber}`
+  function scrollToTop() {
+    window.scrollTo(0, 0)
   }
 
   return {
     table,
     filterTable,
-    getPaginationText,
+    scrollToTop,
   }
 }
