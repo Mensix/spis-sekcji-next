@@ -20,7 +20,7 @@ To setup your custom development environment, modify the runtimeConfig object in
 
 ## Important
 
-The code has been rewritten to ground, with switching to Nuxt 3 and its ecosystem (including TypeScript support). There are some still things to be done, but they don't affect user experience that much:
+The code has been rewritten from the ground, with switching to Nuxt 3 and its ecosystem (including TypeScript support). There are some still things to be done, but they don't affect user experience that much:
 - prevent from sending forms (submissions, editing group dialog) when validation error occurs
 - think of splitting long lines of code
 
