@@ -39,7 +39,7 @@ if ($q.localStorage.getItem('accountInfoRead') === null) {
   })
 }
 
-if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+if (window.matchMedia('(prefers-color-scheme: dark)').matches || $q.localStorage.getItem('darkMode'))
   $q.dark.set(true)
 
 initializeApp(runtimeConfig.public.firebaseConfig)
