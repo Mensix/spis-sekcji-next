@@ -15,7 +15,7 @@
     "prettier": "^2.7.1"
   },
   "dependencies": {
-    "@pinia/nuxt": "^0.3.1",
+    "@pinia/nuxt": "^0.4.0",
     "firebase": "^9.9.2",
     "pinia": "^2.0.17",
     "quasar": "^2.7.7",
