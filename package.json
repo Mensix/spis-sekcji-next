@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
-    "@antfu/eslint-config-basic": "^0.25.2",
+    "@antfu/eslint-config-basic": "^0.39.0",
     "@antfu/eslint-config-ts": "^0.25.2",
     "eslint": "^8.21.0",
     "nuxt": "^3.0.0-rc.4",
