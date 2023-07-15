@@ -1,29 +1,63 @@
-# Spis Sekcji JBwA i tag-grupek
+# Nuxt 3 Minimal Starter
 
-The database containing almost complete list of Facebook groups belonging to one of the most popular polish internet community.
-
-## Stack
-
-* Nuxt
-* Vue
-* Quasar
-* Firebase
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
 
-To setup your custom development environment, modify the runtimeConfig object in nuxt.config.ts file to fit your needs.
+Make sure to install the dependencies:
 
-1. `git clone https://github.com/Mensix/spis-sekcji-next.git`
-2. `cd spis-sekcji-next`
-3. `npm install`
-4. `npm run dev`
+```bash
+# npm
+npm install
 
-## Important
+# pnpm
+pnpm install
 
-The code has been rewritten from the ground, with switching to Nuxt 3 and its ecosystem (including TypeScript support). There are some still things to be done, but they don't affect user experience that much:
-- prevent from sending forms (submissions, editing group dialog) when validation error occurs
-- think of splitting long lines of code
+# yarn
+yarn install
+```
 
-## License
+## Development Server
 
-[MIT](https://choosealicense.com/licenses/mit/)
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
