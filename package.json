@@ -7,8 +7,15 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.39.8",
     "@nuxt/devtools": "latest",
     "@types/node": "^18.16.19",
-    "nuxt": "^3.6.2"
+    "eslint": "^8.45.0",
+    "nuxt": "^3.6.2",
+    "nuxt-quasar-ui": "^2.0.4"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.16.5",
+    "quasar": "^2.12.2"
   }
 }
