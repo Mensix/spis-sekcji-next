@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     head: {
       title: 'Spis sekcji JBwA i tag-grupek',
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '~/assets/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
       ],
       meta: [
         { charset: 'utf-8' },
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' },
         { hid: 'og:title', property: 'og:title', content: 'Spis sekcji JBwA i tag-grupek' },
         { hid: 'og:description', property: 'og:description', content: 'Największy w polskim internecie spis sekcji JBwA i tag-grupek' },
-        { hid: 'og:image', property: 'og:image', content: '~/assets/og:img.png' },
+        { hid: 'og:image', property: 'og:image', content: 'og:img.png' },
         { hid: 'og:url', property: 'og:url', content: 'https://sekcje.github.io/' },
         { hid: 'og:type', property: 'og:type', content: 'website' },
       ],
