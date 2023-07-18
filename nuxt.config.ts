@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Spis sekcji JBwA i tag-grupek',
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '~/assets/favicon.ico' },
+      ],
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width,initial-scale=1' },
@@ -16,6 +19,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  css: ['~/assets/index.css'],
   modules: [
     '@pinia/nuxt',
     // 'nuxt-vuefire',
@@ -23,7 +27,6 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
   ],
   quasar: {
-    sassVariables: '~/assets/variables.sass',
     lang: 'pl',
   },
   googleFonts: {
