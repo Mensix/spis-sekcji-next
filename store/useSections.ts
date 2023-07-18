@@ -14,8 +14,9 @@ export const useSections = defineStore('sections', {
     categories: state =>
       [...new Set(state.groups
         .flatMap(group => group.category ?? [])
-        .filter(Boolean)),
-      ],
+        .filter(Boolean)
+        .sort(),
+      )],
   },
   actions: {
     async fetch() {

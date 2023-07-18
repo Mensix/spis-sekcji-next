@@ -1,5 +1,21 @@
 export default defineNuxtConfig({
   ssr: false,
+  app: {
+    head: {
+      title: 'Spis sekcji JBwA i tag-grupek',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width,initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'Największy w polskim internecie spis sekcji JBwA i tag-grupek' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { hid: 'og:title', property: 'og:title', content: 'Spis sekcji JBwA i tag-grupek' },
+        { hid: 'og:description', property: 'og:description', content: 'Największy w polskim internecie spis sekcji JBwA i tag-grupek' },
+        { hid: 'og:image', property: 'og:image', content: '~/assets/og:img.png' },
+        { hid: 'og:url', property: 'og:url', content: 'https://sekcje.github.io/' },
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+      ],
+    },
+  },
   modules: [
     '@pinia/nuxt',
     // 'nuxt-vuefire',
