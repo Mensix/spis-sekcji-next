@@ -11,13 +11,20 @@ await sections.fetch()
 const { filter, categories, columns, pagination, filterTable } = useTable()
 
 const visibleColumns = computed(() => {
-  if (!sections.groups.length)
-    return columns.filter(x => x.name !== 'index' && x.name !== 'keywords').map(x => x.name)
-
-  return columns.filter(x => x.name !== 'keywords' && (!sections.groups.length && x.name !== 'keywords')).map(x => x.name)
+  if (!sections.groups.length) {
+    return columns.filter(x => x.name !== 'index' && x.name !== 'keywords')
+      .map(x => x.name)
+  }
+  else {
+    return columns.filter(x => x.name !== 'keywords')
+      .map(x => x.name)
+  }
 })
 
-const filteredSections = computed(() => sections.groups.filter(x => categories.value.length ? x.category?.some(y => categories.value.includes(y)) : x))
+const filteredSections = computed(() =>
+  sections.groups.filter(x =>
+    categories.value.length ? x.category?.some(y => categories.value.includes(y)) : x),
+)
 </script>
 
 <template>

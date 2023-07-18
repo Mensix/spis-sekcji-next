@@ -11,7 +11,11 @@ export const useSections = defineStore('sections', {
     } as Groups
   },
   getters: {
-    categories: state => [...new Set(state.groups.flatMap(group => group.category ?? []).filter(Boolean))],
+    categories: state =>
+      [...new Set(state.groups
+        .flatMap(group => group.category ?? [])
+        .filter(Boolean)),
+      ],
   },
   actions: {
     async fetch() {
