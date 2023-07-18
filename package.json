@@ -8,14 +8,26 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
-    "@nuxt/devtools": "latest",
-    "@types/node": "^18.16.19",
+    "@nuxtjs/google-fonts": "^3.0.1",
+    "@types/node": "^20.4.2",
     "eslint": "^8.45.0",
-    "nuxt": "^3.6.2",
-    "nuxt-quasar-ui": "^2.0.4"
+    "nuxt": "^3.6.3",
+    "nuxt-quasar-ui": "^2.0.4",
+    "sass": "^1.63.6"
   },
   "dependencies": {
+    "@firebase/app-types": "^0.9.0",
+    "@pinia/nuxt": "^0.4.11",
     "@quasar/extras": "^1.16.5",
-    "quasar": "^2.12.2"
+    "firebase": "^10.0.0",
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.4.1",
+    "nuxt-vuefire": "^0.2.7",
+    "pinia": "^2.1.4",
+    "quasar": "^2.12.2",
+    "vuefire": "^3.1.8"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }
