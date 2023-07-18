@@ -11,18 +11,15 @@ export const useSections = defineStore('sections', {
     } as Groups
   },
   getters: {
-    categories: state =>
-      [...new Set(state.groups.flatMap(group => group.category))],
+    categories: state => [...new Set(state.groups.flatMap(group => group.category ?? []).filter(Boolean))],
   },
   actions: {
-    fetch() {
+    async fetch() {
       const app = useNuxtApp()
-      const db = app.$firestore
-
-      onSnapshot(collection(db, 'groups'), (snapshot) => {
+      onSnapshot(collection(app.$firestore, 'groups'), (snapshot) => {
         const { updateDate, groups } = snapshot.docs.find(x => x.id === 'sections')?.data() as Groups
         this.updateDate = (updateDate as Timestamp).toDate().toLocaleDateString('pl-PL')
-        this.groups = groups
+        this.groups = groups.sort((a, b) => b.members - a.members)
       })
     },
   },

@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  ssr: false,
   modules: [
     '@pinia/nuxt',
     // 'nuxt-vuefire',
@@ -7,6 +8,7 @@ export default defineNuxtConfig({
   ],
   quasar: {
     sassVariables: '~/assets/variables.sass',
+    lang: 'pl',
   },
   googleFonts: {
     families: {

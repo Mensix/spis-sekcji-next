@@ -1,9 +1,16 @@
 import type { QTableColumn } from 'quasar'
 
 export function useTable() {
-  const search = ref('')
+  const filter = ref('')
   const categories = ref<string[]>([])
   const columns: QTableColumn[] = [
+    {
+      name: 'index',
+      label: '',
+      field: 'index',
+      align: 'left',
+      sortable: false,
+    },
     {
       name: 'name',
       label: 'Nazwa',
@@ -56,7 +63,7 @@ export function useTable() {
   }
 
   return {
-    search,
+    filter,
     categories,
     columns,
     pagination,

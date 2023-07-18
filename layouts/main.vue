@@ -15,7 +15,6 @@ const $q = useQuasar()
         <q-space />
         <q-tabs shrink stretch class="q-mr-sm" no-caps>
           <q-route-tab label="Sekcje" to="/" />
-          <q-route-tab label="Zgłoś brakującą grupę" to="/add" />
         </q-tabs>
       </q-toolbar>
     </q-header>

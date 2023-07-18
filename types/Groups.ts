@@ -7,8 +7,10 @@ export interface Groups {
 
 export interface Group {
   category?: string[]
+  index?: number
+  isSection?: boolean
   keywords?: string[]
   link: string
   name: string
-  isSection?: boolean
+  members: number
 }

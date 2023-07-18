@@ -3,17 +3,28 @@ definePageMeta({
   layout: 'main',
 })
 
-const sections = useSections()
-sections.fetch()
+const $q = useQuasar()
 
-const { search, categories, columns, pagination, filterTable } = useTable()
+const sections = useSections()
+await sections.fetch()
+
+const { filter, categories, columns, pagination, filterTable } = useTable()
+
+const visibleColumns = computed(() => {
+  if (!sections.groups.length)
+    return columns.filter(x => x.name !== 'index' && x.name !== 'keywords').map(x => x.name)
+
+  return columns.filter(x => x.name !== 'keywords' && (!sections.groups.length && x.name !== 'keywords')).map(x => x.name)
+})
+
+const filteredSections = computed(() => sections.groups.filter(x => categories.value.length ? x.category?.some(y => categories.value.includes(y)) : x))
 </script>
 
 <template>
-  <q-table v-model.pagination="pagination" binary-state-sort :filter-method="filterTable" :columns="columns" :rows="sections.groups" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length">
+  <q-table v-model.pagination="pagination" :grid="$q.platform.is.mobile" :visible-columns="visibleColumns" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="filteredSections" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length">
     <template #top-left>
       <div class="col items-start">
-        <q-input v-model.trim="search" class="q-mb-sm" color="accent" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
+        <q-input v-model.trim="filter" class="q-mb-sm" color="accent" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
           <template v-if="sections.groups.length > 0" #append>
             <q-icon name="search" />
           </template>
@@ -27,12 +38,20 @@ const { search, categories, columns, pagination, filterTable } = useTable()
           </template>
         </q-select>
         <p class="q-ma-none">
-          Autorzy: Grzegorz Perun & Daniel Nguyen
+          Autorzy:
+          <a href="https://facebook.com/grzegorz.perun/" rel="noopener noreferrer" target="_blank" class="text-accent">Grzegorz Perun</a>,
+          <a href="https://facebook.com/Nj.Soult/" rel="noopener noreferrer" target="_blank" class="text-accent">Daniel Nguyen</a>
         </p>
         <p class="q-mb-sm" :class="{ 'text-transparent': sections.updateDate === '' }">
           Ostatnia aktualizacja: {{ sections.updateDate }}
         </p>
       </div>
+    </template>
+
+    <template #body-cell-index="props">
+      <q-td :props="props" style="width: 0;">
+        <span>{{ props.rowIndex + 1 }}.</span>
+      </q-td>
     </template>
 
     <template #body-cell-name="props">
@@ -62,5 +81,45 @@ const { search, categories, columns, pagination, filterTable } = useTable()
     </template>
 
     <template #body-cell-keywords />
+
+    <template #item="props">
+      <q-card class="col-12 q-mb-md" flat :props="props">
+        <q-list dense>
+          <q-item>
+            <q-item-section>
+              <q-item-label caption>
+                {{ props.cols[1].label }}
+              </q-item-label>
+              <q-item-label>
+                {{ props.rowIndex + 1 }}. {{ props.row.name }}
+              </q-item-label>
+
+              <q-item-label caption>
+                {{ props.cols[2].label }}
+              </q-item-label>
+              <q-item-label>
+                {{ props.row.members }}
+              </q-item-label>
+
+              <q-item-label v-if="props.cols[3].value" caption>
+                {{ props.cols[3].label }}
+              </q-item-label>
+              <q-item-label>
+                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[3].value }}</a>
+              </q-item-label>
+
+              <template v-if="props.cols[4].value">
+                <q-item-label caption>
+                  {{ props.cols[4].label }}
+                </q-item-label>
+                <q-item-label>
+                  {{ props.cols[4].value.join(', ') }}
+                </q-item-label>
+              </template>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card>
+    </template>
   </q-table>
 </template>
