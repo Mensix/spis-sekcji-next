@@ -25,15 +25,8 @@ export default defineNuxtConfig({
     // 'nuxt-vuefire',
     'nuxt-quasar-ui',
     '@nuxtjs/google-fonts',
+    'nuxt-gtag',
   ],
-  quasar: {
-    lang: 'pl',
-  },
-  googleFonts: {
-    families: {
-      'Open+Sans': [400, 500, 600, 700],
-    },
-  },
   // vuefire: {
   //   config: {
   //     apiKey: 'AIzaSyBm04S9xjPaGHu3EoYZC4gkCQNWC1Tqrco',
@@ -45,6 +38,19 @@ export default defineNuxtConfig({
   //     appId: '1:951968444552:web:26b8f6cf82ad88ff2daf3d',
   //   },
   // },
+  quasar: {
+    lang: 'pl',
+    plugins: ['LocalStorage', 'Notify'],
+  },
+  googleFonts: {
+    families: {
+      'Open+Sans': [400, 500, 600, 700],
+    },
+  },
+  gtag: {
+    id: 'G-NHE3QQR0RY',
+    initialConsent: false,
+  },
   imports: {
     dirs: ['./store'],
   },

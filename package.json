@@ -12,6 +12,7 @@
     "@types/node": "^20.4.2",
     "eslint": "^8.45.0",
     "nuxt": "^3.6.3",
+    "nuxt-gtag": "^0.5.7",
     "nuxt-quasar-ui": "^2.0.4"
   },
   "dependencies": {

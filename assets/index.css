@@ -1,3 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
 }
+
+.body--dark a {
+    color: /* purple-3 */ #ce93d8 !important;
+}

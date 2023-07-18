@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { QTable } from 'quasar'
+
 definePageMeta({
   layout: 'main',
 })
@@ -9,6 +11,8 @@ const sections = useSections()
 await sections.fetch()
 
 const { filter, categories, columns, pagination, filterTable } = useTable()
+
+const table = ref<QTable>()
 
 const visibleColumns = computed(() => {
   if (!sections.groups.length) {
@@ -25,10 +29,17 @@ const filteredSections = computed(() =>
   sections.groups.filter(x =>
     categories.value.length ? x.category?.some(y => categories.value.includes(y)) : x),
 )
+
+function scrollToTop() {
+  if (!table.value)
+    return
+
+  window.scroll(0, 158 /* top-left slot height */)
+}
 </script>
 
 <template>
-  <q-table v-model.pagination="pagination" :grid="$q.platform.is.mobile" :visible-columns="visibleColumns" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="filteredSections" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length">
+  <QTable ref="table" v-model:pagination="pagination" :grid="$q.platform.is.mobile" :visible-columns="visibleColumns" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="filteredSections" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length" @update:pagination="scrollToTop()">
     <template #top-left>
       <div class="col items-start">
         <q-input v-model.trim="filter" class="q-mb-sm" color="accent" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
@@ -128,5 +139,5 @@ const filteredSections = computed(() =>
         </q-list>
       </q-card>
     </template>
-  </q-table>
+  </QTable>
 </template>
