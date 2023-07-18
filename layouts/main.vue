@@ -24,10 +24,18 @@ if ($q.localStorage.getItem('cookieConsent') === null) {
 else {
   useGtagConsent(true)
 }
+
+if (window.matchMedia('(prefers-color-scheme: dark)').matches || $q.localStorage.getItem('darkMode'))
+  $q.dark.set(true)
+
+function toggleDarkMode() {
+  $q.dark.toggle()
+  $q.localStorage.set('darkMode', $q.dark.isActive)
+}
 </script>
 
 <template>
-  <q-layout :view="$q.platform.is.desktop ? 'hHh lpR fff' : 'hHh lpR fFf'">
+  <q-layout :view="$q.platform.is.desktop ? 'hHh lpR fff' : 'hHh lpR fff'">
     <q-header bordered :class="{ 'bg-white text-accent': !$q.dark.isActive, 'bg-dark text-purple-3': $q.dark.isActive }">
       <q-toolbar>
         <q-toolbar-title shrink class="flex items-center">
@@ -39,11 +47,27 @@ else {
           <q-route-tab label="Sekcje" to="/" />
         </q-tabs>
         <q-separator vertical class="q-mx-md" />
-        <q-btn flat round dense :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'" class="q-mx-md" @click="$q.dark.toggle()" />
+        <q-btn flat round dense :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'" class="q-mx-md" @click="toggleDarkMode()" />
       </q-toolbar>
     </q-header>
     <q-page-container>
       <slot />
     </q-page-container>
+    <q-footer bordered class="text-center q-py-sm" :class="{ 'bg-dark text-white': $q.dark.isActive, 'bg-white text-black': !$q.dark.isActive }">
+      <small class="q-ma-none">
+        <a href="https://facebook.com/groups/spis.sekcji/" rel="noopener noreferrer" target="_blank">
+          Facebook
+        </a>
+        <span> • </span>
+        <a href="https://www.github.com/mensix/spis-sekcji-next/" rel="noopener noreferrer" target="_blank">
+          GitHub
+        </a>
+        <span> • </span>
+        <nuxt-link to="/privacy">
+          Polityka prywatności
+        </nuxt-link>
+        <span> • Wersja poglądowa </span>
+      </small>
+    </q-footer>
   </q-layout>
 </template>
