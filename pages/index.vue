@@ -123,7 +123,7 @@ function scrollToTop() {
                 {{ props.cols[3].label }}
               </q-item-label>
               <q-item-label>
-                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[3].value }}</a>
+                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.cols[3].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[3].value }}</a>
               </q-item-label>
 
               <template v-if="props.cols[4].value">

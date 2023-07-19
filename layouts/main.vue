@@ -25,6 +25,25 @@ else {
   useGtagConsent(true)
 }
 
+// notify about fixed mobile links
+if($q.localStorage.getItem('whatsNew') === null) {
+  $q.notify({
+    message: 'Zmiany z 19.07.2023: naprawiono linki do grup na urządzeniach mobilnych.',
+    icon: 'announcement',
+    position: 'bottom-right',
+    timeout: 0,
+    actions: [
+      {
+        label: 'OK',
+        color: 'white',
+        handler: () => {
+          $q.localStorage.set('whatsNew', true)
+        },
+      },
+    ],
+  })
+} 
+
 if (window.matchMedia('(prefers-color-scheme: dark)').matches || $q.localStorage.getItem('darkMode'))
   $q.dark.set(true)
 
