@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  ssr: false,
   app: {
     head: {
       title: 'Spis sekcji JBwA i tag-grupek',
