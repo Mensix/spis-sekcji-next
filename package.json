@@ -11,7 +11,7 @@
     "@nuxtjs/google-fonts": "^3.0.1",
     "@types/node": "^20.4.2",
     "eslint": "^8.45.0",
-    "nuxt": "^3.6.3",
+    "nuxt": "^3.6.5",
     "nuxt-gtag": "^0.5.7",
     "nuxt-quasar-ui": "^2.0.4"
   },
@@ -20,7 +20,7 @@
     "@quasar/extras": "^1.16.5",
     "firebase": "^10.0.0",
     "pinia": "^2.1.4",
-    "quasar": "^2.12.2",
+    "quasar": "^2.12.3",
     "vuefire": "^3.1.8"
   },
   "overrides": {
