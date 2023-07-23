@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { signInWithCustomToken } from 'firebase/auth';
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
+const classes = useClasses()
 
 if ($q.localStorage.getItem('cookieConsent') === null) {
   $q.notify({
@@ -30,14 +30,11 @@ function toggleDarkMode() {
   $q.dark.toggle()
   $q.localStorage.set('darkMode', $q.dark.isActive)
 }
-
-const app = useNuxtApp()
-console.log(app.$auth.currentUser)
 </script>
 
 <template>
   <q-layout :view="$q.platform.is.desktop ? 'hHh lpR fff' : 'hHh lpR fff'">
-    <q-header bordered :class="{ 'bg-white text-accent': !$q.dark.isActive, 'bg-dark text-purple-3': $q.dark.isActive }">
+    <q-header bordered :class="[classes.backgroundClass.value, { 'text-accent': !$q.dark.isActive, 'text-purple-3': $q.dark.isActive }]">
       <q-toolbar>
         <q-toolbar-title shrink class="flex items-center">
           <q-icon name="subject" class="q-mr-sm" />
@@ -54,7 +51,7 @@ console.log(app.$auth.currentUser)
     <q-page-container>
       <slot />
     </q-page-container>
-    <q-footer bordered class="text-center q-py-sm" :class="{ 'bg-dark text-white': $q.dark.isActive, 'bg-white text-black': !$q.dark.isActive }">
+    <q-footer bordered class="text-center q-py-sm" :class="[classes.backgroundClass.value, classes.textClass.value]">
       <small class="q-ma-none">
         <a href="https://facebook.com/groups/spis.sekcji/" rel="noopener noreferrer" target="_blank">
           Facebook

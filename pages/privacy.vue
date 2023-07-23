@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
-
 definePageMeta({
   layout: 'main',
 })
 
-const $q = useQuasar()
+const classes = useClasses()
 </script>
 
 <template>
   <div class="text-grey q-px-md">
-    <h5 class="q-mb-md" :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }">
+    <h5 class="q-mb-md" :class="classes.textClass.value">
       Polityka prywatności
     </h5>
     <p>
@@ -23,13 +21,13 @@ const $q = useQuasar()
         wyświetleń strony
       </li>
     </ul>
-    <h6 class="q-mb-md" :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }">
+    <h6 class="q-mb-md" :class="classes.textClass.value">
       Cookies
     </h6>
     <p>
       Pliki cookies są wykorzystywane przez serwisy powyżej, a także do zapisywania preferencji użytkownika.
     </p>
-    <h6 class="q-mb-md" :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }">
+    <h6 class="q-mb-md" :class="classes.textClass.value">
       Kontakt
     </h6>
     <p>
