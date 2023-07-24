@@ -8,8 +8,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
-    "@nuxtjs/google-fonts": "^3.0.1",
-    "@types/node": "^20.4.2",
+    "@nuxtjs/google-fonts": "^3.0.2",
+    "@types/node": "^20.4.4",
     "eslint": "^8.45.0",
     "nuxt": "^3.6.5",
     "nuxt-gtag": "^0.5.7",
@@ -18,10 +18,9 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "@quasar/extras": "^1.16.5",
-    "firebase": "^10.0.0",
+    "firebase": "^10.1.0",
     "pinia": "^2.1.4",
-    "quasar": "^2.12.3",
-    "vuefire": "^3.1.8"
+    "quasar": "^2.12.3"
   },
   "overrides": {
     "vue": "latest"
