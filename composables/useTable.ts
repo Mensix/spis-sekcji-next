@@ -1,42 +1,54 @@
 import type { QTableColumn } from 'quasar'
 
 export function useTable() {
-  const table = reactive({
-    search: '',
-    selectedCategories: [],
-    columns: [
-      {
-        name: 'name',
-        label: 'Nazwa',
-        field: 'name',
-        align: 'left',
-        sortable: true,
-      },
-      {
-        name: 'members',
-        label: 'Liczba członków',
-        field: 'members',
-        align: 'left',
-        sortable: true,
-      },
-      { name: 'link', label: 'Link', field: 'link', align: 'left' },
-      {
-        name: 'category',
-        label: 'Kategorie',
-        field: 'category',
-        align: 'left',
-      },
-      {
-        name: 'keywords',
-        field: 'keywords',
-      },
-    ] as QTableColumn[],
-    pagination: {
-      descending: true,
-      page: 0,
-      rowsPerPage: 40,
-      rowsCount: 0,
+  const filter = ref('')
+  const categories = ref<string[]>([])
+  const columns: QTableColumn[] = [
+    {
+      name: 'index',
+      label: '',
+      field: 'index',
+      align: 'left',
+      sortable: false,
     },
+    {
+      name: 'name',
+      label: 'Nazwa',
+      field: 'name',
+      align: 'left',
+      sortable: true,
+    },
+    {
+      name: 'members',
+      label: 'Liczba członków',
+      field: 'members',
+      align: 'left',
+      sortable: true,
+    },
+    {
+      name: 'link',
+      label: 'Link',
+      field: 'link',
+      align: 'left',
+    },
+    {
+      name: 'category',
+      label: 'Kategorie',
+      field: 'category',
+      align: 'left',
+    },
+    {
+      name: 'keywords',
+      label: 'Słowa kluczowe',
+      field: 'keywords',
+    },
+  ]
+
+  const pagination = ref({
+    descending: true,
+    page: 0,
+    rowsPerPage: 40,
+    rowsCount: 0,
   })
 
   function filterTable(rows, terms: string, cols, cellValue) {
@@ -50,13 +62,11 @@ export function useTable() {
     )
   }
 
-  function scrollToTop() {
-    window.scrollTo(0, 0)
-  }
-
   return {
-    table,
+    filter,
+    categories,
+    columns,
+    pagination,
     filterTable,
-    scrollToTop,
   }
 }

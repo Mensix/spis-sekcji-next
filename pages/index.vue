@@ -1,84 +1,92 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
-import { useSectionsStore } from '~~/store/useSections'
-import { useUserStore } from '~~/store/useUser'
+import { QTable } from 'quasar'
 
 definePageMeta({
   layout: 'main',
-  title: 'Sekcje | Spis sekcji JBwA i tag-grupek',
 })
 
-const runtimeConfig = useRuntimeConfig()
-const user = useUserStore()
-const sections = useSectionsStore()
-sections.fetch()
-
 const $q = useQuasar()
-const { table, filterTable, scrollToTop } = useTable()
-const { getApproximateMembersCount, deleteGroup, showEditGroupDialog } = useGroup()
 
-const shouldShowOnlyFavouriteGroups = ref(false)
-const filteredSections = computed(() => sections.groups.filter(x => table.selectedCategories.length ? x.category && table.selectedCategories.some(y => x.category?.includes(y)) : x).filter(x => shouldShowOnlyFavouriteGroups.value && user.isLoggedIn ? x.isFavourite : x))
+const sections = useSections()
+await sections.fetch()
+
+const { filter, categories, columns, pagination, filterTable } = useTable()
+
+const table = ref<QTable>()
+
+const visibleColumns = computed(() => {
+  if (!sections.groups.length) {
+    return columns.filter(x => x.name !== 'index' && x.name !== 'keywords')
+      .map(x => x.name)
+  }
+  else {
+    return columns.filter(x => x.name !== 'keywords')
+      .map(x => x.name)
+  }
+})
+
+const filteredSections = computed(() =>
+  sections.groups.filter(x =>
+    categories.value.length ? x.category?.some(y => categories.value.includes(y)) : x),
+)
+
+function scrollToTop() {
+  if (!table.value)
+    return
+
+  window.scroll(0, 158 /* top-left slot height */)
+}
 </script>
 
 <template>
-  <q-table v-model:pagination="table.pagination" binary-state-sort color="secondary" :columns="table.columns" :grid="$q.platform.is.mobile" :rows="filteredSections" dense :filter="table.search" :filter-method="filterTable" flat :loading="!sections.groups.length" :rows-per-page-options="[]" :visible-columns="['name', 'members', 'link', 'category']" @update:pagination="scrollToTop">
+  <QTable ref="table" v-model:pagination="pagination" :grid="$q.platform.is.mobile" :visible-columns="visibleColumns" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="filteredSections" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length" @update:pagination="scrollToTop()">
     <template #top-left>
-      <q-input v-model.trim="table.search" class="q-mb-sm" color="secondary" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
-        <template v-if="sections.groups.length > 0" #append>
-          <q-icon name="search" />
-        </template>
-        <template #loading>
-          <q-spinner />
-        </template>
-      </q-input>
-      <q-select v-model="table.selectedCategories" class="q-mb-sm" color="secondary" dense label="Pokaż kategorie" :loading="!sections.groups.length" multiple :options="sections.categories" options-dense options-selected-class="text-secondary" :readonly="!sections.groups.length">
-        <template #loading>
-          <q-spinner />
-        </template>
-      </q-select>
-      <p class="q-ma-none">
-        Autorzy: Grzegorz Perun & Daniel Nguyen
-      </p>
-      <p class="q-mb-sm" :class="{ 'text-transparent': !sections.lastUpdateDate.length }">
-        Ostatnia aktualizacja: {{ sections.lastUpdateDate }}
-      </p>
-      <q-toggle v-if="user.isLoggedIn && sections.groups.length" v-model="shouldShowOnlyFavouriteGroups" color="secondary" label="Wyświetl tylko ulubione grupy" left-label />
+      <div class="col items-start">
+        <q-input v-model.trim="filter" class="q-mb-sm" color="accent" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
+          <template v-if="sections.groups.length > 0" #append>
+            <q-icon name="search" />
+          </template>
+          <template #loading>
+            <q-spinner />
+          </template>
+        </q-input>
+        <q-select v-model="categories" class="q-mb-sm" color="accent" dense label="Pokaż kategorie" :loading="!sections.groups.length" multiple :options="sections.categories" options-dense options-selected-class="text-accent" :readonly="!sections.groups.length">
+          <template #loading>
+            <q-spinner />
+          </template>
+        </q-select>
+        <p class="q-ma-none">
+          Autorzy:
+          <a href="https://facebook.com/grzegorz.perun/" rel="noopener noreferrer" target="_blank" class="text-accent">Grzegorz Perun</a>,
+          <a href="https://facebook.com/Nj.Soult/" rel="noopener noreferrer" target="_blank" class="text-accent">Daniel Nguyen</a>
+        </p>
+        <p class="q-mb-sm" :class="{ 'text-transparent': sections.updateDate === '' }">
+          Ostatnia aktualizacja: {{ sections.updateDate }}
+        </p>
+      </div>
+    </template>
+
+    <template #body-cell-index="props">
+      <q-td :props="props" style="width: 0;">
+        <span>{{ props.rowIndex + 1 }}.</span>
+      </q-td>
     </template>
 
     <template #body-cell-name="props">
-      <q-td :props="props">
-        <small class="text-grey q-mr-xs">{{ props.row.index }}. </small>
-        <small v-if="props.row.members" class="text-secondary q-mr-xs">
-          {{ getApproximateMembersCount(props.row.members) }}
-        </small>
-        <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
-          <del>JBWA</del>
-        </small>
-        <span class="q-mr-xs">
-          {{ props.row.name }}
-          <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)">
-            <q-tooltip>{{ props.row.isFavourite ? 'Usuń grupę z ulubionych' : 'Dodaj grupę do ulubionych' }}</q-tooltip>
-          </q-icon>
-          <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)">
-            <q-tooltip>Usuń grupę</q-tooltip>
-          </q-icon>
-          <q-icon color="secondary" class="cursor-pointer" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)">
-            <q-tooltip>Edytuj dane grupy</q-tooltip>
-          </q-icon>
-        </span>
+      <q-td>
+        {{ props.row.name }}
       </q-td>
     </template>
 
     <template #body-cell-members="props">
       <q-td :props="props">
-        <span>{{ props.row.members !== 0 ? props.row.members : 'N/A' }}</span>
+        <span>{{ props.row.members }}</span>
       </q-td>
     </template>
 
     <template #body-cell-link="props">
       <q-td :props="props">
-        <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.row.link}`" rel="noopener noreferrer" target="_blank">
+        <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.row.link}`" rel="noopener noreferrer" target="_blank">
           /{{ props.row.link }}
         </a>
       </q-td>
@@ -98,43 +106,38 @@ const filteredSections = computed(() => sections.groups.filter(x => table.select
           <q-item>
             <q-item-section>
               <q-item-label caption>
-                {{ props.cols[0].label }}
-              </q-item-label>
-              <q-item-label>
-                <small class="text-grey q-mr-xs">{{ props.row.index }}.</small>
-                <small v-if="props.row.members" class="text-secondary q-mr-xs">{{ getApproximateMembersCount(props.row.members) }}</small>
-                <small v-if="props.row.isSection === false" class="text-secondary q-mr-xs">
-                  <del>JBWA</del>
-                </small>
-                <span class="q-mr-xs">
-                  {{ props.row.name }}
-                  <q-icon v-if="user.isLoggedIn" class="cursor-pointer" size="16px" color="secondary" :name="!props.row.isFavourite ? 'star_border' : 'star'" @click="sections.toggleFavourite(props.row.link, props.row.isFavourite)" />
-                  <q-icon color="secondary" name="mode_edit_outline" size="16px" @click="showEditGroupDialog(props.row, runtimeConfig.public.sectionsPath)" />
-                  <q-icon v-if="user.isLoggedIn && user.isAdmin" size="16px" class="cursor-pointer" color="secondary" name="delete_forever" @click="deleteGroup('sections', props.row.link)" />
-                </span>
-              </q-item-label>
-              <q-item-label caption>
                 {{ props.cols[1].label }}
               </q-item-label>
               <q-item-label>
-                {{ props.row.members !== 0 ? props.row.members : 'N/A' }}
+                {{ props.rowIndex + 1 }}. {{ props.row.name }}
               </q-item-label>
+
               <q-item-label caption>
                 {{ props.cols[2].label }}
               </q-item-label>
               <q-item-label>
-                <a :id="props.row.name.split(' ').join('@')" class="text-secondary" :href="`https://facebook.com/groups/${props.cols[1].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[2].value }}</a>
+                {{ props.row.members }}
               </q-item-label>
+
               <q-item-label v-if="props.cols[3].value" caption>
                 {{ props.cols[3].label }}
               </q-item-label>
-              <q-item-label v-if="props.cols[3].value">
-                {{ props.cols[3].value?.join(', ') }}
+              <q-item-label>
+                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.cols[3].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[3].value }}</a>
               </q-item-label>
+
+              <template v-if="props.cols[4].value">
+                <q-item-label caption>
+                  {{ props.cols[4].label }}
+                </q-item-label>
+                <q-item-label>
+                  {{ props.cols[4].value.join(', ') }}
+                </q-item-label>
+              </template>
             </q-item-section>
           </q-item>
         </q-list>
       </q-card>
     </template>
-  </q-table>
+  </QTable>
 </template>

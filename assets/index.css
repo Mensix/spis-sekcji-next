@@ -1,0 +1,11 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+body:not(.body--dark) a {
+    color: /* accent */ #9C27B0 !important;
+}
+
+.body--dark a {
+    color: /* purple-3 */ #ce93d8 !important;
+}

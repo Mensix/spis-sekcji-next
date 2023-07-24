@@ -1,7 +1,3 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "downlevelIteration": true,
-    "strict": true
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }

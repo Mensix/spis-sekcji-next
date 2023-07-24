@@ -1,76 +1,31 @@
-import { getDatabase, onValue, push, ref, remove } from 'firebase/database'
+import type { Timestamp } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { defineStore } from 'pinia'
-import { Notify, Platform } from 'quasar'
-import { useUserStore } from './useUser'
-import type { Group, Groups } from '~~/types/Groups'
+import type { Groups } from 'types'
 
-export const useSectionsStore = defineStore('sections', {
+export const useSections = defineStore('sections', {
   state: () => {
     return {
-      groups: [] as Group[],
-      favouriteGroups: {},
-      lastUpdateDate: '',
-      name: '',
+      updateDate: '',
+      groups: [],
     } as Groups
   },
   getters: {
     categories: state =>
       [...new Set(state.groups
-        .filter(x => x.category)
-        .flatMap(x => x.category)
+        .flatMap(group => group.category ?? [])
+        .filter(Boolean)
         .sort(),
       )],
   },
   actions: {
-    fetch() {
-      const runtimeConfig = useRuntimeConfig()
-      onValue(ref(getDatabase(), runtimeConfig.public.sectionsPath), (snapshot) => {
-        const { groups, lastUpdateDate, name } = snapshot.val() as Groups
-        this.groups = groups
-          .map(x => ({ ...x, members: x.members || 0 }))
-          .sort((e, a) => a.members - e.members)
-          .map((_, idx) => ({
-            ..._,
-            category: _.category?.sort(),
-            index: idx + 1,
-          }))
-        this.lastUpdateDate = lastUpdateDate
-        this.name = name
+    async fetch() {
+      const app = useNuxtApp()
+      onSnapshot(collection(app.$firestore, 'groups'), (snapshot) => {
+        const { updateDate, groups } = snapshot.docs.find(x => x.id === 'sections')?.data() as Groups
+        this.updateDate = (updateDate as Timestamp).toDate().toLocaleDateString('pl-PL')
+        this.groups = groups.sort((a, b) => b.members - a.members)
       })
-    },
-    fetchFavourite() {
-      const user = useUserStore()
-      onValue(ref(getDatabase(), `users/${user.data.uid}/favourite-groups`), (snapshot) => {
-        const output = snapshot.val() as Record<string, string>
-        this.favouriteGroups = output
-        this.groups = this.groups.map(x => ({ ...x, isFavourite: this.favouriteGroups && Object.values(output).includes(x.link) }))
-      })
-    },
-    toggleFavourite(id: string, isFavourite: boolean) {
-      const user = useUserStore()
-      if (!isFavourite) {
-        push(ref(getDatabase(), `users/${user.data.uid}/favourite-groups`), id)
-        if (Platform.is.mobile) {
-          Notify.create({
-            message: 'Pomyślnie dodano grupę do ulubionych.',
-            icon: 'announcement',
-            position: 'bottom-right',
-            timeout: 2500,
-          })
-        }
-      }
-      else {
-        const matchingGroup = Object.entries(this.favouriteGroups!).find(x => x[1] === id)![0]
-        remove(ref(getDatabase(), `users/${user.data.uid}/favourite-groups/${matchingGroup}`))
-        if (Platform.is.mobile) {
-          Notify.create({
-            message: 'Pomyślnie usunięto grupę z ulubionych.',
-            icon: 'announcement',
-            position: 'bottom-right',
-            timeout: 2500,
-          })
-        }
-      }
     },
   },
 })

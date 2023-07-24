@@ -1,17 +1,16 @@
+import type { Timestamp } from 'firebase/firestore'
+
 export interface Groups {
   groups: Group[]
-  favouriteGroups?: Record<string, string>
-  lastUpdateDate: string
-  name: string
+  updateDate: string | Timestamp
 }
 
 export interface Group {
+  category?: string[]
   index?: number
-  category?: string[] | null
+  isSection?: boolean
   keywords?: string[]
   link: string
-  members?: number
   name: string
-  isFavourite?: boolean
-  isSection?: boolean
+  members: number
 }
