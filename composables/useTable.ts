@@ -1,8 +1,8 @@
 import type { QTableColumn } from 'quasar'
+import type { Group } from '~/types'
 
 export function useTable() {
   const filter = ref('')
-  const categories = ref<string[]>([])
   const columns: QTableColumn[] = [
     {
       name: 'index',
@@ -51,20 +51,19 @@ export function useTable() {
     rowsCount: 0,
   })
 
-  function filterTable(rows, terms: string, cols, cellValue) {
+  function filterTable(rows: readonly Group[], terms: string, cols: readonly QTableColumn[], cellValue: (col: QTableColumn, row: Group) => string): readonly Group[] {
     const lowerTerms = terms ? terms.toLowerCase() : ''
     return rows.filter(row =>
       cols.some((col) => {
         const val = `${cellValue(col, row)}`
         const haystack = val?.toLowerCase()
-        return ((col.name === 'name' || col.name === 'link' || col.name === 'keywords') && haystack.includes(lowerTerms))
+        return ((col.name === 'name' || col.name === 'link') && haystack.includes(lowerTerms))
       }),
     )
   }
 
   return {
     filter,
-    categories,
     columns,
     pagination,
     filterTable,

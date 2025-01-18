@@ -2,6 +2,7 @@
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
+const { initialize } = useGtag()
 const classes = useClasses()
 
 if ($q.localStorage.getItem('cookieConsent') === null) {
@@ -16,14 +17,14 @@ if ($q.localStorage.getItem('cookieConsent') === null) {
         color: 'white',
         handler: () => {
           $q.localStorage.set('cookieConsent', true)
-          useGtagConsent(true)
+          initialize()
         },
       },
     ],
   })
 }
 else {
-  useGtagConsent(true)
+  initialize()
 }
 
 function toggleDarkMode() {

@@ -1,7 +1,7 @@
 import type { Timestamp } from 'firebase/firestore'
+import type { Groups } from '~/types'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { defineStore } from 'pinia'
-import type { Groups } from 'types'
 
 export const useSections = defineStore('sections', {
   state: () => {
@@ -9,14 +9,6 @@ export const useSections = defineStore('sections', {
       updateDate: '',
       groups: [],
     } as Groups
-  },
-  getters: {
-    categories: state =>
-      [...new Set(state.groups
-        .flatMap(group => group.category ?? [])
-        .filter(Boolean)
-        .sort(),
-      )],
   },
   actions: {
     async fetch() {
