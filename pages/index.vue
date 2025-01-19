@@ -18,7 +18,7 @@ function scrollToTop() {
   if (!table.value)
     return
 
-  window.scroll(0, 158 /* top-left slot height */)
+  window.scroll(0, 160 /* top-left slot height */)
 }
 </script>
 
@@ -82,7 +82,7 @@ function scrollToTop() {
     <template #item="props">
       <q-card class="col-12 q-mb-md" flat :props="props">
         <q-list dense>
-          <q-item>
+          <q-item style="padding: 0;">
             <q-item-section>
               <q-item-label caption>
                 {{ props.cols[1].label }}
@@ -98,21 +98,12 @@ function scrollToTop() {
                 {{ props.row.members }}
               </q-item-label>
 
-              <q-item-label v-if="props.cols[3].value" caption>
+              <q-item-label caption>
                 {{ props.cols[3].label }}
               </q-item-label>
               <q-item-label>
-                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.cols[3].value}`" rel="noopener noreferrer" target="_blank">/{{ props.cols[3].value }}</a>
+                <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.row.alias}`" rel="noopener noreferrer" target="_blank">/{{ props.row.alias }}</a>
               </q-item-label>
-
-              <template v-if="props.cols[4].value">
-                <q-item-label caption>
-                  {{ props.cols[4].label }}
-                </q-item-label>
-                <q-item-label>
-                  {{ props.cols[4].value.join(', ') }}
-                </q-item-label>
-              </template>
             </q-item-section>
           </q-item>
         </q-list>
