@@ -31,17 +31,6 @@ export function useTable() {
       field: 'link',
       align: 'left',
     },
-    {
-      name: 'category',
-      label: 'Kategorie',
-      field: 'category',
-      align: 'left',
-    },
-    {
-      name: 'keywords',
-      label: 'Słowa kluczowe',
-      field: 'keywords',
-    },
   ]
 
   const pagination = ref({

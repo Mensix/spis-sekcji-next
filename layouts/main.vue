@@ -54,17 +54,11 @@ function toggleDarkMode() {
     </q-page-container>
     <q-footer bordered class="text-center q-py-sm" :class="[classes.backgroundClass.value, classes.textClass.value]">
       <small class="q-ma-none">
-        <a href="https://facebook.com/groups/spis.sekcji/" rel="noopener noreferrer" target="_blank">
-          Facebook
-        </a>
+        <a href="https://facebook.com/groups/spis.sekcji/" rel="noopener noreferrer" target="_blank">Facebook</a>
         <span> • </span>
-        <a href="https://www.github.com/mensix/spis-sekcji-next/" rel="noopener noreferrer" target="_blank">
-          GitHub
-        </a>
+        <a href="https://www.github.com/mensix/spis-sekcji-next/" rel="noopener noreferrer" target="_blank">GitHub</a>
         <span> • </span>
-        <nuxt-link to="/privacy">
-          Polityka prywatności
-        </nuxt-link>
+        <nuxt-link to="/privacy">Polityka prywatności</nuxt-link>
         <span> • Wersja poglądowa </span>
       </small>
     </q-footer>

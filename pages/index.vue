@@ -14,17 +14,6 @@ const { filter, columns, pagination, filterTable } = useTable()
 
 const table = ref<QTable>()
 
-const visibleColumns = computed(() => {
-  if (!sections.groups.length) {
-    return columns.filter(x => x.name !== 'index' && x.name !== 'keywords')
-      .map(x => x.name)
-  }
-  else {
-    return columns.filter(x => x.name !== 'keywords')
-      .map(x => x.name)
-  }
-})
-
 function scrollToTop() {
   if (!table.value)
     return
@@ -34,7 +23,7 @@ function scrollToTop() {
 </script>
 
 <template>
-  <QTable ref="table" v-model:pagination="pagination" :grid="$q.platform.is.mobile" :visible-columns="visibleColumns" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="sections.groups" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length" @update:pagination="scrollToTop()">
+  <QTable ref="table" v-model:pagination="pagination" :grid="$q.platform.is.mobile" binary-state-sort :filter="filter" :filter-method="filterTable" :columns="columns" :rows="sections.groups" dense flat :rows-per-page-options="[50]" :loading="!sections.groups.length" @update:pagination="scrollToTop()">
     <template #top-left>
       <div class="col items-start">
         <q-input v-model.trim="filter" class="q-mb-sm" color="accent" :debounce="500" dense label="Wyszukiwarka grup" :loading="!sections.groups.length" :readonly="!sections.groups.length">
@@ -44,13 +33,13 @@ function scrollToTop() {
           <template #loading>
             <q-spinner />
           </template>
-        </q-input> 
+        </q-input>
         <p class="q-ma-none">
           Autorzy:
           <a href="https://facebook.com/grzegorz.perun/" rel="noopener noreferrer" target="_blank" class="text-accent">Grzegorz Perun</a>,
           <a href="https://facebook.com/Nj.Soult/" rel="noopener noreferrer" target="_blank" class="text-accent">Daniel Nguyen</a>
         </p>
-        <p class="q-mb-sm" :class="{ 'text-transparent': sections.updateDate === '' }">
+        <p class="q-mb-sm">
           Ostatnia aktualizacja: {{ sections.updateDate }}
         </p>
       </div>
@@ -77,7 +66,7 @@ function scrollToTop() {
     <template #body-cell-link="props">
       <q-td :props="props">
         <a :id="props.row.name.split(' ').join('@')" class="text-accent" :href="`https://facebook.com/groups/${props.row.link}`" rel="noopener noreferrer" target="_blank">
-          /{{ props.row.link }}
+          /{{ props.row.alias }}
         </a>
       </q-td>
     </template>

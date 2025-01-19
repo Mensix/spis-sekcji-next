@@ -1,3 +1,3 @@
-import { Group, Groups } from './Groups'
+import type { Group, Groups } from './Groups'
 
-export { Group, Groups }
+export type { Group, Groups }
